@@ -12,7 +12,7 @@ const Navbar = () => {
   const [nav, setNav] = useState(false);
   const { data: session } = useSession();
   return (
-    <div className="flex justify-between items-center w-full h-20 px-6 py-2 text-white bg-black fixed nav">
+    <div className="flex justify-between items-center w-full h-20 px-6 py-2 text-white bg-black  nav">
       <div>
         <Link className="link-underline link-underline-black" href="/" rel="noreferrer">
           <h1 className="text-3xl font-signature font-bold">Hyea Me Ha</h1>
