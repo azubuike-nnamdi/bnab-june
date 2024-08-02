@@ -1,3 +1,6 @@
+import { Home, Settings, User } from "lucide-react";
+
+import { CUSTOMER_URL, DASHBOARD_URL, SETTING_URL } from "@/config/routes";
 
 export const menuItems = [
   {
@@ -275,3 +278,28 @@ export const tabs = [
   { name: "Training", banners: training },
 ];
 
+
+
+export const BackOfficeNavItem = [
+  {
+    id: 1,
+    href: DASHBOARD_URL,
+    icon: Home,
+    tooltip: "Dashboard",
+    title: 'Dashboard'
+  },
+  {
+    id: 2,
+    href: CUSTOMER_URL,
+    icon: User,
+    tooltip: "Customers",
+    title: 'Customers'
+  },
+  {
+    id: 3,
+    href: SETTING_URL,
+    icon: Settings,
+    tooltip: "Settings",
+    title: 'Settings'
+  },
+];
