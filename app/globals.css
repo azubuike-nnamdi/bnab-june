@@ -68,6 +68,12 @@
    }
 }
 
+.bg-our-fleet {
+   background-image: url(/img/bg-our-fleet.png);
+   background-repeat: no-repeat;
+   background-position: left top 230px;
+}
+
 .footer {
    background-image: url(/img/bg-footer.png);
    background-repeat: no-repeat;
