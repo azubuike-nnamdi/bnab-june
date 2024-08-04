@@ -12,7 +12,7 @@ import { Fade, Slide } from "react-awesome-reveal";
 
 export default function Fleet() {
   return (
-    <Fade direction="up" cascade delay={7}>
+    <Fade direction="up" cascade>
       <section className="pt-12 pb-28 bg-our-fleet sm:mx-6">
         <div className="mx-auto">
           <div className="flex flex-wrap items-center">
