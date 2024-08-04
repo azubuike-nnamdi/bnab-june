@@ -6,15 +6,20 @@ import React, { useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { signIn, useSession, signOut } from "next-auth/react";
 import { Button } from "../ui/button";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
+import { HOME_URL } from "@/config/routes";
 
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
   const { data: session } = useSession();
+
+  const pathname = usePathname();
   return (
     <div className="flex justify-between items-center w-full h-20 px-6 py-2 text-white bg-black  nav">
       <div>
-        <Link className="link-underline link-underline-black" href="/" rel="noreferrer">
+        <Link className="link-underline link-underline-black" href={HOME_URL} rel="noreferrer">
           <h1 className="text-3xl font-signature font-bold">Hyea Me Ha</h1>
           <span className="text-yellow-500">...meet me there</span>
         </Link>
@@ -22,7 +27,7 @@ const Navbar = () => {
 
       <ul className="hidden md:flex">
         {menuItems.map(({ id, title, path, subMenu }) => (
-          <li key={id} className="nav-links px-4 cursor-pointer capitalize font-medium text-gray-500 hover:scale-105 hover:text-white duration-200 link-underline">
+          <li key={id} className={clsx("nav-links px-4 cursor-pointer capitalize font-medium hover:scale-105 duration-200 link-underline", { "text-yellow-500": pathname === path, "text-gray-500 hover:text-white": pathname !== path })}>
             {subMenu ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex items-center">
