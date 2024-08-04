@@ -72,6 +72,20 @@
    order: 6 !important;
 }
 
+.list-ticks-small-booking {
+   li {
+      padding-left: 35px;
+      &::before {
+         background-image: url(/img/tick.png);
+         background-position: center;
+         background-repeat: no-repeat;
+      }
+      &:last-child {
+         margin-bottom: 0px !important;
+      }
+   }
+}
+
 .bg-our-fleet {
    background-image: url(/img/bg-our-fleet.png);
    background-repeat: no-repeat;
