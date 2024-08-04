@@ -1,6 +1,6 @@
 import { Home, Settings, User } from "lucide-react";
 
-import { ABOUT_URL, CONTACT_URL, CUSTOMER_URL, DASHBOARD_URL, HOME_URL, SERVICES_URL, SETTING_URL } from "@/config/routes";
+import { ABOUT_URL, ACCOMMODATION_URL, AIRPORT_PICK_UP_DROP_OFF_URL, CONTACT_URL, CUSTOMER_URL, DASHBOARD_URL, DEDICATED_RIDES_URL, HOME_URL, SERVICES_URL, SETTING_URL, TICKET_MASTER_URL, TRAINING_URL } from "@/config/routes";
 
 export const menuItems = [
   {
@@ -26,16 +26,20 @@ export const menuItems = [
       {
         id: 41,
         title: "Ticket Master",
-        path: "/ticket-master",
+        path: TICKET_MASTER_URL,
       },
-      { id: 42, title: "Airport Pickup & Dropoff", path: "/airport-pickup-dropoff" },
+      {
+        id: 42,
+        title: "Airport Pickup & Dropoff",
+        path: AIRPORT_PICK_UP_DROP_OFF_URL,
+      },
       {
         id: 43,
         title: "Accommodation",
-        path: "accommodation",
+        path: ACCOMMODATION_URL,
       },
-      { id: 44, title: "Dedicated Rides", path: "dedicated-rides" },
-      { id: 45, title: "Training", path: "/training" },
+      { id: 44, title: "Dedicated Rides", path: DEDICATED_RIDES_URL },
+      { id: 45, title: "Training", path: TRAINING_URL },
     ],
   },
   {

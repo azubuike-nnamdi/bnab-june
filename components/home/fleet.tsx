@@ -3,18 +3,53 @@ import { cars } from "@/lib/data/car-data";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { A11y, Autoplay, Navigation, Pagination, Scrollbar, EffectFade } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import 'swiper/css';
+import "swiper/css";
 import "swiper/css/autoplay";
-import { Fade, Slide } from "react-awesome-reveal";
+import { Fade } from "react-awesome-reveal";
 
 
 export default function Fleet() {
+
+  const settings = {
+    spaceBetween: 30,
+    slidesPerView: 4,
+    slidesPerGroup: 1,
+    loop: true,
+    navigation: {
+      nextEl: ".snbn3",
+      prevEl: ".snbp3",
+    },
+    modules: [Autoplay],
+    autoplay: {
+      delay: 10000,
+    },
+    breakpoints: {
+      1399: {
+        slidesPerView: 4,
+      },
+      1100: {
+        slidesPerView: 3,
+      },
+      600: {
+        slidesPerView: 2,
+      },
+      500: {
+        slidesPerView: 1,
+      },
+      350: {
+        slidesPerView: 1,
+      },
+      150: {
+        slidesPerView: 1,
+      },
+    },
+  };
   return (
     <Fade direction="up" cascade triggerOnce>
       <section className="pt-12 pb-28 bg-our-fleet sm:mx-6">
-        <div className="mx-auto">
+        <div className="mx-auto sm:px-24">
           <div className="flex flex-wrap items-center">
             <div className="w-full lg:w-1/2">
               <h2 className="text-4xl font-bold  wow fadeInUp">
@@ -23,17 +58,10 @@ export default function Fleet() {
             </div>
           </div>
         </div>
-        <div className="mt-12">
+        <div className="mt-12 sm:pl-24">
           <div className="relative">
             <Swiper
-              spaceBetween={10}
-              slidesPerView={4}
-              autoplay={{
-                delay: 3000,
-                disableOnInteraction: false,
-              }}
-
-              pagination={{ clickable: true }}
+              {...settings}
               className="mySwiper pb-0"
             >
               {cars.map((elm) => (
