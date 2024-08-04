@@ -32,11 +32,7 @@ export default function Hero() {
             </div>
           </SwiperSlide>
         ))}
-        <div className="absolute inset-0 flex items-center justify-between p-4">
-          <div className="swiper-button-prev snbp2 bg-gray-800 text-white p-2 rounded-full"></div>
-          <div className="swiper-button-next snbn2 bg-gray-800 text-white p-2 rounded-full"></div>
-          <div className="swiper-pagination sph1"></div>
-        </div>
+
       </Swiper>
       <div className="flex justify-between ">
         <div className="btn-group flex w-full">
