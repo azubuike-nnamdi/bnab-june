@@ -1,4 +1,4 @@
-import { ABOUT_URL, CONTACT_URL, DASHBOARD_URL, HOME_URL, SERVICES_URL, TICKET_MASTER_URL } from "@/config/routes"
+import { ABOUT_URL, AIRPORT_PICK_UP_DROP_OFF_BOOKING_URL, AIRPORT_PICK_UP_DROP_OFF_URL, CONTACT_URL, DASHBOARD_URL, HOME_URL, SERVICES_URL, TICKET_MASTER_URL } from "@/config/routes"
 
 export const servicesLink = [
   {
@@ -68,4 +68,23 @@ export const ticketMasterBookingLink = [
     path: TICKET_MASTER_URL,
     text: 'Ticket Booking'
   }
+]
+
+export const airportLink = [
+  {
+    id: 1,
+    path: HOME_URL,
+    text: 'Home'
+  },
+  {
+    id: 2,
+    path: AIRPORT_PICK_UP_DROP_OFF_URL,
+    text: 'Airport Pick-up & Drop-off'
+  }
+]
+
+export const airportBookingLink = [
+  { id: 1, path: HOME_URL, text: 'Home' },
+  { id: 2, path: AIRPORT_PICK_UP_DROP_OFF_URL, text: 'Airport Pick Up & Drop Off' },
+  { id: 3, path: AIRPORT_PICK_UP_DROP_OFF_BOOKING_URL, text: 'Airport Pick Up & Drop Off Booking' },
 ]
