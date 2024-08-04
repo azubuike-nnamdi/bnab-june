@@ -1,22 +1,22 @@
 import { Home, Settings, User } from "lucide-react";
 
-import { CUSTOMER_URL, DASHBOARD_URL, SETTING_URL } from "@/config/routes";
+import { ABOUT_URL, CONTACT_URL, CUSTOMER_URL, DASHBOARD_URL, HOME_URL, SERVICES_URL, SETTING_URL } from "@/config/routes";
 
 export const menuItems = [
   {
     id: 1,
     title: "Home",
-    path: "/",
+    path: HOME_URL,
   },
   {
     id: 2,
     title: "Services",
-    path: "/services",
+    path: SERVICES_URL,
   },
   {
     id: 3,
     title: "About Us",
-    path: "/about",
+    path: ABOUT_URL,
   },
   {
     id: 4,
@@ -41,7 +41,7 @@ export const menuItems = [
   {
     id: 5,
     title: "Contact",
-    path: "/contact",
+    path: CONTACT_URL,
   },
 ];
 
