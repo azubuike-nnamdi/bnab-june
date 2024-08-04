@@ -68,10 +68,20 @@
    }
 }
 
+.order-lg-last {
+   order: 6 !important;
+}
+
 .bg-our-fleet {
    background-image: url(/img/bg-our-fleet.png);
    background-repeat: no-repeat;
    background-position: left top 230px;
+}
+
+.bg-faq {
+   background-image: url(/img/bg-faq.png);
+   background-repeat: no-repeat;
+   background-position: left 100px bottom -100px;
 }
 
 .footer {
@@ -79,4 +89,46 @@
    background-repeat: no-repeat;
    background-position: top left;
    background-size: cover;
+}
+
+.detail-gallery {
+   display: inline-block;
+   vertical-align: middle;
+   min-height: 510px;
+   width: 100%;
+   position: relative;
+   z-index: 4;
+   .main-image-slider {
+      .slick-slide {
+         display: flex;
+         align-items: center;
+         max-height: 630px;
+         width: 100%;
+         text-align: right;
+         img {
+            max-height: 600px;
+            max-width: 100%;
+         }
+      }
+   }
+}
+.bg-how-it-works {
+   position: relative;
+   &::before {
+      content: "";
+      width: 100%;
+      height: 100%;
+      background-image: url(/img/line.png);
+      background-repeat: no-repeat;
+      background-position: right bottom;
+      background-size: contain;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      z-index: 1;
+   }
+   .position-z3 {
+      position: relative;
+      z-index: 3;
+   }
 }
