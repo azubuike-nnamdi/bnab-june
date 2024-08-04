@@ -82,7 +82,7 @@ export default function Process() {
   };
 
   return (
-    <Fade direction='up' cascade>
+    <Fade direction='up' cascade triggerOnce>
       <section className="sm:pt-36 pt-12 sm:px-24 px-6 pb-20 bg-black bg-how-it-works wow fadeInUp">
         <div className="container mx-auto">
           <h2 className="text-4xl font-medium text-white pb-12">

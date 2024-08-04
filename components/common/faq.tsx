@@ -5,7 +5,7 @@ import { Fade } from "react-awesome-reveal";
 
 export default function Faq() {
   return (
-    <Fade direction="up" cascade delay={4}>
+    <Fade direction="up" cascade triggerOnce>
       <main className="sm:mt-12 bg-faq wow fadeInUp">
         <div className="container">
           <h1 className="text-center sm:text-4xl font-bold">Frequently Asked Questions</h1>

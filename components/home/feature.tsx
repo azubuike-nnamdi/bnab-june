@@ -8,7 +8,7 @@ import { Fade } from "react-awesome-reveal";
 
 export default function Features() {
   return (
-    <Fade direction="up" cascade>
+    <Fade direction="up" cascade triggerOnce>
       <section className="mt-28">
         <div className="container mx-auto px-4">
           <div className="text-center">
