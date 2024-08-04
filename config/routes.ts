@@ -2,6 +2,7 @@
 const HOME_URL: string = "/"
 const ABOUT_URL: string = "/about"
 const SERVICES_URL: string = "/services"
+const CONTACT_URL: string = "/contact"
 
 
 // DASHBOARD_URL constants
@@ -13,6 +14,7 @@ export {
   HOME_URL,
   ABOUT_URL,
   SERVICES_URL,
+  CONTACT_URL,
   // DASHBOARD_URL constants
   DASHBOARD_URL,
   CUSTOMER_URL,
