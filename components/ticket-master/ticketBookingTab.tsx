@@ -57,7 +57,7 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
           <div key={elm.id} className="item-tab animate-fadeInUp">
             <span
               onClick={() => handleTabClick(i)}
-              className={`cursor-pointer p-4 font-bold sm:text-3xl text-xl ${activeTabIndex >= i ? 'text-gray-900 underline underline-offset-8' : 'text-black'}`}
+              className={`cursor-pointer p-4 font-bold sm:text-3xl text-xl ${activeTabIndex >= i ? 'text-gray-700 underline underline-offset-8' : 'text-black'}`}
             >
               <div className="flex items-center space-x-2">
                 {/* <Image src={elm.icon} alt={elm.text} width={20} height={20} /> */}
