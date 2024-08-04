@@ -1,8 +1,11 @@
+import FAQ from '@/components/common/faq'
 import React from 'react'
 
 const Services = () => {
   return (
-    <div>services</div>
+    <div>
+      <FAQ />
+    </div>
   )
 }
 export default Services

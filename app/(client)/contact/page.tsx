@@ -1,7 +1,10 @@
+import FAQ from '@/components/common/faq'
 import React from 'react'
 
-export const page = () => {
+export default function page() {
   return (
-    <div>page</div>
+    <div>
+      <FAQ />
+    </div>
   )
 }
