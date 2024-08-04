@@ -3,7 +3,9 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import TanstackProvider from "@/context/tanstackProvider";
-import 'swiper/css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 const fontSans = FontSans({
   subsets: ["latin"],
