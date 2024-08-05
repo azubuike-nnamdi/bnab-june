@@ -1,7 +1,10 @@
+import { BreadCrumb } from "@/components/common/breadcrumb";
+import { trainingLink } from "@/lib/data/breadcrumb";
+
 export default function page() {
   return (
     <main>
-      training
+      <BreadCrumb title="Training" links={trainingLink} />
     </main>
   )
 }
