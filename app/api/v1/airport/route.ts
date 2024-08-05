@@ -1,8 +1,9 @@
 import { getServerSession } from "next-auth";
 import { options } from "../../auth/[...nextauth]/options";
 import clientPromise from "@/lib/db";
+import { NextResponse } from "next/server";
 
-export async function POST(req) {
+export async function POST(req: NextResponse) {
   const session = await getServerSession(options);
 
   // Check user session
@@ -45,8 +46,7 @@ export async function POST(req) {
     const db = client.db();
     const airportPickup = db.collection("airportPickup");
 
-    const aiportBooking = {
-      userId: session.user._id,
+    const airportBooking = {
       pickUpLocation,
       dropOffLocation,
       pickUpDate,
@@ -57,7 +57,7 @@ export async function POST(req) {
     };
 
     //insert new booking into db
-    const result = await airportPickup.insertOne(aiportBooking);
+    const result = await airportPickup.insertOne(airportBooking);
 
     if (result.insertedId) {
       return new Response(JSON.stringify({ message: "Airport Booking successful" }), {
