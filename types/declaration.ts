@@ -27,6 +27,12 @@ export type PageProps = {
   };
 }
 
+export type ParamProps = {
+  params: {
+    id: number
+  }
+}
+
 
 export type EventCardProps = {
   id: string;
@@ -57,3 +63,28 @@ export type TicketBookingFormDataProps = {
   phoneNumber: string;
   email: string;
 }
+
+export type AirportBookingData = {
+  pickUpLocation: string;
+  dropOffLocation: string;
+  pickUpDate: string;
+  pickUpTime: string;
+  numberOfPassengers: string;
+}
+
+
+
+
+export type Car = {
+  id: number;
+  imgSrc: string;
+  title: string;
+  description: string;
+  passenger: number;
+  luggage: number;
+  price: number;
+  carType: string;
+  brand: string;
+  amt: string;
+  duration: string;
+};
