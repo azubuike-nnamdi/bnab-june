@@ -1,14 +1,16 @@
 // api.js
+import { DedicatedRideBookingProps } from "@/types/declaration";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+
 
 export const useSubmitBooking = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const mutation = useMutation({
-    mutationFn: (booking) => {
+    mutationFn: (booking: DedicatedRideBookingProps) => {
       return axios.post("/api/v1/booking", booking);
     },
     onSuccess: ({ data }) => {
@@ -19,13 +21,13 @@ export const useSubmitBooking = () => {
       }
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
     },
-    onError: (error) => {
-      console.log("error submitting", error);
-      toast.error(error?.response?.data?.message || error.message);
+    onError: (error: { response: { data: { message: string } } }) => {
+      const errorMsg = error.response.data.message
+      toast.error(errorMsg);
     },
   });
 
-  const handleSubmitBooking = (payload) => {
+  const handleSubmitBooking = (payload: DedicatedRideBookingProps) => {
     mutation.mutate(payload);
   };
 

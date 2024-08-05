@@ -21,8 +21,8 @@ export const useAirportBooking = () => {
       }
       queryClient.invalidateQueries({ queryKey: ["airport"] });
     },
-    onError: (error: { message: string }) => {
-      const errorMsg = error.message;
+    onError: (error: { response: { data: { message: string } } }) => {
+      const errorMsg = error.response.data.message
       toast.error(errorMsg);
     },
   });
