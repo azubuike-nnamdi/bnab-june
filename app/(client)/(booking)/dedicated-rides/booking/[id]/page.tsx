@@ -1,5 +1,5 @@
 import { BreadCrumb } from "@/components/common/breadcrumb";
-import VehicleBooking from "@/components/dedicated-rides/vehicleBooking";
+import DedicatedRideBookingTab from "@/components/dedicated-rides/booking/bookingTab";
 import { DEDICATED_RIDES_URL, HOME_URL } from "@/config/routes";
 import { cars } from "@/lib/data/car-data";
 import { ParamProps } from "@/types/declaration";
@@ -19,7 +19,7 @@ export default function page({ params }: Readonly<ParamProps>) {
   return (
     <main>
       <BreadCrumb title="Dedicated Rides Booking" links={breadcrumbLink} />
-      Booking
+      <DedicatedRideBookingTab car={car} />
     </main>
   )
 }
