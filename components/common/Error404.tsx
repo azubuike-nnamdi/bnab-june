@@ -2,6 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Button } from '../ui/button';
 
 const NotFound: React.FC = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const NotFound: React.FC = () => {
   return (
     <section className="mt-32 mb-24">
       <div className="container mx-auto px-4">
-        <div className="text-center">
+        <div className="text-center mx-auto flex flex-col items-center justify-center">
           <Image
             width={770}
             height={538}
@@ -28,8 +29,8 @@ const NotFound: React.FC = () => {
           <p className="text-base text-gray-600 mb-6 animate-fadeInUp">
             The page you&apos;re looking for isn&apos;t available. Try to search again or use the go to.
           </p>
-          <button
-            className="btn btn-primary px-12 py-3 animate-fadeInUp flex items-center justify-center"
+          <Button
+            className=" px-12 py-3 animate-fadeInUp flex items-center justify-center"
             onClick={goBack}
           >
             Go Back to Previous Page
@@ -48,7 +49,7 @@ const NotFound: React.FC = () => {
                 d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
               ></path>
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
     </section>
