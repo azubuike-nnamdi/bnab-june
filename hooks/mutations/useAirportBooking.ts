@@ -1,14 +1,16 @@
 // api.js
+import { AirportBookingData } from "@/types/declaration";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+
 
 export const useAirportBooking = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const mutation = useMutation({
-    mutationFn: (airport) => {
+    mutationFn: (airport: AirportBookingData) => {
       return axios.post("/api/v1/airport", airport);
     },
     onSuccess: ({ data }) => {
@@ -19,13 +21,13 @@ export const useAirportBooking = () => {
       }
       queryClient.invalidateQueries({ queryKey: ["airport"] });
     },
-    onError: (error) => {
-      console.log("error submitting", error);
-      toast.error(error?.response?.data?.message || error.message);
+    onError: (error: { message: string }) => {
+      const errorMsg = error.message;
+      toast.error(errorMsg);
     },
   });
 
-  const handleSubmitAirportBooking = (payload) => {
+  const handleSubmitAirportBooking = (payload: AirportBookingData) => {
     mutation.mutate(payload);
   };
 
