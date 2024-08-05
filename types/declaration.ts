@@ -88,3 +88,18 @@ export type Car = {
   amt: string;
   duration: string;
 };
+
+export type DedicatedRideBookingProps = {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  pickUpLocation: string;
+  pickUpDate: string;
+  pickUpTime?: string;
+  dropOffLocation: string;
+  dropOffDate: string;
+  dropOffTime?: string;
+  numberOfPassengers: string;
+  additionalInfo: string;
+};
