@@ -96,7 +96,7 @@ const BookingSummary: React.FC<SummaryProps> = ({ formData }) => {
                 <input
                   type="text"
                   id="pickUpDate"
-                  value={formatDateString(formData.pickUpDate)}
+                  value={formatDateString(formData.pickUpDate ?? "")}
                   disabled
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
                 />
@@ -138,7 +138,7 @@ const BookingSummary: React.FC<SummaryProps> = ({ formData }) => {
                 <input
                   type="text"
                   id="dropOffDate"
-                  value={formatDateString(formData.dropOffDate)}
+                  value={formatDateString(formData.dropOffDate ?? "")}
                   disabled
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
                 />
