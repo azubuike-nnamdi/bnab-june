@@ -1,13 +1,14 @@
 
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { options } from "../../auth/[...nextauth]/options";
 import clientPromise from "@/lib/db";
 import { getEmailContent } from "@/lib/emailContent";
 import { sendEmail } from "@/lib/sendEmail";
+import { DedicatedRideBookingProps } from "@/types/declaration";
 
 
-export async function POST(req: NextResponse) {
+export async function POST(req: NextRequest) {
   const session = await getServerSession(options);
 
   // Check user session

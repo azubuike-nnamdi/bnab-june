@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth";
 import { options } from "../../auth/[...nextauth]/options";
 import clientPromise from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-export async function POST(req: NextResponse) {
+export async function POST(req: NextRequest) {
   const session = await getServerSession(options);
 
   // Check user session

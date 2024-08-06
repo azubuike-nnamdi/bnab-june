@@ -1,8 +1,9 @@
 import { getServerSession } from "next-auth";
 import { options } from "../../auth/[...nextauth]/options";
 import clientPromise from "@/lib/db";
+import { NextRequest } from "next/server";
 
-export async function POST(req) {
+export async function POST(req: NextRequest) {
   const session = await getServerSession(options)
 
   //check user session
@@ -54,7 +55,6 @@ export async function POST(req) {
 
     //create a new ticket object
     const ticket = {
-      userId: session.user._id,
       firstName,
       lastName,
       email,
