@@ -10,14 +10,13 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { HOME_URL } from "@/config/routes";
 
-
 const Navbar = () => {
   const [nav, setNav] = useState(false);
   const { data: session } = useSession();
 
   const pathname = usePathname();
   return (
-    <div className="flex justify-between items-center w-full h-20 px-6 py-2 text-white bg-black  nav">
+    <div className="flex justify-between items-center w-full h-20 px-6 py-2 text-white bg-black nav">
       <div>
         <Link className="link-underline link-underline-black" href={HOME_URL} rel="noreferrer">
           <h1 className="text-3xl font-signature font-bold">Hyea Me Ha</h1>
@@ -47,6 +46,7 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
+
       {/* Sign Menu */}
       <div className="hidden md:flex gap-5 items-center">
         <Link href={"tel:+233 24 111 1122"} className="flex gap-2 items-center">
@@ -58,15 +58,15 @@ const Navbar = () => {
             <DropdownMenuTrigger className="flex items-center">
               {session?.user?.name}
               <ChevronDown className="ml-1" />
-              <DropdownMenuContent>
-                <Button
-                  className="w-full"
-                  onClick={() => signOut()}
-                >
-                  Sign Out
-                </Button>
-              </DropdownMenuContent>
             </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <Button
+                className="w-full"
+                onClick={() => signOut()}
+              >
+                Sign Out
+              </Button>
+            </DropdownMenuContent>
           </DropdownMenu>
         ) : (
           <div className="gap-4 flex">
@@ -87,13 +87,14 @@ const Navbar = () => {
 
       <button
         onClick={() => setNav(!nav)}
-        className="cursor-pointer pr-4 z-10 text-gray-500 md:hidden"
+        className="cursor-pointer pr-4 text-gray-500 md:hidden absolute top-4 right-4 z-50"
       >
-        {nav ? <X /> : <Menu />}
+        {nav ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
       </button>
 
+
       {nav && (
-        <ul className="flex flex-col justify-center items-center absolute top-0 left-0 w-full h-screen bg-gradient-to-b from-black to-gray-800 text-gray-500">
+        <ul className="flex flex-col justify-center items-center absolute top-0 left-0 w-full h-screen bg-gradient-to-b from-black to-gray-800 text-gray-500 z-50 md:hidden">
           {menuItems.map(({ id, path, title, subMenu }) => (
             <li key={id} className="px-4 cursor-pointer capitalize py-6 text-4xl">
               {subMenu ? (

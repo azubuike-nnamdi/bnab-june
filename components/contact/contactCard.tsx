@@ -4,11 +4,11 @@ import ContactForm from "./contactForm";
 
 export default function ContactCard() {
   return (
-    <main className="grid grid-cols-2 sm:p-24 p-4 sm:gap-6">
+    <main className="grid sm:grid-cols-2 sm:p-24 p-4 sm:gap-6">
       <section>
         <ContactForm />
       </section>
-      <section>
+      <section className="sm:py-0 py-8">
         <h1 className="sm:text-3xl text-xl font-medium mb-6">Our offices</h1>
         <div className="grid grid-cols-2 sm:gap-12 gap-4">
           {contactCards.map((contact) => (

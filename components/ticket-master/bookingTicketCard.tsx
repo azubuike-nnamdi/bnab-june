@@ -20,8 +20,6 @@ export default function BookingTicketCard({ event }: Readonly<BookingTicket>) {
     } else {
       router.push(`/ticket-master/booking/${eventId}`);
     }
-    // router.push(`/ticket-master/booking/${eventId}`);
-
   };
   return (
     <main>
