@@ -1,15 +1,32 @@
-import nodemailer from "nodemailer";
+import { SendEmailOptions } from "@/types/declaration";
+import nodemailer, { TransportOptions } from "nodemailer";
 
-export const sendEmail = async (to: string, subject: string, text: string) => {
+interface ExtendedTransportOptions extends TransportOptions {
+  host: string;
+  port: number;
+  secure: boolean;
+  auth: {
+    user: string;
+    pass: string;
+  };
+}
+
+const { SMTP_PASSWORD, SMTP_HOST, SMTP_USERNAME, SMTP_PORT } = process.env
+
+if (!SMTP_PASSWORD || !SMTP_HOST || !SMTP_USERNAME || !SMTP_PORT) {
+  throw new Error("Missing SMTP credentials");
+}
+
+export const sendEmail = async ({ subject, text }: SendEmailOptions) => {
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
+    host: SMTP_HOST,
+    port: parseInt(SMTP_PORT, 10),
     secure: false,
     auth: {
-      user: process.env.SMTP_USERNAME,
-      pass: process.env.SMTP_PASSWORD,
+      user: SMTP_USERNAME,
+      pass: SMTP_PASSWORD,
     },
-  });
+  } as ExtendedTransportOptions);
 
   const mailOptions = {
     from: process.env.SMTP_FROM,
