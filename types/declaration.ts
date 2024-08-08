@@ -103,3 +103,9 @@ export type DedicatedRideBookingProps = {
   numberOfPassengers?: string;
   additionalInfo?: string;
 };
+
+export type SendEmailOptions = {
+  to: string;
+  subject: string;
+  text: string;
+}
