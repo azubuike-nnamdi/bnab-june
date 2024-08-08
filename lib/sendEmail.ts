@@ -11,17 +11,17 @@ interface ExtendedTransportOptions extends TransportOptions {
   };
 }
 
-const { SMTP_PASSWORD, SMTP_HOST, SMTP_USERNAME, SMTP_PORT } = process.env
+const { SMTP_PASSWORD, SMTP_HOST, SMTP_USERNAME, SMTP_PORT } = process.env;
 
 if (!SMTP_PASSWORD || !SMTP_HOST || !SMTP_USERNAME || !SMTP_PORT) {
   throw new Error("Missing SMTP credentials");
 }
 
-export const sendEmail = async ({ subject, text }: SendEmailOptions) => {
+export const sendEmail = async ({ to, subject, text }: SendEmailOptions) => {
   const transporter = nodemailer.createTransport({
     host: SMTP_HOST,
-    port: parseInt(SMTP_PORT, 10),
-    secure: false,
+    port: parseInt(SMTP_PORT, 10), // Ensure port is parsed as an integer
+    secure: false, // You can set this to true if your SMTP server requires it
     auth: {
       user: SMTP_USERNAME,
       pass: SMTP_PASSWORD,
@@ -30,7 +30,7 @@ export const sendEmail = async ({ subject, text }: SendEmailOptions) => {
 
   const mailOptions = {
     from: process.env.SMTP_FROM,
-    to: process.env.SMTP_TO,
+    to,
     subject,
     text,
   };

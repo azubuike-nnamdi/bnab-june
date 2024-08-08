@@ -5,7 +5,6 @@ import { options } from "../../auth/[...nextauth]/options";
 import clientPromise from "@/lib/db";
 import { getEmailContent } from "@/lib/emailContent";
 import { sendEmail } from "@/lib/sendEmail";
-import { DedicatedRideBookingProps } from "@/types/declaration";
 
 
 export async function POST(req: NextRequest) {
@@ -98,8 +97,9 @@ export async function POST(req: NextRequest) {
       dropOffTime
     });
 
-    await sendEmail(email, "Booking Confirmation", userContent);
-    await sendEmail("admin@example.com", "New Booking", adminContent);
+    await sendEmail({ to: email, subject: "Booking Confirmation", text: userContent });
+    await sendEmail({ to: "admin@example.com", subject: "New Booking", text: adminContent });
+
 
     // Check if the insertion was successful
     if (result.insertedId) {
