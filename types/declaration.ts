@@ -117,3 +117,52 @@ export type ContactType = {
   subject: string;
   message: string;
 }
+
+export type SingleServiceProps = {
+  subTitle1?: string;
+  paragraph1?: string;
+  image1?: string;
+  subTitle2?: string;
+  paragraph2?: string;
+  subTitle3?: string;
+  paragraph3?: string;
+  image2?: string;
+}
+
+// Define a common interface for the basic service structure
+export interface BaseService {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+}
+
+// Extend the BaseService for more detailed services
+export interface DetailedService extends BaseService {
+  subTitle1?: string;
+  paragraph1?: string;
+  image1?: string;
+  subTitle2?: string;
+  paragraph2?: string;
+  subTitle3?: string;
+  paragraph3?: string;
+  image2?: string;
+  alt?: string; // for services4
+}
+
+// For the services array
+export interface Services extends DetailedService { }
+
+// For the services2 array
+export interface SimpleService {
+  id: number;
+  text: string;
+}
+
+// For services4 and services5
+export interface ServiceWithAlt extends DetailedService {
+  alt?: string;
+}
+
+// Type for allServices, which includes a mix of different service types
+export type AllServices = Services | ServiceWithAlt;
