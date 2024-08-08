@@ -21,7 +21,7 @@ export const features = [
       "Enjoy peace of mind with our secure payment system, ensuring your transactions are safe and protected.",
   },
 ];
-export var features2 = [
+export const features2 = [
   {
     id: 1,
     image: "/img/limo.svg",
