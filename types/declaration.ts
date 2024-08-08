@@ -109,3 +109,11 @@ export type SendEmailOptions = {
   subject: string;
   text: string;
 }
+
+export type ContactType = {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  subject: string;
+  message: string;
+}
