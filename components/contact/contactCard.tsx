@@ -4,7 +4,7 @@ import ContactForm from "./contactForm";
 
 export default function ContactCard() {
   return (
-    <main className="grid grid-cols-2 sm:p-24 p-4">
+    <main className="grid grid-cols-2 sm:p-24 p-4 sm:gap-6">
       <section>
         <ContactForm />
       </section>
