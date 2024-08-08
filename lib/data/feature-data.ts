@@ -2,23 +2,23 @@ export const features = [
   {
     id: 1,
     icon: "/img/safe.svg",
-    title: "Safety First",
+    title: "Comprehensive Services",
     description:
-      "Offering efficient and dependable transportation solutions for local and long-distance journeys.",
+      "We offer a one-stop solution for all your travel needs, ensuring a hassle-free experience from start to finish.",
   },
   {
     id: 2,
     icon: "/img/price.svg",
-    title: "Prices With No Surprises",
+    title: "Local Expertise",
     description:
-      "Arranging a variety of accommodation options to suit different preferences and budgets.",
+      "Our deep knowledge of Ghana ensures you receive the best recommendations and services tailored to your preferences.",
   },
   {
     id: 3,
     icon: "/img/vehicle.svg",
-    title: "Travel Solutions",
+    title: "Secure Payments",
     description:
-      "Providing reliable and stress-free travel experience to and from the airport.",
+      "Enjoy peace of mind with our secure payment system, ensuring your transactions are safe and protected.",
   },
 ];
 export var features2 = [
@@ -117,11 +117,11 @@ export const features6 = [
 ];
 
 export const features7 = [
-  "Smooth Booking Process",
-  "Exclusive Deals",
-  "User-friendly Interface",
-  "Secure Payments",
-  "Customer Support",
+  "Event Ticket Sales",
+  "Airport Pick-up & Transfers",
+  "Accommodation Bookings",
+  "Dedicated Vehicles for Travel",
+  "Arts and Crafts Training",
 ];
 export const features8 = [
   [{
