@@ -4,9 +4,9 @@ import Image from "next/image";
 export default function AboutFeature() {
   return (
     <main className="sm:py-12 py-4">
-      <h1 className="sm:text-5xl font-semibold text-center text-leading mb-3">Top-notch services that cater to your various needs.</h1>
+      <h3 className="sm:text-5xl font-semibold text-center text-gray-800 mb-3">Who We Are</h3>
       <p className="mx-auto sm:w-10/12 text-md">
-        We strive to make your experience with us seamless, enjoyable, and hassle-free. Our mission is to deliver exceptional service with a personal touch, ensuring your satisfaction every step of the way. Experience professionalism, reliability, and a customer-centric approach!
+      Welcome to Hyea Me Ha, your ultimate travel companion for exploring the vibrant and diverse country of Ghana. Our app is designed to make your travel experience seamless, enjoyable, and unforgettable by offering a wide range of services tailored to meet all your travel needs.
       </p>
       <ul className="list-ticks list-ticks-small sm:px-28 px-4 py-4">
         {features7.map((elm, i) => (
