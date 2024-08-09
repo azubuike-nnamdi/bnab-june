@@ -1,13 +1,25 @@
-import { useQuery } from "@tanstack/react-query";
+'use client';
 
-export function useContact() {
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+const useContact = () => {
+  const fetchContact = async () => {
+    const data = await axios.get("/api/v1/contact");
+    return data;
+  };
+
   const { isPending, error, data } = useQuery({
-    queryKey: ['contact'],
-    queryFn: async () => {
-      const response = await fetch('/api/v1/contact')
-      return await response.json()
-    },
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  })
-  return { isPending, error, data }
-}
+    queryKey: ["contact"],
+    queryFn: fetchContact,
+    staleTime: 300000,
+  });
+
+  return {
+    data,
+    isPending,
+    error,
+  };
+};
+
+export default useContact;

@@ -28,7 +28,6 @@ export function DataTable({
   isPending,
 }: Readonly<DataTableProps>) {
   const [searchQuery, setSearchQuery] = useState("")
-  const searchParams = useSearchParams()
 
   const filteredData = data.filter((row) =>
     headers.some((header) =>
