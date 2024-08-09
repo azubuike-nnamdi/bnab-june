@@ -9,16 +9,26 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useSearchParams } from "next/navigation"
 
 type DataTableProps = {
   caption: string;
   headers: string[];
   data: Array<Record<string, any>>;
   footer?: Array<Record<string, any>>;
+  isPending: boolean;
 }
 
-export function DataTable({ caption, headers, data, footer }: Readonly<DataTableProps>) {
+export function DataTable({
+  caption,
+  headers,
+  data,
+  footer,
+  isPending,
+}: Readonly<DataTableProps>) {
   const [searchQuery, setSearchQuery] = useState("")
+  const searchParams = useSearchParams()
 
   const filteredData = data.filter((row) =>
     headers.some((header) =>
@@ -42,12 +52,24 @@ export function DataTable({ caption, headers, data, footer }: Readonly<DataTable
         <TableHeader>
           <TableRow>
             {headers.map((header, index) => (
-              <TableHead key={index}>{header}</TableHead>
+              <TableHead key={index}>
+                {isPending ? <Skeleton className="h-4 w-20" /> : header}
+              </TableHead>
             ))}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredData.length > 0 ? (
+          {isPending ? (
+            Array.from({ length: 5 }).map((_, rowIndex) => (
+              <TableRow key={rowIndex}>
+                {headers.map((_, colIndex) => (
+                  <TableCell key={colIndex}>
+                    <Skeleton className="h-4 w-full" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : filteredData.length > 0 ? (
             filteredData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 {headers.map((header, colIndex) => (
