@@ -1,3 +1,8 @@
+export type TransactionIdParams = {
+  entropy: 'alphabet' | 'alphanumeric' | 'numeric'
+  len: number
+}
+
 type BreadcrumbLink = {
   id: number;
   path: string;
@@ -57,11 +62,24 @@ export type CheckoutProps = {
   onFormSubmit: (formData: TicketBookingFormDataProps) => void;
 }
 
+export type TicketEvent = {
+  id: string;
+  price: string;
+  title: string;
+  desc: string;
+  venue: string;
+  img: string;
+  city: string;
+  date: string;
+  time: string;
+  phoneNo: string;
+}
 export type TicketBookingFormDataProps = {
   firstName: string;
   lastName: string;
   phoneNumber: string;
   email: string;
+  event?: TicketEvent
 }
 
 export type AirportBookingData = {

@@ -1,19 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import Checkout from './checkout';
-import { TicketBookingFormDataProps } from '@/types/declaration';
+import { TicketBookingFormDataProps, TicketEvent } from '@/types/declaration';
 import TicketSummary from './ticketSummary';
 import { CreditCard, Truck } from 'lucide-react';
-import Image from 'next/image';
 
-interface Event {
-  id: string;
-  price: string;
-}
 
 
 interface TicketBookingTabProps {
-  event: Event;
+  event: TicketEvent;
 }
 
 const tabs = [
@@ -39,14 +34,15 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
     lastName: '',
     phoneNumber: '',
     email: '',
+    event: event,
   });
 
   const handleTabClick = (index: number) => {
     setActiveTabIndex(index);
   };
 
-  const handleFormSubmit = (data: TicketBookingFormDataProps) => {
-    setFormData(data);
+  const handleFormSubmit = (data: Omit<TicketBookingFormDataProps, 'event'>) => {
+    setFormData({ ...data, event });
   };
 
   return (
@@ -54,18 +50,15 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
       <div className="flex justify-center space-x-4">
         {tabs.map((elm, i) => (
           <div key={elm.id} className="item-tab animate-fadeInUp">
-            <span
+            <button
               onClick={() => handleTabClick(i)}
               className={`cursor-pointer p-4 font-bold sm:text-3xl text-xl ${activeTabIndex >= i ? 'text-gray-700  underline underline-offset-8' : 'text-black'}`}
             >
               <div className="flex items-center space-x-2 ">
-                {/* <Image src={elm.icon} alt={elm.text} width={20} height={20} /> */}
                 <span>{elm.text}{" "} 0{i + 1}</span>
-                <span></span>
               </div>
-              <div className="text-center mt-2">
-              </div>
-            </span>
+              <div className="text-center mt-2"></div>
+            </button>
           </div>
         ))}
       </div>
