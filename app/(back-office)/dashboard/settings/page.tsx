@@ -1,11 +1,7 @@
-import React from "react";
-
-const page = () => {
+export default function page() {
   return (
-    <div>
-      settings
-    </div>
-  );
-};
-
-export default page;
+    <main>
+      <h1>Settings</h1>
+    </main>
+  )
+}
