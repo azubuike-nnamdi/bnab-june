@@ -10,8 +10,9 @@ export function TicketmasterDataTable() {
     "Full Name",
     "Email",
     "Phone Number",
-    "Event Price",
-    "Payment Status"
+    "Cost",
+    "Date",
+    "Status"
   ];
 
   // Define a function to map the ticket master data to the table format
@@ -20,8 +21,9 @@ export function TicketmasterDataTable() {
       "Full Name": `${ticket.firstName} ${ticket.lastName}`,
       "Email": ticket.email,
       "Phone Number": ticket.phoneNumber,
-      "Event Price": ticket.event.price,
-      "Payment Status": ticket.paymentStatus,
+      "Cost": ticket.event.price,
+      "Date": ticket.event.date,
+      "Status": ticket.paymentStatus,
     }));
   };
 
