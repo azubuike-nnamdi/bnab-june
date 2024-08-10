@@ -35,7 +35,7 @@ export function DataTable({
   const [selectedRow, setSelectedRow] = useState<Record<string, any> | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const hasPaymentStatus = headers.includes("Payment Status");
+  const hasPaymentStatus = headers.includes("Status");
 
   const mappedData = mapData ? mapData(data) : data;
 

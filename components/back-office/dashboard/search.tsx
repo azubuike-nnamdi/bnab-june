@@ -25,14 +25,14 @@ export function Search({
       params.set("q", searchQuery);
       router.push(`?${params.toString()}`);
     }
-  }, [searchQuery]);
+  }, [searchQuery, router, searchParams]);
 
   useEffect(() => {
     const initialQuery = searchParams.get("q");
     if (initialQuery) {
       setSearchQuery(initialQuery);
     }
-  }, [searchParams]);
+  }, [searchParams, setSearchQuery]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
