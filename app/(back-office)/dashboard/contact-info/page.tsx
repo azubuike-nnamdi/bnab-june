@@ -1,4 +1,4 @@
-import ContactInfoTable from '@/components/dashboard/contactInfo/contactTable'
+import ContactInfoTable from '@/components/back-office/dashboard/contactInfo/contactTable'
 import React from 'react'
 
 export default function page() {
