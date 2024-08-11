@@ -87,6 +87,7 @@ export type AirportBookingData = {
   dropOffLocation: string;
   pickUpDate: string;
   pickUpTime: string;
+  phoneNumber: string;
   numberOfPassengers: string;
 }
 
