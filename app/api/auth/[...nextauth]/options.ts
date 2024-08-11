@@ -55,7 +55,7 @@ export const options: NextAuthOptions = {
         }
       );
       if (!user.role) {
-        user.role = "user";
+        user.role = "client";
       }
 
       return true;
