@@ -7,6 +7,7 @@ import { TicketmasterDataTable } from "@/components/back-office/ticketMasterData
 import AdminOverView from "@/components/back-office/overview"
 import DedicatedRides from "@/components/back-office/dedicatedRides"
 import AirportDataTable from "@/components/back-office/airportDataTable"
+import AccommodationTable from "@/components/back-office/accommodationTable"
 
 
 export const metadata: Metadata = {
@@ -29,7 +30,10 @@ export default function page() {
               Ticket Master
             </TabsTrigger>
             <TabsTrigger value="airport">
-              Airport Pickup & Dropoff
+              Airport Pickup
+            </TabsTrigger>
+            <TabsTrigger value="accommodation">
+              Accommodation
             </TabsTrigger>
             <TabsTrigger value="dedicated-rides">
               Dedicated Rides
@@ -46,6 +50,9 @@ export default function page() {
           </TabsContent>
           <TabsContent value="airport">
             <AirportDataTable />
+          </TabsContent>
+          <TabsContent value="accommodation">
+            <AccommodationTable />
           </TabsContent>
           <TabsContent value="dedicated-rides">
             <DedicatedRides />
