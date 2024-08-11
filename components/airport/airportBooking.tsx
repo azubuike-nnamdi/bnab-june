@@ -11,6 +11,7 @@ export default function AirportBooking() {
   const [formData, setFormData] = useState<AirportBookingData>({
     pickUpLocation: '',
     dropOffLocation: '',
+    phoneNumber: '',
     pickUpDate: format(new Date(), 'yyyy-MM-dd'),
     pickUpTime: format(new Date(), 'HH:mm'),
     numberOfPassengers: '',
@@ -97,27 +98,43 @@ export default function AirportBooking() {
             />
           </div>
         </div>
-        <div>
-          <label htmlFor="numberOfPassengers" className="block mb-2">
-            Number of passengers
-          </label>
-          <select
-            id="numberOfPassengers"
-            value={formData.numberOfPassengers}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
-          >
-            <option value="">Select number of passengers</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-          </select>
+        <div className='grid md:grid-cols-2 gap-4'>
+          <div>
+            <label htmlFor="dropOffLocation" className="block mb-2">
+              Phone Number
+            </label>
+            <input
+              type="number"
+              id="phoneNumber"
+              placeholder="Enter phone number"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div>
+            <label htmlFor="numberOfPassengers" className="block mb-2">
+              Number of passengers
+            </label>
+            <select
+              id="numberOfPassengers"
+              value={formData.numberOfPassengers}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            >
+              <option value="">Select number of passengers</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
         </div>
         <div className="mt-4">
           <Button
             type="submit"
-            className="w-full py-2 px-4  text-white rounded-md flex items-center justify-center"
+            disabled={isPending}
+            className="w-full py-2 px-4  text-white rounded-md flex items-center justify-center disabled:cursor-not-allowed"
           >
             {isPending ? 'Loading...' : 'Book Now & Pay Later'}
             <svg
