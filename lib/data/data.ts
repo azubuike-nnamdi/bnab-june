@@ -306,11 +306,11 @@ export const BackOfficeNavItem = [
     tooltip: "Contact",
     title: 'Contact'
   },
-  {
-    id: 4,
-    href: SETTING_URL,
-    icon: Settings,
-    tooltip: "Settings",
-    title: 'Settings'
-  },
+  // {
+  //   id: 4,
+  //   href: SETTING_URL,
+  //   icon: Settings,
+  //   tooltip: "Settings",
+  //   title: 'Settings'
+  // },
 ];
