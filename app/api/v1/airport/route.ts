@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
 
     if (result.insertedId) {
       return new Response(JSON.stringify({ message: "Airport Booking successful" }), {
-        status: 200,
+        status: 201,
       });
     } else {
       return new Response(JSON.stringify({ message: "Airport Booking failed" }), {
