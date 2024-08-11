@@ -10,14 +10,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Fade } from "react-awesome-reveal";
-
-
+import { useAccommodationBooking } from "@/hooks/mutations/useAccommodationBooking";
 
 
 const BookingSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   budget: z.string().min(1, { message: "Budget is required" }),
-  phoneNo: z.string().min(1, { message: "Phone number is required" }),
+  phoneNumber: z.string().min(1, { message: "Phone number is required" }),
   email: z.string().email({ message: "Invalid email address" }),
   dateOfArrival: z.string().refine(date => isValid(parseISO(date)), { message: "Invalid date" }),
   timeOfArrival: z.string().min(1, { message: "Time of arrival is required" }),
@@ -28,12 +27,14 @@ type BookingFormInputs = z.infer<typeof BookingSchema>;
 
 export default function AccommodationBookingForm() {
 
+  const { isPending, handleSubmitAccommodation } = useAccommodationBooking();
+
   const form = useForm<BookingFormInputs>({
     resolver: zodResolver(BookingSchema),
     defaultValues: {
       name: "",
       budget: "",
-      phoneNo: "",
+      phoneNumber: "",
       email: "",
       dateOfArrival: format(new Date(), "yyyy-MM-dd"),
       timeOfArrival: format(new Date(), "HH:mm"),
@@ -42,7 +43,7 @@ export default function AccommodationBookingForm() {
   });
 
   const onSubmit = (data: BookingFormInputs) => {
-    console.log('data', data);
+    handleSubmitAccommodation(data)
   };
   return (
     <Fade direction="up" triggerOnce cascade>
@@ -81,7 +82,7 @@ export default function AccommodationBookingForm() {
             <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
               <FormField
                 control={form.control}
-                name="phoneNo"
+                name="phoneNumber"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Phone Number</FormLabel>
@@ -147,7 +148,12 @@ export default function AccommodationBookingForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="sm:w-6/12 w-full">
+            <Button
+              loading={isPending}
+              loadingText="Booking..."
+              type="submit"
+              disabled={isPending}
+              className="w-full disabled:cursor-not-allowed">
               Book Now & Pay Later
             </Button>
           </form>
