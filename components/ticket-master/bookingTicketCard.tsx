@@ -14,12 +14,14 @@ export default function BookingTicketCard({ event }: Readonly<BookingTicket>) {
   const router = useRouter();
 
   const handleBooking = async (eventId: string) => {
-    if (!session) {
-      await signIn();
-      router.push(`/ticket-master/booking/${eventId}`);
-    } else {
-      router.push(`/ticket-master/booking/${eventId}`);
-    }
+    router.push(`/ticket-master/booking/${eventId}`);
+
+    // if (!session) {
+    //   await signIn();
+    //   router.push(`/ticket-master/booking/${eventId}`);
+    // } else {
+    //   router.push(`/ticket-master/booking/${eventId}`);
+    // }
   };
   return (
     <main>

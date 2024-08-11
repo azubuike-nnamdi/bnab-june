@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
-import { Search } from '../dashboard/search'
-import { UserNav } from '../dashboard/user-nav'
+import { Search } from '../back-office/dashboard/search'
+import { UserNav } from '../back-office/dashboard/user-nav'
 
 export const Menu = () => {
   const [query, setQuery] = useState("");

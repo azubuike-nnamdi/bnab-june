@@ -8,11 +8,11 @@ export async function POST(req: NextRequest) {
   const session = await getServerSession(options)
 
   //check user session
-  if (!session) {
-    return new Response(JSON.stringify({ message: "Session not active" }), {
-      status: 401,
-    });
-  }
+  // if (!session) {
+  //   return new Response(JSON.stringify({ message: "Session not active" }), {
+  //     status: 401,
+  //   });
+  // }
 
   try {
     const data = await req.json();
@@ -50,12 +50,12 @@ export async function POST(req: NextRequest) {
     const ticketBooking = db.collection("ticket-booking");
 
     //check if the user already exists
-    const existingTicket = await ticketBooking.findOne({ email });
-    if (existingTicket) {
-      return new Response(JSON.stringify({ message: "Ticket already exists" }), {
-        status: 409,
-      });
-    }
+    // const existingTicket = await ticketBooking.findOne({ email });
+    // if (existingTicket) {
+    //   return new Response(JSON.stringify({ message: "Ticket already exists" }), {
+    //     status: 409,
+    //   });
+    // }
 
 
 
@@ -92,11 +92,11 @@ export async function GET(req: NextRequest) {
   const session = await getServerSession(options);
 
   // Check user session
-  if (!session) {
-    return new Response(JSON.stringify({ message: "Session not active" }), {
-      status: 401,
-    });
-  }
+  // if (!session) {
+  //   return new Response(JSON.stringify({ message: "Session not active" }), {
+  //     status: 401,
+  //   });
+  // }
 
   try {
     const client = await clientPromise;
