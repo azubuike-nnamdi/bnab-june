@@ -91,6 +91,16 @@ export type AirportBookingData = {
   numberOfPassengers: string;
 }
 
+export type AccommodationBookingType = {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  budget: string;
+  dateOfArrival: string;
+  timeOfArrival: string;
+  additionalInfo?: string;
+}
+
 
 
 
