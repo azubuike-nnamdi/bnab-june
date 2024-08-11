@@ -7,12 +7,12 @@ export async function POST(req: NextRequest) {
   const session = await getServerSession(options);
 
   // Check user session
-  if (!session) {
-    console.log("No active session");
-    return new Response(JSON.stringify({ message: "Session not active" }), {
-      status: 401,
-    });
-  }
+  // if (!session) {
+  //   console.log("No active session");
+  //   return new Response(JSON.stringify({ message: "Session not active" }), {
+  //     status: 401,
+  //   });
+  // }
 
   // Handle POST request
   try {
@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
       dropOffLocation,
       pickUpDate,
       pickUpTime,
+      phoneNumber,
       numberOfPassengers
     } = data;
 
@@ -32,6 +33,7 @@ export async function POST(req: NextRequest) {
       "dropOffLocation",
       "pickUpDate",
       "pickUpTime",
+      "phoneNumber",
       "numberOfPassengers",
     ];
     for (const field of requiredFields) {
@@ -52,6 +54,8 @@ export async function POST(req: NextRequest) {
       pickUpDate,
       pickUpTime,
       numberOfPassengers,
+      phoneNumber,
+      paymentStatus: "not paid",
       createAt: new Date(),
       updatedAt: new Date(),
     };
@@ -68,6 +72,34 @@ export async function POST(req: NextRequest) {
         status: 500,
       });
     }
+  } catch (error) {
+    console.log(error);
+    return new Response(JSON.stringify({ message: "Something went wrong" }), {
+      status: 500,
+    });
+  }
+}
+
+//GET Method
+export async function GET(req: NextRequest) {
+  const session = await getServerSession(options);
+
+  // Check user session
+  // if (!session) {
+  //   console.log("No active session");
+  //   return new Response(JSON.stringify({ message: "Session not active" }), {
+  //     status: 401,
+  //   });
+  // }
+
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+    const airportPickup = db.collection("airportPickup");
+
+    const airportBookings = await airportPickup.find().toArray();
+
+    return new Response(JSON.stringify(airportBookings), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify({ message: "Something went wrong" }), {
