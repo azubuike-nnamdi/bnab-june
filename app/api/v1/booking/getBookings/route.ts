@@ -1,9 +1,8 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import clientPromise from "@/lib/db";
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
 
-export async function GET(res: NextResponse) {
+export async function GET() {
   //check user session
   const session = await getServerSession(options)
   // if (!session) {
