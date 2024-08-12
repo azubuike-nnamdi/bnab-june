@@ -13,6 +13,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EllipsisVertical } from "lucide-react";
 import { Modal } from "../ui/modal";
 import { Button } from "../ui/button";
+import PaginationComponent from "./pagination";
+
 
 type DataTableProps = {
   caption: string;
@@ -35,10 +37,13 @@ export function DataTable({
   const [selectedRow, setSelectedRow] = useState<Record<string, any> | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const hasPaymentStatus = headers.includes("Status");
 
   const mappedData = mapData ? mapData(data) : data;
-
   const filteredData = mappedData.filter((row) =>
     headers.some((header) =>
       row[header]
@@ -47,6 +52,13 @@ export function DataTable({
         .includes(searchQuery.toLowerCase())
     )
   );
+
+  // Calculate paginated data
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   const handleIconClick = (row: Record<string, any>) => {
     setSelectedRow(row);
@@ -100,8 +112,8 @@ export function DataTable({
                 ))}
               </TableRow>
             ))}
-          {filteredData.length > 0 ? (
-            filteredData.map((row, rowIndex) => (
+          {currentItems.length > 0 ? (
+            currentItems.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 {headers.map((header, colIndex) => (
                   <TableCell key={colIndex}>{row[header]}</TableCell>
@@ -126,7 +138,15 @@ export function DataTable({
         </TableBody>
       </Table>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} >
+      {!isPending && filteredData.length > 0 && (
+        <PaginationComponent
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      )}
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Button onClick={handleCancelOrder} className="btn-cancel" variant={'outline'}>
           Cancel Order
         </Button>
