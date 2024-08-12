@@ -292,15 +292,15 @@ export const BackOfficeNavItem = [
     tooltip: "Dashboard",
     title: 'Dashboard'
   },
+  // {
+  //   id: 2,
+  //   href: CUSTOMER_URL,
+  //   icon: User,
+  //   tooltip: "Customers",
+  //   title: 'Customers'
+  // },
   {
     id: 2,
-    href: CUSTOMER_URL,
-    icon: User,
-    tooltip: "Customers",
-    title: 'Customers'
-  },
-  {
-    id: 3,
     href: ADMINCONTACT_URL,
     icon: Phone,
     tooltip: "Contact",

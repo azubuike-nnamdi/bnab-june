@@ -5,7 +5,7 @@ import axios from "axios";
 
 const useAccommodation = () => {
   const fetchAccommodation = async () => {
-    const data = await axios.get("/api/v1/accommodation");
+    const data = await axios.get("/api/v1/accommodation/getAccommodations");
     return data;
   };
 

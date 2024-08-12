@@ -101,9 +101,6 @@ export type AccommodationBookingType = {
   additionalInfo?: string;
 }
 
-
-
-
 export type Car = {
   id: number;
   imgSrc: string;
@@ -195,3 +192,16 @@ export interface ServiceWithAlt extends DetailedService {
 
 // Type for allServices, which includes a mix of different service types
 export type AllServices = Services | ServiceWithAlt;
+
+
+export type Contact = {
+  _id: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  subject: string;
+  message: string;
+  createdAt: string;
+  createdDate?: string;
+  createdTime?: string;
+}
