@@ -1,6 +1,7 @@
 
 import { Menu } from "@/components/common/menu";
 import { Sidebar } from "@/components/common/sidebar";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 
@@ -24,16 +25,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.className}`}>
-
-        <div className="grid lg:grid-cols-5">
-          <Sidebar className="hidden lg:block" />
-          <div className="col-span-3 lg:col-span-4 lg:border-l">
-            <div className="h-full px-4 py-6 lg:px-0">
-              <Menu />
-              {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="grid lg:grid-cols-5">
+            <Sidebar className="hidden lg:block" />
+            <div className="col-span-3 lg:col-span-4 lg:border-l">
+              <div className="h-full px-4 py-6 lg:px-0">
+                <Menu />
+                {children}
+              </div>
             </div>
           </div>
-        </div>
+        </ThemeProvider>
       </body>
     </html>
   );

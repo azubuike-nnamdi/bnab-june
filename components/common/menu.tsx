@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { Search } from '../back-office/dashboard/search'
 import { UserNav } from '../back-office/dashboard/user-nav'
+import { ModeToggle } from '../ui/mode-toggle'
 
 export const Menu = () => {
   const [query, setQuery] = useState("");
@@ -14,7 +15,9 @@ export const Menu = () => {
           placeholder="Search for items..."
           className="w-full max-w-lg"
         /> */}
+
         <UserNav />
+        <ModeToggle />
       </section>
     </main>
   )
