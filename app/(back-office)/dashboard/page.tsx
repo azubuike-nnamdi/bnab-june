@@ -23,9 +23,9 @@ export default function page() {
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
         </div>
-        <Tabs defaultValue="overview" className="space-y-4">
+        <Tabs defaultValue="ticket-master" className="space-y-4">
           <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
+            {/* <TabsTrigger value="overview">Overview</TabsTrigger> */}
             <TabsTrigger value="ticket-master">
               Ticket Master
             </TabsTrigger>
@@ -37,9 +37,6 @@ export default function page() {
             </TabsTrigger>
             <TabsTrigger value="dedicated-rides">
               Dedicated Rides
-            </TabsTrigger>
-            <TabsTrigger value="notifications" disabled>
-              Notifications
             </TabsTrigger>
           </TabsList>
           <TabsContent value="overview" className="space-y-4">
