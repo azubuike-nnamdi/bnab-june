@@ -33,8 +33,8 @@ export default function RootLayout({
         >
           <div className="grid lg:grid-cols-5">
             <Sidebar className="hidden lg:block" />
-            <div className="col-span-3 lg:col-span-4 lg:border-l">
-              <div className="h-full px-4 py-6 lg:px-0">
+            <div className="col-span-3 lg:col-span-4 lg:border-l overflow-x-hidden">
+              <div className="h-full sm:px-4 py-6 lg:px-0">
                 <Menu />
                 {children}
               </div>

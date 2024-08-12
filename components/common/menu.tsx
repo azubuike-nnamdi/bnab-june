@@ -7,7 +7,7 @@ import { ModeToggle } from '../ui/mode-toggle'
 export const Menu = () => {
   const [query, setQuery] = useState("");
   return (
-    <main className='border-b px-2 py-4 flex justify-end items-center'>
+    <main className='border-b px-2 py-4 md:flex justify-end items-center overflow-x-auto'>
       <section className='flex gap-3 items-center px-4'>
         {/* <Search
           searchQuery={query}
