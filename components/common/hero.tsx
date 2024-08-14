@@ -1,17 +1,51 @@
 "use client";
 import { tabs } from "@/lib/data/data";
 import React, { useState } from "react";
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 
 export default function Hero() {
   const [activeTab, setActiveTab] = useState(0);
-
+  const settings = {
+    spaceBetween: 30,
+    slidesPerView: 1,
+    slidesPerGroup: 1,
+    loop: true,
+    navigation: {
+      nextEl: ".snbn3",
+      prevEl: ".snbp3",
+    },
+    modules: [Autoplay],
+    autoplay: {
+      delay: 10000,
+    },
+    breakpoints: {
+      1399: {
+        slidesPerView: 1,
+      },
+      1100: {
+        slidesPerView: 1,
+      },
+      600: {
+        slidesPerView: 1,
+      },
+      500: {
+        slidesPerView: 1,
+      },
+      350: {
+        slidesPerView: 1,
+      },
+      150: {
+        slidesPerView: 1,
+      },
+    },
+  };
 
   return (
     <section className="relative overflow-hidden h-screen">
       <Swiper
-        slidesPerView={1}
+        {...settings}
         className="swiper-container"
       >
         {tabs[activeTab].banners.map((elm) => (
@@ -22,6 +56,8 @@ export default function Hero() {
                 backgroundImage: `url(${elm.url})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
+                width: '100%',
+                height: '100%',
               }}
             >
               <div className="absolute inset-0 bg-black opacity-50"></div>
