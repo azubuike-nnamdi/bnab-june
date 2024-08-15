@@ -1,9 +1,10 @@
 "use client";
 import { tabs } from "@/lib/data/data";
+import clsx from "clsx";
 import React, { useState } from "react";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import { Swiper as SwiperClass } from 'swiper/types';
 
 export default function Hero() {
   const [activeTab, setActiveTab] = useState(0);
@@ -11,7 +12,7 @@ export default function Hero() {
     spaceBetween: 30,
     slidesPerView: 1,
     slidesPerGroup: 1,
-    loop: true,
+    loop: false,
     navigation: {
       nextEl: ".snbn3",
       prevEl: ".snbp3",
@@ -19,6 +20,13 @@ export default function Hero() {
     modules: [Autoplay],
     autoplay: {
       delay: 10000,
+    },
+    onSlideChange: (swiper: SwiperClass) => { // Type the swiper parameter
+      if (swiper.isEnd) {
+        // Move to the next tab if the last slide is reached
+        setActiveTab((prevTab) => (prevTab + 1) % tabs.length);
+        swiper.slideTo(0); // Reset to the first slide of the next tab
+      }
     },
     breakpoints: {
       1399: {
@@ -47,6 +55,7 @@ export default function Hero() {
       <Swiper
         {...settings}
         className="swiper-container"
+        style={{ maxWidth: "100vw", overflow: "hidden" }}
       >
         {tabs[activeTab].banners.map((elm) => (
           <SwiperSlide key={elm.id} className="relative h-full">
@@ -55,12 +64,10 @@ export default function Hero() {
               style={{
                 backgroundImage: `url(${elm.url})`,
                 backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                width: '100%',
-                height: '100%',
+                minHeight: '100vh'
               }}
             >
-              <div className="absolute inset-0 bg-black opacity-50"></div>
+              <div className="absolute inset-0 bg-black opacity-30"></div>
             </div>
             <div className="relative z-10 md:py-56 py-32 md:px-12 px-8 text-white">
               <p className="md:text-lg text-md">{elm.text}</p>
@@ -75,11 +82,14 @@ export default function Hero() {
 
       </Swiper>
       <div className="flex justify-between ">
-        <div className="btn-group sm:flex  w-full">
+        <div className="btn-group sm:flex w-full">
           {tabs.map((tab, index) => (
             <button
               key={tab?.name}
-              className={`px-4 py-2 border-r-1 w-full  text-center  ${activeTab === index ? "bg-yellow-500 text-black" : "bg-gray-800 text-white"}`}
+              className={clsx(
+                "px-4 py-2 border-r-1 w-full text-center",
+                activeTab === index ? "bg-yellow-500 text-black" : "bg-gray-800 text-white"
+              )}
               onClick={() => setActiveTab(index)}
             >
               {tab.name}
