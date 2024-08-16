@@ -11,12 +11,12 @@ export async function POST(req: NextRequest) {
   const session = await getServerSession(options);
 
   // Check user session
-  if (!session) {
-    console.log("No active session");
-    return new Response(JSON.stringify({ message: "Session not active" }), {
-      status: 401,
-    });
-  }
+  // if (!session) {
+  //   console.log("No active session");
+  //   return new Response(JSON.stringify({ message: "Session not active" }), {
+  //     status: 401,
+  //   });
+  // }
 
   try {
     // Parse booking data from the request body
@@ -79,6 +79,7 @@ export async function POST(req: NextRequest) {
       dropOffDate: new Date(dropOffDate),
       dropOffTime: new Date(dropOffTime),
       numberOfPassengers,
+      paymentStatus: "not paid",
       additionalInfo,
       createdAt: new Date(),
     };
@@ -97,8 +98,8 @@ export async function POST(req: NextRequest) {
       dropOffTime
     });
 
-    await sendEmail({ to: email, subject: "Booking Confirmation", text: userContent });
-    await sendEmail({ to: "admin@example.com", subject: "New Booking", text: adminContent });
+    await sendEmail({ to: "blessedmarcel1@gmail.com", subject: "Booking Confirmation", text: userContent });
+    await sendEmail({ to: "blessedmarcel1@gmail.com", subject: "New Booking", text: adminContent });
 
 
     // Check if the insertion was successful

@@ -12,6 +12,7 @@ import "swiper/css/autoplay";
 import { services } from "@/lib/data/services";
 import { Fade } from "react-awesome-reveal";
 import { MoveUpRight } from "lucide-react";
+import { SERVICES_URL } from "@/config/routes";
 
 interface ServiceItem {
   id: number;
@@ -69,7 +70,7 @@ const Service: React.FC = () => {
             <div className="w-full lg:w-1/2 text-right">
               <Link
                 className="text-base font-medium text-primary flex items-center justify-end"
-                href="/service"
+                href={SERVICES_URL}
               >
                 More Services
                 <MoveUpRight className="w-5 h-5 font-normal" />
@@ -95,7 +96,7 @@ const Service: React.FC = () => {
                         src={elm.image}
                         alt={elm.title}
                       />
-                      <div className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300 group-hover:opacity-70"></div>
+                      <div className="absolute inset-0 bg-black opacity-20 transition-opacity duration-300 group-hover:opacity-70"></div>
                       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white transition-transform duration-300 transform group-hover:translate-y-0 translate-y-16">
                         <h3 className="text-2xl font-medium mb-6">{elm.title}</h3>
                         <p className="text-xs mb-4">{elm.description}</p>

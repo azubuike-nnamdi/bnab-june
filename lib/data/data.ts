@@ -165,7 +165,7 @@ export const airport = [
     id: 4,
     url: "https://bnab-june.s3.amazonaws.com/img/airportpick-4.png",
     // title: "BANNER 2",
-    text: "Airport Pickup & Dropoff",
+    text: "Airport Pickup & Drop-off",
   },
   {
     id: 5,

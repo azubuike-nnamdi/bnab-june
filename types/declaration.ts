@@ -83,12 +83,16 @@ export type TicketBookingFormDataProps = {
 }
 
 export type AirportBookingData = {
+  fullName: string;
   pickUpLocation: string;
   dropOffLocation: string;
   pickUpDate: string;
   pickUpTime: string;
   phoneNumber: string;
+  email: string;
   numberOfPassengers: string;
+  additionalNote: string;
+
 }
 
 export type AccommodationBookingType = {

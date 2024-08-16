@@ -30,7 +30,7 @@ export default function page() {
               Ticket Master
             </TabsTrigger>
             <TabsTrigger value="airport">
-              Airport Pickup
+              Airport Pickup & Drop-off
             </TabsTrigger>
             <TabsTrigger value="accommodation">
               Accommodation

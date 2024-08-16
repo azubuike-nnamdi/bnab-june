@@ -9,9 +9,10 @@ export function TicketmasterDataTable() {
   const headers = [
     "Full Name",
     "Email",
-    "Phone Number",
+    "Contact",
     "Cost",
-    "Date",
+    "Event Title",
+    "Timestamp",
     "Status"
   ];
 
@@ -20,9 +21,10 @@ export function TicketmasterDataTable() {
     return data.map(ticket => ({
       "Full Name": `${ticket.firstName} ${ticket.lastName}`,
       "Email": ticket.email,
-      "Phone Number": ticket.phoneNumber,
+      "Contact": ticket.phoneNumber,
       "Cost": ticket.event.price,
-      "Date": ticket.event.date,
+      "Event Title": ticket.event.title,
+      "Timestamp": `${ticket.event.date} ${ticket.event.time}`,
       "Status": ticket.paymentStatus,
     }));
   };

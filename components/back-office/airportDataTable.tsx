@@ -10,23 +10,27 @@ export default function AirportDataTable() {
   const airportData = data?.data || []
 
   const headers = [
-    "Phone Number",
-    "Pick Up Address",
-    "Pick Up Time",
+    "Full Name",
+    "Contact",
+    // "Pick Up Address",
+    "Email",
     "Pick Up Date",
     "Drop Off Address",
     "Passenger",
+    "Note",
     "Status",
   ];
 
   const mappedAirportData = (data: any[]) => {
     return data.map(airport => ({
-      "Phone Number": airport.phoneNumber,
-      "Pick Up Address": airport.pickUpLocation,
-      "Pick Up Time": airport.pickUpTime,
-      "Pick Up Date": airport.pickUpDate,
+      "Full Name": airport.fullName,
+      "Contact": airport.phoneNumber,
+      "Email": airport.email,
+      // "Pick Up Address": airport.pickUpLocation,
+      "Pick Up Date": ` ${airport.pickUpDate} ${airport.pickUpTime} `,
       "Drop Off Address": airport.dropOffLocation,
       "Passenger": airport.numberOfPassengers,
+      "Note": airport.additionalNote,
       "Status": airport.paymentStatus,
     }));
   };

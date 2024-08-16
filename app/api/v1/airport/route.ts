@@ -19,22 +19,28 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
 
     const {
+      fullName,
       pickUpLocation,
       dropOffLocation,
       pickUpDate,
       pickUpTime,
       phoneNumber,
-      numberOfPassengers
+      email,
+      numberOfPassengers,
+      additionalNote
     } = data;
 
     //check fields
     const requiredFields = [
+      "fullName",
       "pickUpLocation",
       "dropOffLocation",
       "pickUpDate",
       "pickUpTime",
       "phoneNumber",
+      "email",
       "numberOfPassengers",
+      "additionalNote"
     ];
     for (const field of requiredFields) {
       if (!data[field]) {
@@ -49,12 +55,15 @@ export async function POST(req: NextRequest) {
     const airportPickup = db.collection("airportPickup");
 
     const airportBooking = {
+      fullName,
       pickUpLocation,
       dropOffLocation,
       pickUpDate,
       pickUpTime,
       numberOfPassengers,
       phoneNumber,
+      email,
+      additionalNote,
       paymentStatus: "not paid",
       createAt: new Date(),
       updatedAt: new Date(),

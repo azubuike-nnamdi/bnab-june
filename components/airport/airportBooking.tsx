@@ -9,17 +9,20 @@ import { Button } from '../ui/button';
 export default function AirportBooking() {
 
   const [formData, setFormData] = useState<AirportBookingData>({
-    pickUpLocation: '',
+    pickUpLocation: 'Kotoka International Airport (Accra)',
+    fullName: '',
     dropOffLocation: '',
     phoneNumber: '',
+    email: '',
     pickUpDate: format(new Date(), 'yyyy-MM-dd'),
     pickUpTime: format(new Date(), 'HH:mm'),
     numberOfPassengers: '',
+    additionalNote: '',
   });
 
   const { handleSubmitAirportBooking, isPending } = useAirportBooking();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
@@ -43,7 +46,35 @@ export default function AirportBooking() {
   return (
     <div className='sm:p-24 p-4'>
       <h1 className='sm:text-2xl text-xl font-medium'>Easy Airport Pick Up To and From to Your Accommodation</h1>
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-4 pt-4" onSubmit={handleSubmit}>
+        <div className='grid md:grid-cols-2 gap-4'>
+          <div>
+            <label htmlFor="fullName" className="block mb-2">
+              Full Name
+            </label>
+            <input
+              type="text"
+              id="fullName"
+              placeholder="Enter Name"
+              value={formData.fullName}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter Email Address"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+        </div>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="pickUpLocation" className="block mb-2">
@@ -55,12 +86,13 @@ export default function AirportBooking() {
               placeholder="Enter pick up location"
               value={formData.pickUpLocation}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              disabled
+              className="w-full p-2 border border-gray-300 rounded-md disabled:cursor-not-allowed"
             />
           </div>
           <div>
             <label htmlFor="dropOffLocation" className="block mb-2">
-              Drop off location
+              Drop-off location
             </label>
             <input
               type="text"
@@ -100,7 +132,7 @@ export default function AirportBooking() {
         </div>
         <div className='grid md:grid-cols-2 gap-4'>
           <div>
-            <label htmlFor="dropOffLocation" className="block mb-2">
+            <label htmlFor="phoneNumber" className="block mb-2">
               Phone Number
             </label>
             <input
@@ -129,6 +161,19 @@ export default function AirportBooking() {
               <option value="4">4</option>
             </select>
           </div>
+        </div>
+
+        <div>
+          <label htmlFor="additionalNote" className="block mb-2">
+            Additional Note
+          </label>
+          <textarea
+            id="additionalNote"
+            value={formData.additionalNote}
+            rows={3}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+          />
         </div>
         <div className="mt-4">
           <Button

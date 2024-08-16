@@ -25,7 +25,7 @@ const ServiceCard: React.FC = () => {
                       src={elm.image}
                       alt={elm.title}
                     />
-                    <div className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300 group-hover:opacity-70"></div>
+                    <div className="absolute inset-0 bg-black opacity-20 transition-opacity duration-300 group-hover:opacity-70"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white transition-transform duration-300 transform group-hover:translate-y-0">
                       <h3 className="text-xl font-medium mb-2">{elm.title}</h3>
                       <p className="text-sm mb-4 group-hover:block hidden">{elm.description}</p>

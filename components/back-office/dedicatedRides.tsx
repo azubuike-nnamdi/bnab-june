@@ -8,14 +8,15 @@ export default function DedicatedRides() {
   const { isPending, data } = useBookings();
   const bookingsData = data?.data || []
 
+  console.log(bookingsData)
   //heading
   const headers = [
     "Full Name",
     "Email",
-    "Phone Number",
-    "Time",
+    "Contact",
+    "Date",
     "Address",
-    "Drop Off Location",
+    "Drop-off Location",
     "Passengers",
     "Status"
   ]
@@ -24,10 +25,10 @@ export default function DedicatedRides() {
     return data.map(booking => ({
       "Full Name": `${booking.firstName} ${booking.lastName}`,
       "Email": booking.email,
-      "Phone Number": booking.phoneNumber,
-      "Time": booking.pickUpDate,
+      "Contact": booking.phoneNumber,
+      "Date": `${booking.pickUpDate}`,
       "Address": booking.pickUpLocation,
-      "Drop Off Address": booking.dropOffLocation,
+      "Drop-off Address": booking.dropOffLocation,
       "Passengers": booking.numberOfPassengers,
       "Status": booking.paymentStatus,
     }));
@@ -37,7 +38,7 @@ export default function DedicatedRides() {
       <DataTable
         caption="Ticket Master Information"
         headers={headers}
-        data={data?.data || []}
+        data={bookingsData}
         isPending={isPending}
         mapData={mappedBookingData}
       />

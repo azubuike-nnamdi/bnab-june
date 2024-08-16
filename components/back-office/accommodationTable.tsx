@@ -12,7 +12,7 @@ export default function AccommodationTable() {
   const headers = [
     "Full Name",
     "Email",
-    "Phone Number",
+    "Contact",
     "Budget",
     "Arrival Date",
     "Arrival Time",
@@ -23,7 +23,7 @@ export default function AccommodationTable() {
     return data.map(accommodation => ({
       "Full Name": accommodation.name,
       "Email": accommodation.email,
-      "Phone Number": accommodation.phoneNumber,
+      "Contact": accommodation.phoneNumber,
       "Budget": accommodation.budget,
       "Arrival Date": accommodation.dateOfArrival,
       "Arrival Time": accommodation.timeOfArrival,
