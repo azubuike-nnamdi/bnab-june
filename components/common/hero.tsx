@@ -51,14 +51,14 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden h-screen">
+    <section className="relative overflow-visible min-h-screen">
       <Swiper
         {...settings}
         className="swiper-container"
         style={{ maxWidth: "100vw", overflow: "hidden" }}
       >
         {tabs[activeTab].banners.map((elm) => (
-          <SwiperSlide key={elm.id} className="relative h-full">
+          <SwiperSlide key={elm.id} className="relative h-screen">
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
