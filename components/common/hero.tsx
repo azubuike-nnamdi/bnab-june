@@ -21,11 +21,10 @@ export default function Hero() {
     autoplay: {
       delay: 10000,
     },
-    onSlideChange: (swiper: SwiperClass) => { // Type the swiper parameter
+    onSlideChange: (swiper: SwiperClass) => {
       if (swiper.isEnd) {
-        // Move to the next tab if the last slide is reached
         setActiveTab((prevTab) => (prevTab + 1) % tabs.length);
-        swiper.slideTo(0); // Reset to the first slide of the next tab
+        swiper.slideTo(0);
       }
     },
     breakpoints: {
