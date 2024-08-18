@@ -1,6 +1,7 @@
 "use client";
 import { tabs } from "@/lib/data/data";
 import clsx from "clsx";
+import { MoveLeft, MoveRight } from "lucide-react";
 import React, { useState } from "react";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,6 +9,8 @@ import { Swiper as SwiperClass } from 'swiper/types';
 
 export default function Hero() {
   const [activeTab, setActiveTab] = useState(0);
+  const [swiperRef, setSwiperRef] = useState<SwiperClass | null>(null);
+
   const settings = {
     spaceBetween: 30,
     slidesPerView: 1,
@@ -21,6 +24,7 @@ export default function Hero() {
     autoplay: {
       delay: 10000,
     },
+    onSwiper: setSwiperRef,
     onSlideChange: (swiper: SwiperClass) => {
       if (swiper.isEnd) {
         setActiveTab((prevTab) => (prevTab + 1) % tabs.length);
@@ -63,13 +67,21 @@ export default function Hero() {
               style={{
                 backgroundImage: `url(${elm.url})`,
                 backgroundSize: 'cover',
-                minHeight: '100vh'
+                minHeight: '100vh',
               }}
             >
               <div className="absolute inset-0 bg-black opacity-30"></div>
             </div>
             <div className="relative z-10 md:py-56 py-32 md:px-12 px-8 text-white">
-              <p className="md:text-lg text-md">{elm.text}</p>
+              <div className="text-center flex  items-center gap-3">
+                <MoveLeft
+                  className="text-black text-2xl hover:text-yellow-500 bg-white rounded-full w-5 h-5 p-1"
+                  onClick={() => swiperRef?.slidePrev()} />
+                <p className="md:text-lg text-md">{elm.text}</p>
+                <MoveRight
+                  className="text-black text-2xl hover:text-yellow-500 bg-white rounded-full w-5 h-5 p-1"
+                  onClick={() => swiperRef?.slideNext()} />
+              </div>
               <h2 className="md:text-5xl text-2xl font-medium">
                 {elm.text.split(" ").slice(0, 2).join(" ")}{" "}
                 <br className="hidden lg:block" />
