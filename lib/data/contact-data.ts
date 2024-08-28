@@ -13,7 +13,7 @@ export const contactCards = [
     city: "KNUST Campus Office",
     imageSrc: "/img/kumasi1.png",
     box: "Prempeh II Museum",
-    address: "Kumasi, Ghana",
+    address: "Kumasi, southern part of Ghana (Ashanti Region)",
     phone: "+233 20 455 3111",
     email: "accra@example.com",
   },
