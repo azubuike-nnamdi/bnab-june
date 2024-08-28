@@ -20,9 +20,11 @@ export default function PickUpVehicles() {
     }
     setSelectedCars(items);
   }, [selectedCarTypes, selectedBrand]);
+
+  console.log(selectedCars)
   return (
     <main className="pt-12">
-      <section className="sm:p-24 p-4 bg-white">
+      <section className="md:p-8 lg:p-24 p-4 bg-white">
         <div className="container mx-auto">
           <div className="flex flex-wrap items-center justify-between mb-8">
             <h2 className="text-2xl font-medium">Choose your Vehicle</h2>
@@ -57,13 +59,14 @@ export default function PickUpVehicles() {
           </div>
           <div className="flex flex-wrap mt-8">
             {selectedCars.slice(0, 6).map((elm) => (
-              <div key={elm.id} className="w-full md:w-1/2 lg:w-1/3 p-4">
-                <div className="bg-white shadow-lg rounded-lg p-6">
-                  <Link href={`/dedicated-rides/${elm.id}`}>
+              <Link
+                key={elm.id}
+                href={`/dedicated-rides/${elm.id}`}
+                className="w-full md:w-1/2 lg:w-1/3 p-4">
+                <div >
+                  <div className="bg-white shadow-lg rounded-lg p-6">
                     <h3 className="text-xl font-medium text-gray-900 mb-2">{elm.title}</h3>
-                  </Link>
-                  <p className="text-gray-700 mb-4">{elm.description}</p>
-                  <Link href={`/dedicated-rides/${elm.id}`}>
+                    <p className="text-gray-700 mb-4">{elm.description}</p>
                     <Image
                       width={450}
                       height={250}
@@ -71,9 +74,13 @@ export default function PickUpVehicles() {
                       src={elm.imgSrc}
                       alt={elm.title}
                     />
-                  </Link>
+                    <div className="flex items-center">
+                      <p>{elm?.amt}</p>
+                      <p>{elm?.duration}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
             {!selectedCars.length && <div>No item found. Try another filter</div>}
           </div>
