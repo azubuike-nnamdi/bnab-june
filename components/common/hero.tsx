@@ -58,7 +58,7 @@ export default function Hero() {
       <Swiper
         {...settings}
         className="swiper-container"
-        style={{ maxWidth: "100vw", overflow: "hidden" }}
+        style={{ maxWidth: "100vw", overflow: "hidden", minHeight: '100vh' }}
       >
         {tabs[activeTab].banners.map((elm) => (
           <SwiperSlide key={elm.id} className="relative h-screen">
@@ -82,7 +82,7 @@ export default function Hero() {
                   className="text-black text-2xl hover:text-yellow-500 bg-white rounded-full w-5 h-5 p-1"
                   onClick={() => swiperRef?.slideNext()} />
               </div>
-              <h2 className="md:text-5xl text-2xl font-medium">
+              <h2 className="md:text-5xl text-2xl font-medium mt-4">
                 {elm.text.split(" ").slice(0, 2).join(" ")}{" "}
                 <br className="hidden lg:block" />
                 {elm.text.split(" ").slice(2).join(" ")}
