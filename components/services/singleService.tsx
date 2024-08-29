@@ -5,6 +5,7 @@
 import { features7 } from "@/lib/data/feature-data";
 import { SingleServiceProps } from "@/types/declaration";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { Fade } from "react-awesome-reveal";
 
@@ -32,10 +33,13 @@ const SingleService = ({
                 {paragraph1}
               </p>
               <ul className="list-disc list-inside text-lg text-gray-700 dark:text-gray-300 mb-10 md:mb-12 lg:mb-16">
-                {features7.map((elm, i) => (
-                  <li key={i} className="mb-4 md:mb-5">
-                    {elm}
-                  </li>
+                {features7.map((elm) => (
+                  <Link key={elm.id} href={elm.href}>
+                    <li className="mb-4 md:mb-5">
+                      {elm.title}
+                    </li>
+
+                  </Link>
                 ))}
               </ul>
             </div>
