@@ -1,3 +1,5 @@
+import { ACCOMMODATION_URL, AIRPORT_PICK_UP_DROP_OFF_BOOKING_URL, DEDICATED_RIDES_URL, TICKET_MASTER_URL, TRAINING_URL } from "@/config/routes";
+
 export const features = [
   {
     id: 1,
@@ -117,11 +119,31 @@ export const features6 = [
 ];
 
 export const features7 = [
-  "Event Ticket Sales",
-  "Airport Pick-up & Transfers",
-  "Accommodation Bookings",
-  "Dedicated Vehicles for Travel",
-  "Arts and Crafts Training",
+  {
+    id: "hi6f7xKqU+K6Mj3",
+    href: TICKET_MASTER_URL,
+    title: "Event Ticket Sales"
+  },
+  {
+    id: "qO26O520pruJavxl",
+    href: AIRPORT_PICK_UP_DROP_OFF_BOOKING_URL,
+    title: "Airport Pick-up & Transfers"
+  },
+  {
+    id: "duzi5Cukb1teqWJD",
+    href: ACCOMMODATION_URL,
+    title: "Accommodation Bookings"
+  },
+  {
+    id: "ZGNALXiRIDCppJMw",
+    href: DEDICATED_RIDES_URL,
+    title: "Dedicated Vehicles for Travel"
+  },
+  {
+    id: "zkLU0+D3ICzto0OY",
+    href: TRAINING_URL,
+    title: "Arts and Crafts Training"
+  },
 ];
 export const features8 = [
   [{
