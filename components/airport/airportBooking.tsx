@@ -181,7 +181,7 @@ export default function AirportBooking() {
             disabled={isPending}
             className="w-full py-2 px-4  text-white rounded-md flex items-center justify-center disabled:cursor-not-allowed"
           >
-            {isPending ? 'Loading...' : 'Book Now & Pay Later'}
+            {isPending ? 'Loading...' : 'Book Now'}
             <svg
               className="w-4 h-4 ml-2"
               fill="none"

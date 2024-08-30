@@ -79,7 +79,7 @@ export default function BookingTicketCard({ event }: Readonly<BookingTicket>) {
                     className="btn btn-primary w-full"
                     onClick={() => handleBooking(event.id)}
                   >
-                    Book Now & Pay Later
+                    Book Now
                     <svg
                       className="w-4 h-4 ml-1 inline-block"
                       fill="none"

@@ -5,7 +5,6 @@ import { cars } from "@/lib/data/car-data";
 import { ParamProps } from "@/types/declaration";
 
 export default function page({ params }: Readonly<ParamProps>) {
-  console.log('params', params);
   const car = cars.filter((elm) => elm.id == params.id)[0] || cars[0];
 
   const breadcrumbLink = [

@@ -154,7 +154,7 @@ export default function AccommodationBookingForm() {
               type="submit"
               disabled={isPending}
               className="w-full disabled:cursor-not-allowed">
-              Book Now & Pay Later
+              Book Now
             </Button>
           </form>
         </Form>

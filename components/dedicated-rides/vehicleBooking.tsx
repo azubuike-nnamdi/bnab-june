@@ -59,7 +59,7 @@ const VehicleBooking: React.FC<VehicleBookingProps> = ({ car }) => {
                   className="w-full py-3  text-white font-semibold rounded-lg flex justify-center items-center hover:bg-black-700"
                   onClick={() => handleBooking(car.id)}
                 >
-                  Book Now & Pay Later
+                  Book Now
                   <svg
                     className="w-4 h-4 ml-2"
                     fill="none"
