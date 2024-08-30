@@ -24,6 +24,8 @@ export default function ContactInfoTable() {
 
   return (
     <main>
+      <h1 className="sm:my-6 ">Total Submitted contacts: {" "} {contactData?.length}
+      </h1>
       <DataTable
         caption="Contact Form Records"
         headers={headers}
