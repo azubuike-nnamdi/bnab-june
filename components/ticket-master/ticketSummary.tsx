@@ -1,4 +1,5 @@
 import { useSubmitTicket } from "@/hooks/mutations/useSubmitTicket";
+import { Button } from "../ui/button";
 
 
 interface TicketSummaryProps {
@@ -7,16 +8,20 @@ interface TicketSummaryProps {
     lastName: string;
     phoneNumber: string;
     email: string;
+    transID?: string;
   };
+  activeTabIndex: number;
+  setActiveTabIndex: (index: number) => void;
+  // onFormSubmit: (formData: TicketBookingFormDataProps) => void;
 }
 
-export default function TicketSummary({ formData }: Readonly<TicketSummaryProps>) {
+export default function TicketSummary({ activeTabIndex, setActiveTabIndex, formData }: Readonly<TicketSummaryProps>) {
 
-  const { handleSubmitTicket, isPending } = useSubmitTicket();
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    handleSubmitTicket(formData);
+    setActiveTabIndex(activeTabIndex + 1);
+
   };
   return (
     <main>
@@ -76,13 +81,12 @@ export default function TicketSummary({ formData }: Readonly<TicketSummaryProps>
             </div>
           </div>
           <div className="mt-4">
-            <button
+            <Button
               type="submit"
-              className="w-full py-2 px-4 bg-gray-500 text-white rounded-md flex items-center justify-center"
-              disabled={isPending}
+              className="w-full py-2 px-4 text-white rounded-md flex items-center justify-center"
             >
-              {isPending ? "Loading..." : "Book Now & Pay Later"}
-            </button>
+              {"Continue..."}
+            </Button>
           </div>
         </form>
       </div>
