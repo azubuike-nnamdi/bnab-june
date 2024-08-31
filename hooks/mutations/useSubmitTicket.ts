@@ -13,7 +13,6 @@ export const useSubmitTicket = () => {
       return axios.post("/api/v1/ticket-master", ticket);
     },
     onSuccess: ({ data }) => {
-      console.log("data submitted", data);
       if (data) {
         toast.success(data?.message);
         router.push("/");

@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     //insert the new user into the db
     await ticketBooking.insertOne(ticket);
 
-    return new Response(JSON.stringify({ message: "Ticket created successfully" }), {
+    return new Response(JSON.stringify({ message: "Ticket booking is successful" }), {
       status: 201,
     });
   } catch (error) {
