@@ -80,6 +80,7 @@ export type TicketBookingFormDataProps = {
   phoneNumber: string;
   email: string;
   event?: TicketEvent
+  transID?: string;
 }
 
 export type AirportBookingData = {
@@ -208,4 +209,10 @@ export type Contact = {
   createdAt: string;
   createdDate?: string;
   createdTime?: string;
+}
+
+export interface PaymentMethodProps {
+  onPaymentSelect: (method: string) => void;
+  formData: TicketBookingFormDataProps;
+  paymentMethod: string;
 }
