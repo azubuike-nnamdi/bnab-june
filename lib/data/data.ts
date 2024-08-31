@@ -72,12 +72,12 @@ export const socialMediaPlatforms = [
 ];
 
 export const links1 = [
-  { id: 1, text: "About us", href: "/about" },
-  // { id: 2, text: "Our offerings", href: "#fleet-list" },
+  { id: 1, text: "Home", href: HOME_URL },
+  { id: 2, text: "About us", href: ABOUT_URL },
   // { id: 3, text: "Newsroom", href: "#blog-grid" },
-  { id: 4, text: "Investors", href: "#our-team" },
-  { id: 5, text: "Careers", href: "#" },
-  { id: 6, text: "Blog", href: "#blog-grid" },
+  { id: 3, text: "Contact", href: CONTACT_URL },
+  { id: 4, text: "Services", href: SERVICES_URL },
+  // { id: 6, text: "Blog", href: "#blog-grid" },
   // { id: 7, text: "Gift cards", href: "#" },
 ];
 export const links2 = [
@@ -88,11 +88,11 @@ export const links2 = [
   // { id: 5, name: "Achimota", href: "#" },
 ];
 export const links3 = [
-  { id: 1, name: "Airport Pickup & Dropoff", href: "#" },
-  { id: 2, name: "Accommodation", href: "#" },
-  { id: 3, name: "Dedicated Rides", href: "#" },
-  { id: 4, name: "Ticket Master", href: "#" },
-  { id: 5, name: "Training", href: "#" },
+  { id: 1, name: "Airport Pickup & Dropoff", href: AIRPORT_PICK_UP_DROP_OFF_URL },
+  { id: 2, name: "Accommodation", href: ACCOMMODATION_URL },
+  { id: 3, name: "Dedicated Rides", href: DEDICATED_RIDES_URL },
+  { id: 4, name: "Ticket Master", href: TICKET_MASTER_URL },
+  { id: 5, name: "Training", href: TRAINING_URL },
   // { id: 6, name: "Airport transfer", href: "#" },
 ];
 export const links4 = [
