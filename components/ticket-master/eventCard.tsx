@@ -24,9 +24,9 @@ export default function EventCard() {
   };
   return (
     <Fade direction="up" triggerOnce cascade>
-      <main className="sm:p-24 p-4">
-        <h2 className="sm:text-3xl font-semibold text-xl">Our Event</h2>
-        <div className="grid sm:grid-cols-3 grid-cols-2 gap-4">
+      <main className="md:p-24 smp-12 p-4">
+        <h2 className="sm:text-3xl font-semibold text-xl py-6">Our Event</h2>
+        <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
           {/* Event Cards */}
           {eventData.map((event) => (
             <Card key={event.id}>
