@@ -4,6 +4,7 @@
 import { CheckoutProps, TicketBookingFormDataProps } from "@/types/declaration";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { genId } from "@/lib/helper";
 
 export default function Checkout({ activeTabIndex,
   setActiveTabIndex,
@@ -22,12 +23,13 @@ export default function Checkout({ activeTabIndex,
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onFormSubmit(formData);
+    const transID = genId('numeric', 24)
+    onFormSubmit({ ...formData, transID });
     setActiveTabIndex(activeTabIndex + 1);
   };
   return (
     <div className="container mx-auto my-5 animate-fadeInUp">
-      <h3 className="mb-4 sm:text-3xl text-xl font-med">Billing Details</h3>
+      <h3 className="mb-4 sm:text-3xl text-xl font-med">Personal Details</h3>
       <form onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-2 gap-4 mb-4">
           <div>
