@@ -4,6 +4,7 @@ import Checkout from './checkout';
 import { TicketBookingFormDataProps, TicketEvent } from '@/types/declaration';
 import TicketSummary from './ticketSummary';
 import { CreditCard, Truck } from 'lucide-react';
+import PaymentMethod from '../common/payment-method';
 
 
 
@@ -15,15 +16,21 @@ const tabs = [
   {
     id: 1,
     icon: <Truck />,
-    text: 'Billing',
+    text: 'Personal Details',
     number: '01',
   },
   {
     id: 2,
     icon: <CreditCard />,
-    text: 'Summary',
+    text: 'Booking Summary',
     number: '02',
   },
+  {
+    id: 3,
+    icon: <CreditCard />,
+    text: 'Payment Method',
+    number: '03',
+  }
 ];
 
 const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
@@ -37,31 +44,40 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
     event: event,
   });
 
+  const [paymentMethod, setPaymentMethod] = useState<string>('');
+
   const handleTabClick = (index: number) => {
     setActiveTabIndex(index);
+    console.log(index)
+  };
+
+  const handlePaymentSelect = (method: string) => {
+    setPaymentMethod(method);
   };
 
   const handleFormSubmit = (data: Omit<TicketBookingFormDataProps, 'event'>) => {
     setFormData({ ...data, event });
+    setActiveTabIndex(1);
   };
 
   return (
     <div className="container mx-auto">
-      <div className="flex justify-center space-x-4">
+      <div className="flex flex-col sm:flex-row mx-auto justify-center sm:space-x-4 border">
         {tabs.map((elm, i) => (
           <div key={elm.id} className="item-tab animate-fadeInUp">
             <button
               onClick={() => handleTabClick(i)}
-              className={`cursor-pointer p-4 font-bold sm:text-3xl text-xl ${activeTabIndex >= i ? 'text-gray-700  underline underline-offset-8' : 'text-black'}`}
+              className={`cursor-pointer p-4 font-bold md:text-3xl text-xl ${activeTabIndex >= i ? 'text-gray-700 underline underline-offset-8' : 'text-black'}`}
             >
-              <div className="flex items-center space-x-2 ">
-                <span>{elm.text}{" "} 0{i + 1}</span>
+              <div className="flex items-center justify-center space-x-2">
+                <span>{elm.text}{" "}</span>
               </div>
               <div className="text-center mt-2"></div>
             </button>
           </div>
         ))}
       </div>
+
       <div className="tab-content mt-4">
         <div className="flex flex-wrap">
           <div className="w-full md:w-2/3 p-4">
@@ -72,7 +88,14 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
                 onFormSubmit={handleFormSubmit}
               />
             )}
-            {activeTabIndex === 1 && <TicketSummary formData={formData} />}
+            {activeTabIndex === 1 && <TicketSummary
+              activeTabIndex={activeTabIndex}
+              setActiveTabIndex={setActiveTabIndex}
+              formData={formData} />}
+            {activeTabIndex === 2 && <PaymentMethod
+              paymentMethod={paymentMethod}
+              onPaymentSelect={handlePaymentSelect}
+              formData={formData} />}
           </div>
           <div className="w-full md:w-1/3 p-4">
             <div className="box-tab-right">
