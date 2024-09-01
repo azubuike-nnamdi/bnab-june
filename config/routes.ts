@@ -17,6 +17,7 @@ const AIRPORT_PICK_UP_DROP_OFF_BOOKING_URL: string = '/airport-pick-up-drop-off/
 const ACCOMMODATION_URL: string = '/accommodation'
 const TRAINING_URL: string = '/training'
 const DEDICATED_RIDES_URL: string = '/dedicated-rides'
+const CHECKOUT_URL: string = '/checkout'
 
 // Back Office
 
@@ -33,6 +34,7 @@ export {
   ACCOMMODATION_URL,
   TRAINING_URL,
   DEDICATED_RIDES_URL,
+  CHECKOUT_URL,
   // Back Office
 
   // DASHBOARD_URL constants
