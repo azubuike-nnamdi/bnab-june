@@ -1,17 +1,20 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { tabs } from "@/lib/data/tabs-data";
-import { DedicatedRideBookingProps } from "@/types/declaration";
+import { DedicatedRideBookingProps, TransactionType } from "@/types/declaration";
 import React, { useState } from "react";
 import PassengerDetails from "./passengerDetails";
 import BookingSidebar from "./bookingSidebar";
 import BookingSummary from "./bookingSummary";
 import { format } from "date-fns";
 import clsx from "clsx";
+import PaymentMethod from "@/components/common/payment-method";
 
 export default function DedicatedRideBookingTab({ car }: any) {
 
-  const [activeTab, setActiveTab] = useState<string>("billing");
+  const [activeTab, setActiveTab] = useState<string>("passenger");
+  const [paymentMethod, setPaymentMethod] = useState<string>('');
+  const [transactionType, setTransactionType] = useState<TransactionType>('booking');
   const [formData, setFormData] = useState<DedicatedRideBookingProps>({
     firstName: "",
     lastName: "",
@@ -31,12 +34,17 @@ export default function DedicatedRideBookingTab({ car }: any) {
     setActiveTab(value);
   };
 
+  const handlePaymentSelect = (method: string) => {
+    setPaymentMethod(method);
+  };
+
   const handleFormSubmit = (data: DedicatedRideBookingProps) => {
+    setTransactionType('booking');
     setFormData(data);
   };
   return (
     <div className="container mx-auto my-8">
-      <Tabs defaultValue="billing" value={activeTab} onValueChange={handleTabClick} className="w-full bg-white">
+      <Tabs defaultValue="passenger" value={activeTab} onValueChange={handleTabClick} className="w-full bg-white">
         <TabsList className="flex justify-center space-x-4 bg-white">
           {tabs.map((elm) => (
             <TabsTrigger key={elm.id} value={elm.value} className={clsx(
@@ -50,7 +58,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
             </TabsTrigger>
           ))}
         </TabsList>
-        <TabsContent value="billing" className="mt-4">
+        <TabsContent value="passenger" className="mt-4">
           <div className="flex flex-col md:flex-row">
             <div className="md:w-2/3 p-4">
               <PassengerDetails
@@ -67,7 +75,24 @@ export default function DedicatedRideBookingTab({ car }: any) {
         <TabsContent value="summary" className="mt-4">
           <div className="flex flex-col md:flex-row">
             <div className="md:w-2/3 p-4">
-              <BookingSummary formData={formData} />
+              <BookingSummary
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                formData={formData} />
+            </div>
+            <div className="md:w-1/3 p-4">
+              <BookingSidebar car={car} />
+            </div>
+          </div>
+        </TabsContent>
+        <TabsContent value="billing" className="mt-4">
+          <div className="flex flex-col md:flex-row">
+            <div className="md:w-2/3 p-4">
+              <PaymentMethod
+                paymentMethod={paymentMethod}
+                onPaymentSelect={handlePaymentSelect}
+                transactionType={transactionType}
+                formData={formData} />
             </div>
             <div className="md:w-1/3 p-4">
               <BookingSidebar car={car} />
