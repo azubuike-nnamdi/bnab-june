@@ -31,7 +31,11 @@ export type PageProps = {
     id: string;
   };
 }
-
+export type CheckoutPageProps = {
+  params: {
+    id: TransactionType;
+  };
+}
 export type ParamProps = {
   params: {
     id: number
