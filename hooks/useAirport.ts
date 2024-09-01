@@ -10,7 +10,7 @@ const useAirport = () => {
   };
 
   const { isPending, error, data } = useQuery({
-    queryKey: ["airport"],
+    queryKey: ["airportBooking"],
     queryFn: fetchAirportBooking,
     staleTime: 300000,
   });
