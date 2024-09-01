@@ -213,12 +213,33 @@ export type Contact = {
 
 export interface PaymentMethodProps {
   onPaymentSelect: (method: string) => void;
-  formData: TicketBookingFormDataProps;
+  formData: TicketBookingFormDataProps | DedicatedRideBookingProps;
   paymentMethod: string;
+  transactionType: TransactionType;
 }
 
 export type PaymentMethodOption = {
   id: number;
   method: string;
   icon: React.ReactNode;
+};
+
+
+// Union type that includes all booking data types
+export type CheckoutData = AirportBookingData | AccommodationBookingType;
+
+export type CheckoutContextType = {
+  checkout: CheckoutData | null;
+  setCheckout: (data: CheckoutData) => void;
+};
+
+// Define the transaction types and their corresponding hooks and data types
+export type TransactionType = "airportBooking" | "accommodation" | "booking" | "ticket";
+
+// This utility type maps transaction types to their corresponding data types
+export type TransactionDataMap = {
+  airportBooking: AirportBookingData;
+  accommodation: AccommodationBookingType;
+  booking: DedicatedRideBookingProps
+  ticket: TicketBookingFormDataProps
 };
