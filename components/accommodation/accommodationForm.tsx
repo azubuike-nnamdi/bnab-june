@@ -11,6 +11,9 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Fade } from "react-awesome-reveal";
 import { useAccommodationBooking } from "@/hooks/mutations/useAccommodationBooking";
+import { useRouter } from "next/navigation";
+import { CHECKOUT_URL } from "@/config/routes";
+import { useCheckoutContext } from "@/context/checkoutContext";
 
 
 const BookingSchema = z.object({
@@ -27,7 +30,10 @@ type BookingFormInputs = z.infer<typeof BookingSchema>;
 
 export default function AccommodationBookingForm() {
 
-  const { isPending, handleSubmitAccommodation } = useAccommodationBooking();
+  const router = useRouter();
+  const { setCheckout } = useCheckoutContext();
+
+
 
   const form = useForm<BookingFormInputs>({
     resolver: zodResolver(BookingSchema),
@@ -43,7 +49,9 @@ export default function AccommodationBookingForm() {
   });
 
   const onSubmit = (data: BookingFormInputs) => {
-    handleSubmitAccommodation(data)
+    const transactionType = 'accommodation';
+    router.push(`${CHECKOUT_URL}/${transactionType}`);
+    setCheckout(data)
   };
   return (
     <Fade direction="up" triggerOnce cascade>
@@ -149,10 +157,7 @@ export default function AccommodationBookingForm() {
               )}
             />
             <Button
-              loading={isPending}
-              loadingText="Booking..."
               type="submit"
-              disabled={isPending}
               className="w-full disabled:cursor-not-allowed">
               Book Now
             </Button>
