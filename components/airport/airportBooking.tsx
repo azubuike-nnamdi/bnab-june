@@ -1,6 +1,6 @@
 'use client';
 
-import { AirportBookingData } from '@/types/declaration';
+import { AirportBookingData, TransactionType } from '@/types/declaration';
 import { format, isValid, parseISO } from 'date-fns';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
@@ -22,6 +22,7 @@ export default function AirportBooking() {
   });
   const router = useRouter();
   const { setCheckout } = useCheckoutContext();
+  const [transactionType, setTransactionType] = useState<TransactionType>('airportBooking');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
@@ -42,7 +43,7 @@ export default function AirportBooking() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const transactionType = 'airportBooking';
+    setTransactionType('airportBooking');
     router.push(`${CHECKOUT_URL}/${transactionType}`);
     setCheckout(formData)
   };

@@ -14,6 +14,8 @@ import { useAccommodationBooking } from "@/hooks/mutations/useAccommodationBooki
 import { useRouter } from "next/navigation";
 import { CHECKOUT_URL } from "@/config/routes";
 import { useCheckoutContext } from "@/context/checkoutContext";
+import { TransactionType } from "@/types/declaration";
+import { useState } from "react";
 
 
 const BookingSchema = z.object({
@@ -32,6 +34,7 @@ export default function AccommodationBookingForm() {
 
   const router = useRouter();
   const { setCheckout } = useCheckoutContext();
+  const [transactionType, setTransactionType] = useState<TransactionType>('accommodation');
 
 
 
@@ -49,7 +52,7 @@ export default function AccommodationBookingForm() {
   });
 
   const onSubmit = (data: BookingFormInputs) => {
-    const transactionType = 'accommodation';
+    setTransactionType("accommodation");
     router.push(`${CHECKOUT_URL}/${transactionType}`);
     setCheckout(data)
   };
