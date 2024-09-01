@@ -1,11 +1,12 @@
 'use client';
 
-
-import { useAirportBooking } from '@/hooks/mutations/useAirportBooking';
 import { AirportBookingData } from '@/types/declaration';
 import { format, isValid, parseISO } from 'date-fns';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
+import { useRouter } from 'next/navigation';
+import { useCheckoutContext } from '@/context/checkoutContext';
+import { CHECKOUT_URL } from '@/config/routes';
 export default function AirportBooking() {
 
   const [formData, setFormData] = useState<AirportBookingData>({
@@ -19,8 +20,8 @@ export default function AirportBooking() {
     numberOfPassengers: '',
     additionalNote: '',
   });
-
-  const { handleSubmitAirportBooking, isPending } = useAirportBooking();
+  const router = useRouter();
+  const { setCheckout } = useCheckoutContext();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
@@ -41,7 +42,9 @@ export default function AirportBooking() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleSubmitAirportBooking(formData);
+    const transactionType = 'airportBooking';
+    router.push(`${CHECKOUT_URL}/${transactionType}`);
+    setCheckout(formData)
   };
   return (
     <div className='sm:p-24 p-4'>
@@ -178,10 +181,9 @@ export default function AirportBooking() {
         <div className="mt-4">
           <Button
             type="submit"
-            disabled={isPending}
             className="w-full py-2 px-4  text-white rounded-md flex items-center justify-center disabled:cursor-not-allowed"
           >
-            {isPending ? 'Loading...' : 'Book Now'}
+            Book Now
             <svg
               className="w-4 h-4 ml-2"
               fill="none"
