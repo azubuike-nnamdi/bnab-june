@@ -19,7 +19,7 @@ export const useAirportBooking = () => {
         toast.success(data?.message);
         router.push("/");
       }
-      queryClient.invalidateQueries({ queryKey: ["airport"] });
+      queryClient.invalidateQueries({ queryKey: ["airportBooking"] });
     },
     onError: (error: { response: { data: { message: string } } }) => {
       const errorMsg = error.response.data.message
