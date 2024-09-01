@@ -5,15 +5,17 @@ import { DedicatedRideBookingProps } from "@/types/declaration";
 import { Button } from "@/components/ui/button";
 
 interface SummaryProps {
+  activeTab: string
+  setActiveTab: (index: string) => void;
   formData: DedicatedRideBookingProps;
 }
 
-const BookingSummary: React.FC<SummaryProps> = ({ formData }) => {
-  const { handleSubmitBooking, isPending } = useSubmitBooking();
+const BookingSummary: React.FC<SummaryProps> = ({ activeTab, setActiveTab, formData }) => {
+
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    handleSubmitBooking(formData);
+    setActiveTab("billing")
   };
 
   return (
@@ -194,10 +196,9 @@ const BookingSummary: React.FC<SummaryProps> = ({ formData }) => {
           <div className="mt-4">
             <Button
               type="submit"
-              disabled={isPending}
               className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              {isPending ? "Loading..." : "Book Now & Pay Later"}
+              Book Now
             </Button>
           </div>
         </form>
