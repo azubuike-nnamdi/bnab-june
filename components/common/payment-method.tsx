@@ -24,13 +24,13 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData
     onPaymentSelect(method);
   };
 
-  const handlePayment = async () => {
+  const handlePayment = () => {
     if (!selectedMethod) {
       return toast.error("Please select a payment method");
     }
 
     if (selectedMethod === 'Buy Now, Pay Later') {
-      await handleSubmitTicket(formData);
+      handleSubmitTicket(formData);
       return;
     }
 
