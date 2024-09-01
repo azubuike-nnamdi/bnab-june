@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { PaymentMethodProps } from '@/types/declaration';
 import { toast } from 'sonner';
 import { useSubmitTicket } from '@/hooks/mutations/useSubmitTicket';
+import { useSubmitTransaction } from '@/hooks/mutations/useSubmitTransaction';
 
 const paymentMethods = [
   { id: 1, method: 'Credit Card', icon: <CreditCard /> },
@@ -14,10 +15,12 @@ const paymentMethods = [
   { id: 3, method: 'Buy Now, Pay Later', icon: <CreditCard /> },
 ];
 
-const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData, paymentMethod }) => {
+const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData, paymentMethod, transactionType }) => {
   const [selectedMethod, setSelectedMethod] = useState<string>('');
 
-  const { handleSubmitTicket, isPending } = useSubmitTicket();
+
+  const { handleSubmitTransaction, isPending } = useSubmitTransaction(transactionType);
+
 
   const handleMethodSelect = (method: string) => {
     setSelectedMethod(method);
@@ -30,7 +33,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData
     }
 
     if (selectedMethod === 'Buy Now, Pay Later') {
-      handleSubmitTicket(formData);
+      handleSubmitTransaction(formData);
       return;
     }
 
@@ -40,7 +43,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData
   return (
     <div className="payment-method">
       <h2 className="text-2xl font-bold mb-4">Select Payment Method</h2>
-      <div className="flex">
+      <div className="flex sm:space-x-4">
         {paymentMethods.map(({ id, method, icon }) => (
           <label key={id} className="flex items-center space-x-2 cursor-pointer">
             <input
