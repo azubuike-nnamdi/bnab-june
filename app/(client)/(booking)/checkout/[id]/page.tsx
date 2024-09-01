@@ -3,11 +3,11 @@
 import ReusablePaymentMethod from "@/components/common/reusablePaymentMethod";
 import { useCheckoutContext } from "@/context/checkoutContext"
 import { useSubmitTransaction } from "@/hooks/mutations/useSubmitTransaction";
-import { PageProps } from "@/types/declaration";
+import { CheckoutPageProps } from "@/types/declaration";
 import { CreditCard } from "lucide-react";
 import { toast } from "sonner";
 
-export default function Page({ params }: PageProps) {
+export default function Page({ params }: CheckoutPageProps) {
 
   const transactionType = params.id
   const { checkout } = useCheckoutContext();
@@ -20,7 +20,9 @@ export default function Page({ params }: PageProps) {
   const formData = checkout;
   const handleSubmitPayment = async (selectedMethod: string) => {
     if (selectedMethod === 'Buy Now, Pay Later') {
-      handleSubmitTransaction(formData);
+      if (formData) {
+        handleSubmitTransaction(formData);
+      }
     }
 
     toast.warning('Feature not available at the moment');
