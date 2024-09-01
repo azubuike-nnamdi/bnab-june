@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Checkout from './checkout';
-import { TicketBookingFormDataProps, TicketEvent } from '@/types/declaration';
+import { TicketBookingFormDataProps, TicketEvent, TransactionType } from '@/types/declaration';
 import TicketSummary from './ticketSummary';
 import { CreditCard, Truck } from 'lucide-react';
 import PaymentMethod from '../common/payment-method';
@@ -36,6 +36,8 @@ const tabs = [
 const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
 
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const [transactionType, setTransactionType] = useState<TransactionType>('ticket');
+
   const [formData, setFormData] = useState<TicketBookingFormDataProps>({
     firstName: '',
     lastName: '',
@@ -48,7 +50,6 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
 
   const handleTabClick = (index: number) => {
     setActiveTabIndex(index);
-    console.log(index)
   };
 
   const handlePaymentSelect = (method: string) => {
@@ -57,6 +58,7 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
 
   const handleFormSubmit = (data: Omit<TicketBookingFormDataProps, 'event'>) => {
     setFormData({ ...data, event });
+    setTransactionType('ticket')
     setActiveTabIndex(1);
   };
 
@@ -92,10 +94,12 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
               activeTabIndex={activeTabIndex}
               setActiveTabIndex={setActiveTabIndex}
               formData={formData} />}
-            {activeTabIndex === 2 && <PaymentMethod
-              paymentMethod={paymentMethod}
-              onPaymentSelect={handlePaymentSelect}
-              formData={formData} />}
+            {activeTabIndex === 2 &&
+              <PaymentMethod
+                paymentMethod={paymentMethod}
+                transactionType={transactionType}
+                onPaymentSelect={handlePaymentSelect}
+                formData={formData} />}
           </div>
           <div className="w-full md:w-1/3 p-4">
             <div className="box-tab-right">
