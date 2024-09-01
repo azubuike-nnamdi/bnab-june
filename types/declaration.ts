@@ -216,3 +216,9 @@ export interface PaymentMethodProps {
   formData: TicketBookingFormDataProps;
   paymentMethod: string;
 }
+
+export type PaymentMethodOption = {
+  id: number;
+  method: string;
+  icon: React.ReactNode;
+};
