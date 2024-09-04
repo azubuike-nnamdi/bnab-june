@@ -52,7 +52,7 @@ export type EventCardProps = {
   city: string;
   date: string;
   time: string;
-  price: string;
+  price?: number;
   phoneNo: string;
 }
 
@@ -63,12 +63,13 @@ export type BookingTicket = {
 export type CheckoutProps = {
   activeTabIndex: number;
   setActiveTabIndex: (index: number) => void;
+  onFormDataChange: (updatedData: Partial<TicketBookingFormDataProps>) => void;
   onFormSubmit: (formData: TicketBookingFormDataProps) => void;
 }
 
 export type TicketEvent = {
   id: string;
-  price: string;
+  price?: number;
   title: string;
   desc: string;
   venue: string;
@@ -85,6 +86,11 @@ export type TicketBookingFormDataProps = {
   email: string;
   event?: TicketEvent
   transID?: string;
+  ticketType?: string;
+  price?: number
+  isBookingForSelf: boolean;
+  personName: string;
+  personPhoneNumber: string
 }
 
 export type AirportBookingData = {
