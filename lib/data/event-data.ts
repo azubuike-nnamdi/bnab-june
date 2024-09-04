@@ -10,7 +10,7 @@ export const eventData = [
     city: 'city',
     date: '2022-10-01',
     time: '10:00:00',
-    price: 'GHC 500',
+    price: 500.00,
     phoneNo: '+233 24 111 1122'
   },
   {
@@ -22,7 +22,7 @@ export const eventData = [
     city: 'city',
     date: '2022-10-01',
     time: '10:00:00',
-    price: 'GHC 500',
+    price: 500.00,
     phoneNo: '+233 24 111 1122'
   },
   {
@@ -34,7 +34,7 @@ export const eventData = [
     city: 'city',
     date: '2022-10-01',
     time: '10:00:00',
-    price: 'GHC 500',
+    price: 500.00,
     phoneNo: '+233 24 111 1122'
   },
   {
@@ -46,7 +46,7 @@ export const eventData = [
     city: 'city',
     date: '2022-10-01',
     time: '10:00:00',
-    price: 'GHC 500',
+    price: 500.00,
     phoneNo: '+233 24 111 1122'
   },
   {
@@ -58,7 +58,7 @@ export const eventData = [
     city: 'city',
     date: '2022-10-01',
     time: '10:00:00',
-    price: 'GHC 500',
+    price: 500.00,
     phoneNo: '+233 24 111 1122'
   }
 ]
