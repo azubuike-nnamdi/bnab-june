@@ -52,6 +52,11 @@ export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit
     onFormSubmit(formData);
     setActiveTab("summary");
   };
+
+  // Check if all required fields are filled
+  const isFormValid = Object.values(formData).every((field) =>
+    typeof field === 'string' && field.trim() !== ''
+  );
   return (
     <main>
       <h3 className="text-2xl font-semibold mb-4">Passenger Details</h3>
@@ -229,7 +234,8 @@ export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit
         {/* Continue Button */}
         <Button
           type="submit"
-          className="w-full py-2 px-4  text-white font-medium text-lg rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 "
+          className="w-full py-2 px-4  text-white font-medium text-lg rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed"
+          disabled={!isFormValid}
         >
           Continue{" "}
 

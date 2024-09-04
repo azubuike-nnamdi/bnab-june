@@ -10,7 +10,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Fade } from "react-awesome-reveal";
-import { useAccommodationBooking } from "@/hooks/mutations/useAccommodationBooking";
 import { useRouter } from "next/navigation";
 import { CHECKOUT_URL } from "@/config/routes";
 import { useCheckoutContext } from "@/context/checkoutContext";
@@ -40,6 +39,7 @@ export default function AccommodationBookingForm() {
 
   const form = useForm<BookingFormInputs>({
     resolver: zodResolver(BookingSchema),
+    mode: "onChange", // Validate on each change
     defaultValues: {
       name: "",
       budget: "",
@@ -161,7 +161,8 @@ export default function AccommodationBookingForm() {
             />
             <Button
               type="submit"
-              className="w-full disabled:cursor-not-allowed">
+              className="w-full disabled:cursor-not-allowed"
+              disabled={!form.formState.isValid}>
               Book Now
             </Button>
           </form>

@@ -27,6 +27,11 @@ export default function Checkout({ activeTabIndex,
     onFormSubmit({ ...formData, transID });
     setActiveTabIndex(activeTabIndex + 1);
   };
+
+  // Check if all fields are filled
+  const isFormValid = Object.values(formData).every((field) =>
+    typeof field === 'string' && field.trim() !== ''
+  );
   return (
     <div className="container mx-auto my-5 animate-fadeInUp">
       <h3 className="mb-4 sm:text-3xl text-xl font-med">Personal Details</h3>
@@ -88,7 +93,8 @@ export default function Checkout({ activeTabIndex,
           </div>
         </div>
         <div className="mt-4">
-          <Button type="submit" className="w-full py-2 px-4  text-white rounded-md flex items-center justify-center">
+          <Button type="submit" className="w-full py-2 px-4  text-white rounded-md flex items-center justify-center disabled:cursor-not-allowed"
+            disabled={!isFormValid}>
             Continue
             <svg
               className="w-4 h-4 ml-2"

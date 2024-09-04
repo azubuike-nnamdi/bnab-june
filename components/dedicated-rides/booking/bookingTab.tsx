@@ -42,6 +42,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
     setTransactionType('booking');
     setFormData(data);
   };
+
   return (
     <div className="container mx-auto my-8">
       <Tabs defaultValue="passenger" value={activeTab} onValueChange={handleTabClick} className="w-full bg-white">

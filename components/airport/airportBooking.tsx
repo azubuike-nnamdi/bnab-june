@@ -47,6 +47,15 @@ export default function AirportBooking() {
     router.push(`${CHECKOUT_URL}/${transactionType}`);
     setCheckout(formData)
   };
+
+
+  // Check if all required fields are filled
+  const isFormValid = Object.values(formData).every((field) =>
+    typeof field === 'string' && field.trim() !== ''
+  );
+
+
+
   return (
     <div className='sm:p-24 p-4'>
       <h1 className='sm:text-2xl text-xl font-medium'>Easy Airport Pick Up To and From to Your Accommodation</h1>
@@ -183,6 +192,7 @@ export default function AirportBooking() {
           <Button
             type="submit"
             className="w-full py-2 px-4  text-white rounded-md flex items-center justify-center disabled:cursor-not-allowed"
+            disabled={!isFormValid}
           >
             Book Now
             <svg
