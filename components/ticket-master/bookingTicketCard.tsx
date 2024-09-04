@@ -7,8 +7,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
+import { useState } from "react";
 
 export default function BookingTicketCard({ event }: Readonly<BookingTicket>) {
+
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -69,9 +71,22 @@ export default function BookingTicketCard({ event }: Readonly<BookingTicket>) {
             <div className="w-full lg:w-1/3 mb-8">
               <div className="p-4 shadow-lg rounded-lg bg-[#F0FBF7]">
                 <ul className="list-none">
-                  <li className="flex justify-between">
+
+                  {/* <li className="flex justify-between">
                     <span className="text-sm">Amount</span>
                     <span className="font-bold">{event.price}</span>
+                  </li> */}
+                  <li className="flex justify-between">
+                    <span className="text-sm font-semibold">Regular</span>
+                    <span className="text-sm">$500.00</span>
+                  </li>
+                  <li className="flex justify-between my-3">
+                    <span className="text-sm font-semibold">VIP</span>
+                    <span className="text-sm">$1,000.00</span>
+                  </li>
+                  <li className="flex justify-between">
+                    <span className="text-sm font-semibold">VVIP</span>
+                    <span className="text-sm">$1,500.00</span>
                   </li>
                 </ul>
                 <div className="mt-8 text-center">
