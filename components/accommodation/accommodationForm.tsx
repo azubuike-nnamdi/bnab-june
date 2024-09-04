@@ -1,9 +1,8 @@
-'use client';
-
+'use client'
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format, isValid, parseISO } from "date-fns";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
@@ -13,29 +12,39 @@ import { Fade } from "react-awesome-reveal";
 import { useRouter } from "next/navigation";
 import { CHECKOUT_URL } from "@/config/routes";
 import { useCheckoutContext } from "@/context/checkoutContext";
-import { TransactionType } from "@/types/declaration";
+import { AccommodationBookingType, TransactionType } from "@/types/declaration";
 import { useState } from "react";
-
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const BookingSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  budget: z.string().min(1, { message: "Budget is required" }),
   phoneNumber: z.string().min(1, { message: "Phone number is required" }),
+  personName: z.string().optional(),
+  personPhoneNumber: z.string().optional(),
+  budget: z.string().min(1, { message: "Budget is required" }),
   email: z.string().email({ message: "Invalid email address" }),
   dateOfArrival: z.string().refine(date => isValid(parseISO(date)), { message: "Invalid date" }),
   timeOfArrival: z.string().min(1, { message: "Time of arrival is required" }),
   additionalInfo: z.string().optional(),
+  isBookingSelf: z.boolean(),
+}).refine(data => {
+  if (data.isBookingSelf) {
+    return data.name && data.phoneNumber;
+  } else {
+    return data.name && data.phoneNumber && data.personName && data.personPhoneNumber;
+  }
+}, {
+  message: "Required fields are missing",
 });
+
+
 
 type BookingFormInputs = z.infer<typeof BookingSchema>;
 
 export default function AccommodationBookingForm() {
-
   const router = useRouter();
   const { setCheckout } = useCheckoutContext();
   const [transactionType, setTransactionType] = useState<TransactionType>('accommodation');
-
-
 
   const form = useForm<BookingFormInputs>({
     resolver: zodResolver(BookingSchema),
@@ -48,14 +57,59 @@ export default function AccommodationBookingForm() {
       dateOfArrival: format(new Date(), "yyyy-MM-dd"),
       timeOfArrival: format(new Date(), "HH:mm"),
       additionalInfo: "",
+      isBookingSelf: true,
+      personName: "",
+      personPhoneNumber: "",
     },
   });
 
   const onSubmit = (data: BookingFormInputs) => {
     setTransactionType("accommodation");
-    router.push(`${CHECKOUT_URL}/${transactionType}`);
-    setCheckout(data)
+
+    if (data.isBookingSelf) {
+      // Only include self-booking fields
+      const selfBookingPayload: Omit<AccommodationBookingType, 'personName' | 'personPhoneNumber'> = {
+        name: data.name,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        budget: data.budget,
+        dateOfArrival: data.dateOfArrival,
+        timeOfArrival: data.timeOfArrival,
+        additionalInfo: data.additionalInfo,
+        isBookingSelf: data.isBookingSelf,
+      };
+
+      router.push(`${CHECKOUT_URL}/${transactionType}`);
+      setCheckout(selfBookingPayload as AccommodationBookingType);
+    } else {
+      // Include all fields
+      const fullBookingPayload: AccommodationBookingType = {
+        name: data.name,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        budget: data.budget,
+        dateOfArrival: data.dateOfArrival,
+        timeOfArrival: data.timeOfArrival,
+        additionalInfo: data.additionalInfo,
+        isBookingSelf: data.isBookingSelf,
+        personName: data.personName!,
+        personPhoneNumber: data.personPhoneNumber!,
+      };
+
+      router.push(`${CHECKOUT_URL}/${transactionType}`);
+      setCheckout(fullBookingPayload);
+    }
   };
+
+
+
+  const budgetOptions = [
+    { id: 1, name: "Economy", price: "$80.00" },
+    { id: 2, name: "Standard", price: "$120.00" },
+    { id: 3, name: "Premium", price: "$200.00" },
+    { id: 4, name: "Luxury", price: "$300.00" },
+  ];
+
   return (
     <Fade direction="up" triggerOnce cascade>
       <div className="container sm:p-24 p-4 mx-auto my-5">
@@ -81,9 +135,32 @@ export default function AccommodationBookingForm() {
                 name="budget"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Budget $</FormLabel>
+                    <FormLabel>Budget</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="Enter your budget" {...field} />
+                      <Controller
+                        name="budget"
+                        control={form.control}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                          <Select
+                            onValueChange={(value) => {
+                              // Update form value with the selected price
+                              onChange(value);
+                            }}
+                            defaultValue={value}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select your budget" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {budgetOptions.map((option) => (
+                                <SelectItem key={option.id} value={option.price}>
+                                  {option.name} ({option.price})
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -148,6 +225,72 @@ export default function AccommodationBookingForm() {
             </div>
             <FormField
               control={form.control}
+              name="isBookingSelf"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-md">Is this booking for you?</FormLabel>
+                  <FormControl>
+                    <div className="flex space-x-4">
+                      <div className="flex items-center space-x-2">
+                        <Input
+                          type="radio"
+                          value="true"
+                          checked={field.value}
+                          onChange={() => field.onChange(true)}
+                        />
+                        <label>
+                          Yes
+                        </label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Input
+                          type="radio"
+                          value="false"
+                          checked={!field.value}
+                          onChange={() => field.onChange(false)}
+                        />
+                        <label>
+                          No
+                        </label>
+                      </div>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {!form.watch('isBookingSelf') && (
+              <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
+                <FormField
+                  control={form.control}
+                  name="personName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Person Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter your name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="personPhoneNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Person Phone Number</FormLabel>
+                      <FormControl>
+                        <Input type="tel" placeholder="Enter phone number" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+            <FormField
+              control={form.control}
               name="additionalInfo"
               render={({ field }) => (
                 <FormItem>
@@ -169,5 +312,5 @@ export default function AccommodationBookingForm() {
         </Form>
       </div>
     </Fade>
-  )
+  );
 }

@@ -116,6 +116,9 @@ export type AccommodationBookingType = {
   dateOfArrival: string;
   timeOfArrival: string;
   additionalInfo?: string;
+  isBookingSelf: boolean;
+  personName: string;
+  personPhoneNumber: string;
 }
 
 export type Car = {
