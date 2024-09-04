@@ -6,8 +6,6 @@ import TicketSummary from './ticketSummary';
 import { CreditCard, Truck } from 'lucide-react';
 import PaymentMethod from '../common/payment-method';
 
-
-
 interface TicketBookingTabProps {
   event: TicketEvent;
 }
@@ -44,6 +42,11 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
     phoneNumber: '',
     email: '',
     event: event,
+    ticketType: 'Regular',
+    price: event.price,
+    isBookingForSelf: true,
+    personName: '',
+    personPhoneNumber: '',
   });
 
   const [paymentMethod, setPaymentMethod] = useState<string>('');
@@ -62,6 +65,10 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
     setActiveTabIndex(1);
   };
 
+  const handleFormDataChange = (updatedData: Partial<TicketBookingFormDataProps>) => {
+    setFormData(prevData => ({ ...prevData, ...updatedData }));
+  };
+
   return (
     <div className="container mx-auto">
       <div className="flex flex-col sm:flex-row mx-auto justify-center sm:space-x-4 border">
@@ -74,7 +81,6 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
               <div className="flex items-center justify-center space-x-2">
                 <span>{elm.text}{" "}</span>
               </div>
-              <div className="text-center mt-2"></div>
             </button>
           </div>
         ))}
@@ -88,18 +94,24 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
                 activeTabIndex={activeTabIndex}
                 setActiveTabIndex={setActiveTabIndex}
                 onFormSubmit={handleFormSubmit}
+                onFormDataChange={handleFormDataChange} // Pass the update function
               />
             )}
-            {activeTabIndex === 1 && <TicketSummary
-              activeTabIndex={activeTabIndex}
-              setActiveTabIndex={setActiveTabIndex}
-              formData={formData} />}
-            {activeTabIndex === 2 &&
+            {activeTabIndex === 1 && (
+              <TicketSummary
+                activeTabIndex={activeTabIndex}
+                setActiveTabIndex={setActiveTabIndex}
+                formData={formData}
+              />
+            )}
+            {activeTabIndex === 2 && (
               <PaymentMethod
                 paymentMethod={paymentMethod}
                 transactionType={transactionType}
                 onPaymentSelect={handlePaymentSelect}
-                formData={formData} />}
+                formData={formData}
+              />
+            )}
           </div>
           <div className="w-full md:w-1/3 p-4">
             <div className="box-tab-right">
@@ -111,14 +123,14 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
               <div className="sidebar bg-gray-100 p-4 mt-4 rounded-md animate-fadeInUp">
                 <ul className="list-none space-y-2">
                   <li>
-                    <span className="price text-xl font-medium">{event?.price}</span>
+                    <span className="price text-xl font-medium">{`$${formData.price}`}</span>
                   </li>
                 </ul>
                 <div className="border-b my-4"></div>
                 <ul className="list-none space-y-2">
                   <li className="flex justify-between text-xl font-medium">
                     <span>Total</span>
-                    <span>{event?.price}</span>
+                    <span>{`$${formData.price}`}</span>
                   </li>
                 </ul>
               </div>
@@ -128,6 +140,7 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
       </div>
     </div>
   );
+
 };
 
 export default TicketBookingTab;
