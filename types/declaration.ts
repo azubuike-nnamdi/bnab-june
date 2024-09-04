@@ -103,7 +103,9 @@ export type AirportBookingData = {
   email: string;
   numberOfPassengers: string;
   additionalNote: string;
-
+  isBookingForSelf: boolean;
+  personName: string | undefined;
+  personPhoneNumber: string | undefined
 }
 
 export type AccommodationBookingType = {
