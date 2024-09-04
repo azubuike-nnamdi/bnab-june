@@ -59,7 +59,7 @@ export default function EventCard() {
 
                   <div className="flex gap-2">
                     <CircleDollarSign />
-                    <p> {event.price} </p>
+                    <p> From {event.price} </p>
                   </div>
                 </div>
 
