@@ -20,6 +20,7 @@ export default function Page({ params }: Readonly<CheckoutPageProps>) {
   const formData = checkout;
   const handleSubmitPayment = async (selectedMethod: string) => {
     if (selectedMethod === 'Buy Now, Pay Later') {
+      toast.warning('Kindly note that, payment validates booking. Booking expires in 4 hours')
       if (formData) {
         handleSubmitTransaction(formData);
       }
