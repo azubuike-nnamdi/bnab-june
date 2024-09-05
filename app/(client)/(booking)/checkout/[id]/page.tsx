@@ -7,7 +7,7 @@ import { CheckoutPageProps } from "@/types/declaration";
 import { CreditCard } from "lucide-react";
 import { toast } from "sonner";
 
-export default function Page({ params }: CheckoutPageProps) {
+export default function Page({ params }: Readonly<CheckoutPageProps>) {
 
   const transactionType = params.id
   const { checkout } = useCheckoutContext();
@@ -23,9 +23,9 @@ export default function Page({ params }: CheckoutPageProps) {
       if (formData) {
         handleSubmitTransaction(formData);
       }
+    } else {
+      toast.warning('Feature not available at the moment');
     }
-
-    toast.warning('Feature not available at the moment');
 
   };
   return (
