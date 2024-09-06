@@ -15,6 +15,8 @@ export default function AirportBooking() {
     dropOffLocation: '',
     phoneNumber: '',
     email: '',
+    airlineName: '',
+    timeOfArrival: format(new Date(), 'yyyy-MM-dd'),
     pickUpDate: format(new Date(), 'yyyy-MM-dd'),
     pickUpTime: format(new Date(), 'HH:mm'),
     numberOfPassengers: '',
@@ -63,6 +65,8 @@ export default function AirportBooking() {
       dropOffLocation,
       phoneNumber,
       email,
+      airlineName,
+      timeOfArrival,
       pickUpDate,
       pickUpTime,
       numberOfPassengers,
@@ -81,6 +85,8 @@ export default function AirportBooking() {
       dropOffLocation,
       phoneNumber,
       email,
+      airlineName,
+      timeOfArrival,
       pickUpDate,
       pickUpTime,
       numberOfPassengers,
@@ -109,6 +115,8 @@ export default function AirportBooking() {
       formData.dropOffLocation,
       formData.phoneNumber,
       formData.email,
+      formData.airlineName,
+      formData.timeOfArrival,
       formData.pickUpDate,
       formData.pickUpTime,
       formData.numberOfPassengers,
@@ -189,6 +197,29 @@ export default function AirportBooking() {
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
+            <label htmlFor="airlineName" className="block mb-2">Airline Name</label>
+            <input
+              type="text"
+              id="airlineName"
+              placeholder="Enter Airline Name"
+              value={formData.airlineName}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div>
+            <label htmlFor="timeOfArrival" className="block mb-2">Time of Arrival</label>
+            <input
+              type="time"
+              id="timeOfArrival"
+              value={formData.timeOfArrival}
+              onChange={(e) => handleTimeChange(e, 'timeOfArrival')}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
             <label htmlFor="pickUpDate" className="block mb-2">Pick Up Date</label>
             <input
               type="date"
@@ -209,6 +240,7 @@ export default function AirportBooking() {
             />
           </div>
         </div>
+
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="phoneNumber" className="block mb-2">Phone Number</label>

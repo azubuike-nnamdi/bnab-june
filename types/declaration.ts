@@ -107,6 +107,8 @@ export type AirportBookingData = {
   pickUpTime: string;
   phoneNumber: string;
   email: string;
+  airlineName: string;
+  timeOfArrival: string;
   numberOfPassengers: string;
   additionalNote: string;
   isBookingForSelf: boolean;
