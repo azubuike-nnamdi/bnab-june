@@ -21,7 +21,7 @@ export default function PickUpVehicles() {
     setSelectedCars(items);
   }, [selectedCarTypes, selectedBrand]);
 
-  console.log(selectedCars)
+
   return (
     <main className="pt-12">
       <section className="md:p-8 lg:p-24 p-4 bg-white">
@@ -75,6 +75,7 @@ export default function PickUpVehicles() {
                       alt={elm.title}
                     />
                     <div className="flex items-center">
+                      <p className="font-bold mr-2">From</p>
                       <p>{elm?.amt}</p>
                       <p>{elm?.duration}</p>
                     </div>
