@@ -3,11 +3,12 @@ import { options } from "../../auth/[...nextauth]/options";
 import clientPromise from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { genId } from "@/lib/helper";
+import { TicketBookingFormDataProps } from "@/types/declaration";
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(options)
+  const session = await getServerSession(options);
 
-  //check user session
+  // Check user session
   // if (!session) {
   //   return new Response(JSON.stringify({ message: "Session not active" }), {
   //     status: 401,
@@ -22,45 +23,60 @@ export async function POST(req: NextRequest) {
       lastName,
       email,
       phoneNumber,
-      event
+      event,
+      isBookingForSelf,
+      forBookingFirstName,
+      forBookingLastName,
+      forBookingEmail,
+      forBookingPhoneNumber
     } = data;
 
-    //validate the fields
+    // Validate the fields
     const requiredFields = [
       "firstName",
       "lastName",
       "email",
       "phoneNumber",
-      "event"
+      "event",
+      "isBookingForSelf",
     ];
+
     for (const field of requiredFields) {
-      if (!data[field]) {
+      if (data[field] === undefined || data[field] === null || data[field] === '') {
         return new Response(JSON.stringify({ message: `${field} is required` }), {
           status: 400,
         });
       }
     }
 
+    // Additional validation for non-self bookings
+    if (!isBookingForSelf) {
+      const additionalFields = [
+        "forBookingFirstName",
+        "forBookingLastName",
+        "forBookingEmail",
+        "forBookingPhoneNumber",
+      ];
+
+      for (const field of additionalFields) {
+        if (data[field] === undefined || data[field] === null || data[field] === '') {
+          return new Response(JSON.stringify({ message: `${field} is required when booking for someone else` }), {
+            status: 400,
+          });
+        }
+      }
+    }
+
     // Generate unique ID for the booking
     const bookingId = genId();
 
-    //connect to db
+    // Connect to the database
     const client = await clientPromise;
     const db = client.db();
     const ticketBooking = db.collection("ticket-booking");
 
-    //check if the user already exists
-    // const existingTicket = await ticketBooking.findOne({ email });
-    // if (existingTicket) {
-    //   return new Response(JSON.stringify({ message: "Ticket already exists" }), {
-    //     status: 409,
-    //   });
-    // }
-
-
-
-    //create a new ticket object
-    const ticket = {
+    // Create a new ticket object
+    const ticket: TicketBookingFormDataProps = {
       id: bookingId,
       firstName,
       lastName,
@@ -70,10 +86,18 @@ export async function POST(req: NextRequest) {
       paymentStatus: "not paid",
       createdAt: new Date(),
       updatedAt: new Date(),
-
+      isBookingForSelf,
     };
 
-    //insert the new user into the db
+    // Include additional fields if booking for someone else
+    if (!isBookingForSelf) {
+      ticket.forBookingFirstName = forBookingFirstName;
+      ticket.forBookingLastName = forBookingLastName;
+      ticket.forBookingEmail = forBookingEmail;
+      ticket.forBookingPhoneNumber = forBookingPhoneNumber;
+    }
+
+    // Insert the new booking into the database
     await ticketBooking.insertOne(ticket);
 
     return new Response(JSON.stringify({ message: "Ticket booking is successful" }), {
