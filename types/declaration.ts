@@ -148,6 +148,11 @@ export type DedicatedRideBookingProps = {
   dropOffTime?: string;
   numberOfPassengers?: string;
   additionalInfo?: string;
+  vehicleType?: string;
+  price?: number;
+  isBookingForSelf: boolean;
+  bookingForName: string;
+  bookingForPhone: string;
 };
 
 export type SendEmailOptions = {
