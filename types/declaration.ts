@@ -117,8 +117,8 @@ export type AccommodationBookingType = {
   timeOfArrival: string;
   additionalInfo?: string;
   isBookingSelf: boolean;
-  personName: string;
-  personPhoneNumber: string;
+  bookingForName: string;
+  bookingForPhone: string;
 }
 
 export type Car = {
@@ -151,8 +151,9 @@ export type DedicatedRideBookingProps = {
   vehicleType?: string;
   price?: number;
   isBookingForSelf: boolean;
-  bookingForName: string;
-  bookingForPhone: string;
+  bookingForName?: string;
+  bookingForPhone?: string;
+  paymentStatus?: string;
 };
 
 export type SendEmailOptions = {
