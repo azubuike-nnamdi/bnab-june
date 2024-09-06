@@ -19,12 +19,14 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     const {
-      name,
+      firstName,
+      lastName,
       budget,
       phoneNumber,
       email,
       dateOfArrival,
       timeOfArrival,
+      departureDate,
       additionalInfo,
       isBookingForSelf,
       bookingForName,
@@ -33,11 +35,13 @@ export async function POST(req: NextRequest) {
 
     // Check required fields
     const requiredFields = [
-      "name",
+      "firstName",
+      "lastName",
       "budget",
       "phoneNumber",
       "email",
       "dateOfArrival",
+      "departureDate",
       "timeOfArrival",
       "additionalInfo",
       "isBookingForSelf",
@@ -68,12 +72,14 @@ export async function POST(req: NextRequest) {
 
     // Create a new booking object
     const accommodationBooking: {
-      name: string;
+      firstName: string;
+      lastName: string;
       budget: number;
       phoneNumber: string;
       email: string;
       dateOfArrival: string;
       timeOfArrival: string;
+      departureDate: string;
       additionalInfo: string;
       paymentStatus: string;
       createdAt: Date;
@@ -82,12 +88,14 @@ export async function POST(req: NextRequest) {
       bookingForName?: string;
       bookingForPhone?: string;
     } = {
-      name,
+      firstName,
+      lastName,
       budget,
       phoneNumber,
       email,
       dateOfArrival,
       timeOfArrival,
+      departureDate,
       additionalInfo,
       paymentStatus: "not paid",
       createdAt: new Date(),
