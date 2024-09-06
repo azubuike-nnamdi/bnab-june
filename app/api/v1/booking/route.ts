@@ -5,17 +5,18 @@ import clientPromise from "@/lib/db";
 import { getEmailContent } from "@/lib/emailContent";
 import { sendEmail } from "@/lib/sendEmail";
 import { DedicatedRideBookingProps } from "@/types/declaration";
+import { formatDate, formatTime } from "@/lib/helper";
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(options);
 
   // Check user session
-  if (!session) {
-    console.log("No active session");
-    return new Response(JSON.stringify({ message: "Session not active" }), {
-      status: 401,
-    });
-  }
+  // if (!session) {
+  //   console.log("No active session");
+  //   return new Response(JSON.stringify({ message: "Session not active" }), {
+  //     status: 401,
+  //   });
+  // }
 
   try {
     // Parse booking data from the request body
@@ -35,8 +36,12 @@ export async function POST(req: NextRequest) {
       isBookingForSelf,
       numberOfPassengers,
       additionalInfo,
-      bookingForName,
-      bookingForPhone,
+      bookingForFirstName,
+      bookingForLastName,
+      bookingForEmail,
+      bookingForPhoneNumber,
+      vehicleType,
+      price,
     } = body;
 
     // Define a type guard function for checking required fields
@@ -54,9 +59,10 @@ export async function POST(req: NextRequest) {
       "dropOffLocation",
       "dropOffDate",
       "dropOffTime",
+      "vehicleType",
+      "price",
       "isBookingForSelf",
       "numberOfPassengers",
-      "additionalInfo",
     ];
 
     for (const field of requiredFields) {
@@ -69,7 +75,8 @@ export async function POST(req: NextRequest) {
 
     // Additional validation for bookingForName and bookingForPhone
     if (!isBookingForSelf) {
-      if (!isDefined(bookingForName) || !isDefined(bookingForPhone)) {
+      if (!isDefined(bookingForFirstName) || !isDefined(bookingForLastName) ||
+        !isDefined(bookingForEmail) || !isDefined(bookingForPhoneNumber)) {
         return new Response(
           JSON.stringify({ message: "Missing required fields for booking for someone else" }),
           { status: 401 }
@@ -77,25 +84,11 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Ensure date fields are valid and convert to string format if required
-    const formatDate = (date?: Date): string | undefined => date ? date.toISOString() : undefined;
-
-    const pickUpDateStr = pickUpDate ? formatDate(new Date(pickUpDate)) : undefined;
-    const pickUpTimeStr = pickUpTime ? formatDate(new Date(pickUpTime)) : undefined;
-    const dropOffDateStr = dropOffDate ? formatDate(new Date(dropOffDate)) : undefined;
-    const dropOffTimeStr = dropOffTime ? formatDate(new Date(dropOffTime)) : undefined;
-
-    if (!pickUpDateStr || !pickUpTimeStr || !dropOffDateStr || !dropOffTimeStr) {
-      return new Response(
-        JSON.stringify({ message: "Invalid date/time format" }),
-        { status: 400 }
-      );
-    }
-
     // Connect to the database
     const client = await clientPromise;
     const db = client.db();
     const bookings = db.collection("bookings");
+
 
     // Create a new booking object
     const newBooking: DedicatedRideBookingProps & { createdAt: string } = {
@@ -105,11 +98,13 @@ export async function POST(req: NextRequest) {
       email,
       isBookingForSelf,
       pickUpLocation,
-      pickUpDate: pickUpDateStr,
-      pickUpTime: pickUpTimeStr,
+      pickUpDate,
+      pickUpTime,
       dropOffLocation,
-      dropOffDate: dropOffDateStr,
-      dropOffTime: dropOffTimeStr,
+      dropOffDate,
+      dropOffTime,
+      vehicleType,
+      price,
       numberOfPassengers,
       paymentStatus: "not paid",
       additionalInfo,
@@ -118,8 +113,10 @@ export async function POST(req: NextRequest) {
 
     // Include bookingForName and bookingForPhone if not booking for self
     if (!isBookingForSelf) {
-      newBooking.bookingForName = bookingForName!;
-      newBooking.bookingForPhone = bookingForPhone!;
+      newBooking.bookingForFirstName = bookingForFirstName;
+      newBooking.bookingForLastName = bookingForLastName;
+      newBooking.bookingForEmail = bookingForEmail;
+      newBooking.bookingForPhoneNumber = bookingForPhoneNumber;
     }
 
     // Insert the new booking into the database
@@ -132,16 +129,20 @@ export async function POST(req: NextRequest) {
       phoneNumber,
       email,
       pickUpLocation,
-      pickUpDate: pickUpDateStr,
-      pickUpTime: pickUpTimeStr,
+      pickUpDate,
+      pickUpTime,
       dropOffLocation,
-      dropOffDate: dropOffDateStr,
-      dropOffTime: dropOffTimeStr,
+      dropOffDate,
+      dropOffTime,
       isBookingForSelf,
       numberOfPassengers,
       additionalInfo,
-      bookingForName,
-      bookingForPhone
+      bookingForFirstName,
+      bookingForLastName,
+      bookingForEmail,
+      bookingForPhoneNumber,
+      vehicleType,
+      price,
     });
 
     await sendEmail({ to: "blessedmarcel1@gmail.com", subject: "Booking Confirmation", text: userContent });
