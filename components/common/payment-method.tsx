@@ -70,7 +70,15 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData
         ))}
       </div>
 
-      {selectedMethod && (
+      {selectedMethod === "Buy Now, Pay Later" && (
+        <div className="mt-4 bg-yellow-100 p-4 border border-yellow-300 rounded-md">
+          <p className="text-sm">
+            Payment validates booking and booking expires in 4 hours.
+          </p>
+        </div>
+      )}
+
+      {(selectedMethod === 'Credit Card' || selectedMethod === 'Mobile Money') && (
         <div className="mt-4">
           <p className="text-sm">
             Clicking the <span className="font-bold">Pay</span> button will redirect you to our payment platform.
