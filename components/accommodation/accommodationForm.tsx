@@ -19,8 +19,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 const BookingSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   phoneNumber: z.string().min(1, { message: "Phone number is required" }),
-  personName: z.string().optional(),
-  personPhoneNumber: z.string().optional(),
+  bookingForName: z.string().optional(),
+  bookingForPhone: z.string().optional(),
   budget: z.string().min(1, { message: "Budget is required" }),
   email: z.string().email({ message: "Invalid email address" }),
   dateOfArrival: z.string().refine(date => isValid(parseISO(date)), { message: "Invalid date" }),
@@ -31,7 +31,7 @@ const BookingSchema = z.object({
   if (data.isBookingSelf) {
     return data.name && data.phoneNumber;
   } else {
-    return data.name && data.phoneNumber && data.personName && data.personPhoneNumber;
+    return data.name && data.phoneNumber && data.bookingForName && data.bookingForPhone;
   }
 }, {
   message: "Required fields are missing",
@@ -58,8 +58,8 @@ export default function AccommodationBookingForm() {
       timeOfArrival: format(new Date(), "HH:mm"),
       additionalInfo: "",
       isBookingSelf: true,
-      personName: "",
-      personPhoneNumber: "",
+      bookingForName: "",
+      bookingForPhone: "",
     },
   });
 
@@ -68,7 +68,7 @@ export default function AccommodationBookingForm() {
 
     if (data.isBookingSelf) {
       // Only include self-booking fields
-      const selfBookingPayload: Omit<AccommodationBookingType, 'personName' | 'personPhoneNumber'> = {
+      const selfBookingPayload: Omit<AccommodationBookingType, 'bookingForName' | 'bookingForPhone'> = {
         name: data.name,
         email: data.email,
         phoneNumber: data.phoneNumber,
@@ -92,8 +92,8 @@ export default function AccommodationBookingForm() {
         timeOfArrival: data.timeOfArrival,
         additionalInfo: data.additionalInfo,
         isBookingSelf: data.isBookingSelf,
-        personName: data.personName!,
-        personPhoneNumber: data.personPhoneNumber!,
+        bookingForName: data.bookingForName!,
+        bookingForPhone: data.bookingForPhone!,
       };
 
       router.push(`${CHECKOUT_URL}/${transactionType}`);
@@ -263,7 +263,7 @@ export default function AccommodationBookingForm() {
               <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
                 <FormField
                   control={form.control}
-                  name="personName"
+                  name="bookingForName"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Person Name</FormLabel>
@@ -276,7 +276,7 @@ export default function AccommodationBookingForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="personPhoneNumber"
+                  name="bookingForPhone"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Person Phone Number</FormLabel>
