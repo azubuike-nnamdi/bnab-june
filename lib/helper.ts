@@ -17,6 +17,25 @@ export const formatDateString = (dateString: string) => {
   return format(date, "MM/dd/yyyy");
 };
 
+
+// Function to combine the date and time strings into a valid ISO datetime string
+export const formatDateTime = (date: string, time: string): string | undefined => {
+  const dateTimeString = `${date}T${time}`;
+  const dateTime = new Date(dateTimeString);
+
+  // Check if the date is valid
+  if (isNaN(dateTime.getTime())) {
+    return undefined; // return undefined if the date is invalid
+  }
+
+  return dateTime.toISOString();
+};
+
+// Function to format a date string to "yyyy-MM-dd"
+export const formatDate = (date: Date): string => format(date, "yyyy-MM-dd");
+
+// Function to format a time string to "HH:mm"
+export const formatTime = (date: Date): string => format(date, "HH:mm");
 /**
  * Generates the specified length of characters as alphanumeric string transaction ID.
  * @param {TransactionIdParams['entropy']} [entropy] - Optional parameter to specify the entropy of the transaction ID. Must be 'alphabet' or 'alphanumeric' or 'numeric'. Defaults to 'alphanumeric' if not provided.
