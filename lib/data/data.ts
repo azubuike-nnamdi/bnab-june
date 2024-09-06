@@ -314,3 +314,26 @@ export const BackOfficeNavItem = [
   //   title: 'Settings'
   // },
 ];
+
+export const airlinesInAccra = [
+  { id: 1, name: "Delta Airlines" },
+  { id: 2, name: "BA" },
+  { id: 3, name: "Air France" },
+  { id: 4, name: "KLM" },
+  { id: 5, name: "Emirates Airlines" },
+  { id: 6, name: "United Airlines" },
+  { id: 7, name: "Kenya Airways" },
+  { id: 8, name: "Qatar Airways" },
+  { id: 9, name: "Brussels Airways" },
+  { id: 10, name: "Air Portugal" },
+  { id: 11, name: "Singapore Airlines" },
+  { id: 12, name: "Virgin Atlantic" },
+  { id: 13, name: "Ethiopia Airlines" },
+  { id: 14, name: "RAM" },
+  { id: 15, name: "Lufthansa" },
+  { id: 16, name: "Egypt Air" },
+  { id: 17, name: "Turkish Airlines" },
+  { id: 18, name: "South Africa Airways" },
+  { id: 19, name: "Air Maroc" },
+  { id: 20, name: "Asky Airways" }
+] as const;

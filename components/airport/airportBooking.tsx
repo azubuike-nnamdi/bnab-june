@@ -7,6 +7,7 @@ import { Button } from '../ui/button';
 import { useRouter } from 'next/navigation';
 import { useCheckoutContext } from '@/context/checkoutContext';
 import { CHECKOUT_URL } from '@/config/routes';
+import { airlinesInAccra } from '@/lib/data/data';
 
 export default function AirportBooking() {
   const [formData, setFormData] = useState<AirportBookingData>({
@@ -198,14 +199,19 @@ export default function AirportBooking() {
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="airlineName" className="block mb-2">Airline Name</label>
-            <input
-              type="text"
+            <select
               id="airlineName"
-              placeholder="Enter Airline Name"
               value={formData.airlineName}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-md"
-            />
+            >
+              <option value="">Select Airline</option>
+              {airlinesInAccra.map((airline) => (
+                <option key={airline.id} value={airline.name}>
+                  {airline.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label htmlFor="timeOfArrival" className="block mb-2">Time of Arrival</label>
