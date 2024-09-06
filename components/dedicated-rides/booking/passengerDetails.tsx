@@ -1,29 +1,31 @@
-"use client";
-
-
 import React, { useState } from "react";
 import { format, parseISO, isValid } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { DedicatedRideBookingProps } from "@/types/declaration";
 
 const vehiclePrice = {
-  Regular: 500,
-  Comfort: 1000,
-  VVIP: 1500,
+  Regular: "500.00",
+  Comfort: "1000.00",
+  VVIP: "1500.00",
 } as const;
 
+type CarType = keyof typeof vehiclePrice;
 
-
-// a union type that includes the possible values for vechicleType and use it to type the value:
-type CarType = keyof typeof vehiclePrice; // 'Regular' | 'Comfort' | 'VVIP'
 interface PassengerDetailsProps {
   activeTab: string;
   setActiveTab: (index: string) => void;
   onFormSubmit: (data: DedicatedRideBookingProps) => void;
   onFormDataChange: (updatedData: Partial<DedicatedRideBookingProps>) => void;
+  goToNextTab: () => void;
 }
 
-export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit, onFormDataChange }: Readonly<PassengerDetailsProps>) {
+export default function PassengerDetails({
+  activeTab,
+  setActiveTab,
+  onFormSubmit,
+  onFormDataChange,
+  goToNextTab, // Destructure goToNextTab from props
+}: Readonly<PassengerDetailsProps>) {
 
   const [formData, setFormData] = useState<DedicatedRideBookingProps>({
     firstName: "",
@@ -45,20 +47,18 @@ export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit
     bookingForPhone: "",
   });
 
-  // Handles changes for text inputs, select options, and text areas
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
 
-    // Check if vehicleType was changed
     if (id === "vehicleType") {
       const selectedPrice = vehiclePrice[value as CarType];
       const updatedData = { vehicleType: value, price: selectedPrice };
       setFormData((prevData) => ({ ...prevData, ...updatedData }));
-      onFormDataChange(updatedData); // Notify parent component
+      onFormDataChange(updatedData);
     } else {
       const updatedData = { [id]: value } as Partial<DedicatedRideBookingProps>;
       setFormData((prevData) => ({ ...prevData, ...updatedData }));
-      onFormDataChange(updatedData); // Notify parent component
+      onFormDataChange(updatedData);
     }
   };
 
@@ -82,13 +82,12 @@ export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit
       bookingForName: "",
       bookingForPhone: "",
     }));
-    onFormDataChange({ isBookingForSelf }); // Notify parent component
+    onFormDataChange({ isBookingForSelf });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Prepare the payload
     const payload: Partial<DedicatedRideBookingProps> = {
       firstName: formData.firstName,
       lastName: formData.lastName,
@@ -107,19 +106,15 @@ export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit
       additionalInfo: formData.additionalInfo,
     };
 
-    // Conditionally add bookingForName and bookingForPhone if booking is for someone else
     if (!formData.isBookingForSelf) {
       payload.bookingForName = formData.bookingForName;
       payload.bookingForPhone = formData.bookingForPhone;
     }
 
-    // Submit the payload
     onFormSubmit(payload as DedicatedRideBookingProps);
-    setActiveTab("summary");
+    goToNextTab(); // Call goToNextTab function to move to the next tab
   };
 
-
-  // Check if all required fields are filled
   const requiredFields = [
     "firstName",
     "lastName",
@@ -134,7 +129,6 @@ export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit
     "numberOfPassengers"
   ];
 
-  // If the booking is for someone else, these fields are also required:
   if (!formData.isBookingForSelf) {
     requiredFields.push("bookingForName", "bookingForPhone");
   }
@@ -410,5 +404,5 @@ export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit
         </Button>
       </form>
     </main>
-  )
+  );
 }

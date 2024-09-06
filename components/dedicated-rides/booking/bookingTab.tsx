@@ -35,10 +35,6 @@ export default function DedicatedRideBookingTab({ car }: any) {
     bookingForPhone: "",
   });
 
-  const handleTabClick = (value: string) => {
-    setActiveTab(value);
-  };
-
   const handlePaymentSelect = (method: string) => {
     setPaymentMethod(method);
   };
@@ -46,10 +42,28 @@ export default function DedicatedRideBookingTab({ car }: any) {
   const handleFormSubmit = (data: DedicatedRideBookingProps) => {
     setTransactionType('booking');
     setFormData(data);
+    setActiveTab('summary'); // Move to Booking Summary after form submission
   };
 
   const handleFormDataChange = (updatedData: Partial<DedicatedRideBookingProps>) => {
     setFormData(prevData => ({ ...prevData, ...updatedData }));
+  };
+
+  // Control tab changes via component functions
+  const goToNextTab = () => {
+    if (activeTab === 'passenger' && formData.firstName && formData.lastName && formData.email && formData.phoneNumber) {
+      setActiveTab('summary');
+    } else if (activeTab === 'summary') {
+      setActiveTab('billing');
+    }
+  };
+
+  const goToPreviousTab = () => {
+    if (activeTab === 'summary') {
+      setActiveTab('passenger');
+    } else if (activeTab === 'billing') {
+      setActiveTab('summary');
+    }
   };
 
   return (
@@ -57,7 +71,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
       <div className="flex flex-col md:flex-row">
         {/* Tabs and Main Content */}
         <div className="md:w-2/3 p-4">
-          <Tabs defaultValue="passenger" value={activeTab} onValueChange={handleTabClick} className="w-full bg-white">
+          <Tabs defaultValue="passenger" value={activeTab} onValueChange={() => { }} className="w-full bg-white">
             <TabsList className="flex justify-center space-x-4 bg-white">
               {tabs.map((elm) => (
                 <TabsTrigger key={elm.id} value={elm.value} className={clsx(
@@ -66,7 +80,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
                     "font-bold border-b-4 border-black": activeTab === elm.value,
                     "border-gray-400 text-gray-500": activeTab !== elm.value,
                   }
-                )}>
+                )} disabled>
                   {elm.text}
                 </TabsTrigger>
               ))}
@@ -79,6 +93,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
                 setActiveTab={setActiveTab}
                 onFormSubmit={handleFormSubmit}
                 onFormDataChange={handleFormDataChange}
+                goToNextTab={goToNextTab} // Function to handle moving to next tab
               />
             </TabsContent>
 
@@ -87,7 +102,10 @@ export default function DedicatedRideBookingTab({ car }: any) {
               <BookingSummary
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
-                formData={formData} />
+                formData={formData}
+                goToNextTab={goToNextTab} // Function to handle moving to next tab
+                goToPreviousTab={goToPreviousTab} // Function to handle moving to previous tab
+              />
             </TabsContent>
 
             {/* Payment Method Tab */}
@@ -96,7 +114,9 @@ export default function DedicatedRideBookingTab({ car }: any) {
                 paymentMethod={paymentMethod}
                 onPaymentSelect={handlePaymentSelect}
                 transactionType={transactionType}
-                formData={formData} />
+                formData={formData}
+                goToPreviousTab={goToPreviousTab} // Function to handle moving to previous tab
+              />
             </TabsContent>
           </Tabs>
         </div>

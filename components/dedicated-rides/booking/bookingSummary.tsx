@@ -8,15 +8,18 @@ interface SummaryProps {
   activeTab: string
   setActiveTab: (index: string) => void;
   formData: DedicatedRideBookingProps;
+  goToNextTab: () => void;
+  goToPreviousTab: () => void;
 }
 
-const BookingSummary: React.FC<SummaryProps> = ({ activeTab, setActiveTab, formData }) => {
+const BookingSummary: React.FC<SummaryProps> = ({ activeTab, setActiveTab, formData, goToNextTab, goToPreviousTab }) => {
 
   console.log(formData)
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     setActiveTab("billing")
+    goToNextTab();
   };
 
   return (
@@ -230,15 +233,31 @@ const BookingSummary: React.FC<SummaryProps> = ({ activeTab, setActiveTab, formD
               />
             </div>
           </div>
+          <Button
+            type="submit"
+            className="w-full py-2 px-4  text-white font-medium text-lg rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 "
+          >
+            Continue{" "}
 
-          <div className="mt-4">
+          </Button>
+
+          {/* <div className="mt-4 flex justify-between">
+            <Button
+              type="button"
+              onClick={goToPreviousTab}
+              variant={"outline"}
+              className="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700"
+            >
+              Back
+            </Button>
             <Button
               type="submit"
-              className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+
+
             >
               Book Now
             </Button>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

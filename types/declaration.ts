@@ -159,7 +159,7 @@ export type DedicatedRideBookingProps = {
   numberOfPassengers?: string;
   additionalInfo?: string;
   vehicleType?: string;
-  price?: number;
+  price?: string;
   isBookingForSelf: boolean;
   bookingForName?: string;
   bookingForPhone?: string;
@@ -247,6 +247,7 @@ export interface PaymentMethodProps {
   formData: TicketBookingFormDataProps | DedicatedRideBookingProps;
   paymentMethod: string;
   transactionType: TransactionType;
+  goToPreviousTab?: () => void;
 }
 
 export type PaymentMethodOption = {
