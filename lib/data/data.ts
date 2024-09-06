@@ -335,5 +335,7 @@ export const airlinesInAccra = [
   { id: 17, name: "Turkish Airlines" },
   { id: 18, name: "South Africa Airways" },
   { id: 19, name: "Air Maroc" },
-  { id: 20, name: "Asky Airways" }
+  { id: 20, name: "Asky Airways" },
+  { id: 21, name: "Air Peace " },
+  { id: 22, name: "Africa World Airlines" },
 ] as const;
