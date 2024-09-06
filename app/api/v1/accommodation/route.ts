@@ -4,9 +4,9 @@ import { options } from "../../auth/[...nextauth]/options";
 import clientPromise from "@/lib/db";
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(options)
+  const session = await getServerSession(options);
 
-  //cher user session
+  // Check user session
   // if (!session) {
   //   console.log("No active session");
   //   return new Response(JSON.stringify({ message: "Session not active" }), {
@@ -14,8 +14,8 @@ export async function POST(req: NextRequest) {
   //   });
   // }
 
-  // Handle POST request
   try {
+    // Parse booking data from the request body
     const body = await req.json();
 
     const {
@@ -25,10 +25,13 @@ export async function POST(req: NextRequest) {
       email,
       dateOfArrival,
       timeOfArrival,
-      additionalInfo
+      additionalInfo,
+      isBookingForSelf,
+      bookingForName,
+      bookingForPhone
     } = body;
 
-    //check required fields
+    // Check required fields
     const requiredFields = [
       "name",
       "budget",
@@ -37,7 +40,9 @@ export async function POST(req: NextRequest) {
       "dateOfArrival",
       "timeOfArrival",
       "additionalInfo",
+      "isBookingForSelf",
     ];
+
     for (const field of requiredFields) {
       if (!body[field]) {
         return new Response(JSON.stringify({ message: `${field} is required` }), {
@@ -46,13 +51,37 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    //connect to db
-    const client = await clientPromise
-    const db = client.db()
-    const accommodation = db.collection('accommodation')
+    // Additional validation for bookingForName and bookingForPhone
+    if (!isBookingForSelf) {
+      if (!bookingForName || !bookingForPhone) {
+        return new Response(
+          JSON.stringify({ message: "Missing required fields for booking for someone else" }),
+          { status: 400 }
+        );
+      }
+    }
 
-    //insert data into db'
-    const accommodationBooking = {
+    // Connect to the database
+    const client = await clientPromise;
+    const db = client.db();
+    const accommodation = db.collection("accommodation");
+
+    // Create a new booking object
+    const accommodationBooking: {
+      name: string;
+      budget: number;
+      phoneNumber: string;
+      email: string;
+      dateOfArrival: string;
+      timeOfArrival: string;
+      additionalInfo: string;
+      paymentStatus: string;
+      createdAt: Date;
+      updatedAt: Date;
+      isBookingForSelf: boolean;
+      bookingForName?: string;
+      bookingForPhone?: string;
+    } = {
       name,
       budget,
       phoneNumber,
@@ -60,12 +89,20 @@ export async function POST(req: NextRequest) {
       dateOfArrival,
       timeOfArrival,
       additionalInfo,
-      paymentStatus: 'not paid',
+      paymentStatus: "not paid",
       createdAt: new Date(),
       updatedAt: new Date(),
+      isBookingForSelf,
+    };
+
+    // Include bookingForName and bookingForPhone if not booking for self
+    if (!isBookingForSelf) {
+      accommodationBooking.bookingForName = bookingForName;
+      accommodationBooking.bookingForPhone = bookingForPhone;
     }
 
-    const data = await accommodation.insertOne(accommodationBooking)
+    // Insert the new booking into the database
+    const data = await accommodation.insertOne(accommodationBooking);
 
     if (data.insertedId) {
       return new Response(JSON.stringify({ message: "Booking successful" }), {
