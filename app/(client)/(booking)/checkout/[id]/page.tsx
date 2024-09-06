@@ -19,7 +19,7 @@ export default function Page({ params }: Readonly<CheckoutPageProps>) {
 
   const formData = checkout;
   const handleSubmitPayment = async (selectedMethod: string) => {
-    if (selectedMethod === 'Buy Now, Pay Later') {
+    if (selectedMethod === 'Pay Later') {
       if (formData) {
         handleSubmitTransaction(formData);
       }
@@ -47,5 +47,5 @@ export default function Page({ params }: Readonly<CheckoutPageProps>) {
 const paymentMethods = [
   { id: 1, method: 'Credit Card', icon: <CreditCard /> },
   { id: 2, method: 'Mobile Money', icon: <CreditCard /> },
-  { id: 3, method: 'Buy Now, Pay Later', icon: <CreditCard /> },
+  { id: 3, method: 'Pay Later', icon: <CreditCard /> },
 ];

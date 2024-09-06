@@ -12,7 +12,7 @@ import { useSubmitTransaction } from '@/hooks/mutations/useSubmitTransaction';
 const paymentMethods = [
   { id: 1, method: 'Credit Card', icon: <CreditCard /> },
   { id: 2, method: 'Mobile Money', icon: <CreditCard /> },
-  { id: 3, method: 'Buy Now, Pay Later', icon: <CreditCard /> },
+  { id: 3, method: 'Pay Later', icon: <CreditCard /> },
 ];
 
 const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData, paymentMethod, transactionType }) => {
@@ -32,7 +32,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData
       return toast.error("Please select a payment method");
     }
 
-    if (selectedMethod === 'Buy Now, Pay Later') {
+    if (selectedMethod === 'Pay Later') {
       handleSubmitTransaction(formData);
       return;
     }
@@ -70,10 +70,10 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData
         ))}
       </div>
 
-      {selectedMethod === "Buy Now, Pay Later" && (
+      {selectedMethod === "Pay Later" && (
         <div className="mt-4 bg-yellow-100 p-4 border border-yellow-300 rounded-md">
           <p className="text-sm">
-            Payment validates booking and booking expires in 4 hours.
+            Kindly note that the current booking fee is guaranteed for 48 hours
           </p>
         </div>
       )}
@@ -94,7 +94,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData
           onClick={handlePayment}
           className="w-full py-2 px-4 text-white rounded-md flex items-center justify-center disabled:cursor-not-allowed"
         >
-          Pay
+          Proceed with payment
         </Button>
       </div>
     </div>

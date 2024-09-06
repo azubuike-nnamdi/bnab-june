@@ -71,10 +71,10 @@ const ReusablePaymentMethod: React.FC<ReusablePaymentMethodProps> = ({
           ))}
         </div>
 
-        {selectedMethod === "Buy Now, Pay Later" && (
+        {selectedMethod === "Pay Later" && (
           <div className="mt-4 bg-yellow-100 p-4 border border-yellow-300 rounded-md">
             <p className="text-sm">
-              Payment validates booking and booking expires in 4 hours.
+              Kindly note that the current booking fee is guaranteed for 48 hours
             </p>
           </div>
         )}
