@@ -52,7 +52,7 @@ export type EventCardProps = {
   city: string;
   date: string;
   time: string;
-  price?: number;
+  price?: string;
   phoneNo: string;
 }
 
@@ -80,6 +80,7 @@ export type TicketEvent = {
   phoneNo: string;
 }
 export type TicketBookingFormDataProps = {
+  id?: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;
@@ -89,8 +90,13 @@ export type TicketBookingFormDataProps = {
   ticketType?: string;
   price?: string
   isBookingForSelf: boolean;
-  personName: string;
-  personPhoneNumber: string
+  forBookingFirstName?: string;
+  forBookingLastName?: string;
+  forBookingEmail?: string;
+  forBookingPhoneNumber?: string
+  paymentStatus?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export type AirportBookingData = {
