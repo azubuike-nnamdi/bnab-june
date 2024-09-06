@@ -14,7 +14,6 @@ export const useSubmitBooking = () => {
       return axios.post("/api/v1/booking", booking);
     },
     onSuccess: ({ data }) => {
-      console.log("data submitted", data);
       if (data) {
         toast.success(data?.message);
         router.push("/");
