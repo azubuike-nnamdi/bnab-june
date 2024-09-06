@@ -35,7 +35,6 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
 
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [transactionType, setTransactionType] = useState<TransactionType>('ticket');
-
   const [formData, setFormData] = useState<TicketBookingFormDataProps>({
     firstName: '',
     lastName: '',
@@ -53,7 +52,13 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
 
   const [paymentMethod, setPaymentMethod] = useState<string>('');
 
+  const isPersonalDetailsFilled = formData.firstName && formData.lastName && formData.email && formData.phoneNumber;
+
   const handleTabClick = (index: number) => {
+    // Prevent moving to Booking Summary or Payment Method if Personal Details are not filled
+    if (index > activeTabIndex && !isPersonalDetailsFilled) {
+      return;
+    }
     setActiveTabIndex(index);
   };
 
@@ -63,7 +68,7 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
 
   const handleFormSubmit = (data: Omit<TicketBookingFormDataProps, 'event'>) => {
     setFormData({ ...data, event });
-    setTransactionType('ticket')
+    setTransactionType('ticket');
     setActiveTabIndex(1);
   };
 
@@ -78,7 +83,8 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
           <div key={elm.id} className="item-tab animate-fadeInUp">
             <button
               onClick={() => handleTabClick(i)}
-              className={`cursor-pointer p-4 font-bold md:text-3xl text-xl ${activeTabIndex >= i ? 'text-gray-700 underline underline-offset-8' : 'text-black'}`}
+              className={`cursor-pointer p-4 font-bold md:text-3xl text-xl ${activeTabIndex >= i ? 'text-gray-700 underline underline-offset-8' : 'text-black'} ${i > 0 && !isPersonalDetailsFilled && activeTabIndex < i ? 'cursor-not-allowed opacity-50' : ''}`}
+              disabled={i > 0 && !isPersonalDetailsFilled && activeTabIndex < i}
             >
               <div className="flex items-center justify-center space-x-2">
                 <span>{elm.text}{" "}</span>
@@ -142,7 +148,6 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
       </div>
     </div>
   );
-
 };
 
 export default TicketBookingTab;
