@@ -27,10 +27,14 @@ export async function POST(req: NextRequest) {
       phoneNumber,
       email,
       numberOfPassengers,
-      additionalNote
+      additionalNote,
+      isBookingForSelf,
+      forBookingFullName,
+      forBookingPhoneNumber,
+      forBookingEmail,
     } = data;
 
-    //check fields
+    // Validate required fields for self-booking
     const requiredFields = [
       "fullName",
       "pickUpLocation",
@@ -40,8 +44,10 @@ export async function POST(req: NextRequest) {
       "phoneNumber",
       "email",
       "numberOfPassengers",
-      "additionalNote"
+      "additionalNote",
+      "isBookingForSelf",
     ];
+
     for (const field of requiredFields) {
       if (!data[field]) {
         return new Response(JSON.stringify({ message: `${field} is required` }), {
@@ -50,11 +56,29 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // If booking for someone else, validate additional fields
+    if (!isBookingForSelf) {
+      const additionalFields = [
+        "forBookingFullName",
+        "forBookingPhoneNumber",
+        "forBookingEmail",
+      ];
+
+      for (const field of additionalFields) {
+        if (!data[field]) {
+          return new Response(JSON.stringify({ message: `${field} is required when booking for someone else` }), {
+            status: 400,
+          });
+        }
+      }
+    }
+
     const client = await clientPromise;
     const db = client.db();
     const airportPickup = db.collection("airportPickup");
 
-    const airportBooking = {
+    // Create a new booking object
+    const airportBooking: any = {
       fullName,
       pickUpLocation,
       dropOffLocation,
@@ -64,12 +88,20 @@ export async function POST(req: NextRequest) {
       phoneNumber,
       email,
       additionalNote,
+      isBookingForSelf,
       paymentStatus: "not paid",
       createAt: new Date(),
       updatedAt: new Date(),
     };
 
-    //insert new booking into db
+    // If not booking for self, add additional fields to the booking object
+    if (!isBookingForSelf) {
+      airportBooking.forBookingFullName = forBookingFullName;
+      airportBooking.forBookingPhoneNumber = forBookingPhoneNumber;
+      airportBooking.forBookingEmail = forBookingEmail;
+    }
+
+    // Insert new booking into the database
     const result = await airportPickup.insertOne(airportBooking);
 
     if (result.insertedId) {
@@ -89,7 +121,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-//GET Method
+// GET Method
 export async function GET(req: NextRequest) {
   const session = await getServerSession(options);
 

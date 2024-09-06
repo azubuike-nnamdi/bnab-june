@@ -19,8 +19,10 @@ export default function AirportBooking() {
     pickUpTime: format(new Date(), 'HH:mm'),
     numberOfPassengers: '',
     isBookingForSelf: true,
-    personName: '',
-    personPhoneNumber: '',
+    forBookingFirstName: '',
+    forBookingLastName: '',
+    forBookingEmail: '',
+    forBookingPhoneNumber: '',
     additionalNote: '',
   });
 
@@ -56,29 +58,54 @@ export default function AirportBooking() {
 
     const {
       isBookingForSelf,
-      personName,
-      personPhoneNumber,
-      ...restFormData
+      fullName,
+      pickUpLocation,
+      dropOffLocation,
+      phoneNumber,
+      email,
+      pickUpDate,
+      pickUpTime,
+      numberOfPassengers,
+      additionalNote,
+      forBookingFirstName,
+      forBookingLastName,
+      forBookingEmail,
+      forBookingPhoneNumber,
     } = formData;
 
-    // Ensure that personName and personPhoneNumber are defined, even if they are undefined values
-    const formattedData: AirportBookingData = {
-      ...restFormData,
+    // Build the payload
+    const payload: AirportBookingData = {
       isBookingForSelf,
-      personName: isBookingForSelf ? undefined : personName,
-      personPhoneNumber: isBookingForSelf ? undefined : personPhoneNumber,
+      pickUpLocation,
+      fullName,
+      dropOffLocation,
+      phoneNumber,
+      email,
+      pickUpDate,
+      pickUpTime,
+      numberOfPassengers,
+      additionalNote,
     };
 
+    // If booking is not for self, include the additional person's details
+    if (!isBookingForSelf) {
+      payload.forBookingFirstName = forBookingFirstName;
+      payload.forBookingLastName = forBookingLastName;
+      payload.forBookingEmail = forBookingEmail;
+      payload.forBookingPhoneNumber = forBookingPhoneNumber;
+    }
+
+    // Proceed with the checkout process
     setTransactionType('airportBooking');
-    setCheckout(formattedData);
+    setCheckout(payload);
     router.push(`${CHECKOUT_URL}/${transactionType}`);
   };
 
-
-
   const isFormValid = () => {
+    // Required fields for all cases
     const requiredFields = [
       formData.fullName,
+      formData.pickUpLocation,
       formData.dropOffLocation,
       formData.phoneNumber,
       formData.email,
@@ -87,16 +114,21 @@ export default function AirportBooking() {
       formData.numberOfPassengers,
     ];
 
-    // Check if all the required fields are non-empty
-    const areRequiredFieldsFilled = requiredFields.every((field) => field.trim() !== '');
+    // Ensure all required fields are filled (check for both undefined and empty string)
+    const areRequiredFieldsFilled = requiredFields.every((field) => typeof field === 'string' && field.trim() !== '');
 
-    // If the booking is not for self, ensure personName and personPhoneNumber are also filled
+    // If booking is not for self, additional fields are required
     if (!formData.isBookingForSelf) {
-      return (
-        areRequiredFieldsFilled &&
-        (formData.personName?.trim() ?? '') !== '' &&
-        (formData.personPhoneNumber?.trim() ?? '') !== ''
-      );
+      const additionalRequiredFields = [
+        formData.forBookingFirstName,
+        formData.forBookingLastName,
+        formData.forBookingEmail,
+        formData.forBookingPhoneNumber,
+      ];
+
+      const areAdditionalFieldsFilled = additionalRequiredFields.every((field) => typeof field === 'string' && field.trim() !== '');
+
+      return areRequiredFieldsFilled && areAdditionalFieldsFilled;
     }
 
     return areRequiredFieldsFilled;
@@ -235,30 +267,56 @@ export default function AirportBooking() {
           </fieldset>
         </div>
         {!formData.isBookingForSelf && (
-          <div className="grid md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label htmlFor="personName" className="block mb-2">Person&apos;s Fullname</label>
-              <input
-                type="text"
-                id="personName"
-                placeholder="Person's Name"
-                value={formData.personName}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md"
-              />
+          <section>
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label htmlFor="forBookingFirstName" className="block mb-2">Person&apos;s First Name</label>
+                <input
+                  type="text"
+                  id="forBookingFirstName"
+                  placeholder="Person's First Name"
+                  value={formData.forBookingFirstName}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div>
+                <label htmlFor="forBookingLastName" className="block mb-2">Person&apos;s Last Name</label>
+                <input
+                  type="tel"
+                  id="forBookingLastName"
+                  placeholder="Person's Last Name"
+                  value={formData.forBookingLastName}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
             </div>
-            <div>
-              <label htmlFor="personPhoneNumber" className="block mb-2">Person&apos;s Phone Number</label>
-              <input
-                type="tel"
-                id="personPhoneNumber"
-                placeholder="Person's Phone Number"
-                value={formData.personPhoneNumber}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md"
-              />
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label htmlFor="forBookingEmail" className="block mb-2">Person&apos;s Email</label>
+                <input
+                  type="email"
+                  id="forBookingEmail"
+                  placeholder="Person's Email"
+                  value={formData.forBookingEmail}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div>
+                <label htmlFor="forBookingPhoneNumber" className="block mb-2">Person&apos;s Phone Number</label>
+                <input
+                  type="tel"
+                  id="forBookingPhoneNumber"
+                  placeholder="Person's Phone Number"
+                  value={formData.forBookingPhoneNumber}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
             </div>
-          </div>
+          </section>
         )}
         <div>
           <label htmlFor="additionalNote" className="block mb-2">Additional Note</label>
