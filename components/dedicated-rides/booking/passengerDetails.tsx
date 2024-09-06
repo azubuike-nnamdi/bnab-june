@@ -6,14 +6,24 @@ import { format, parseISO, isValid } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { DedicatedRideBookingProps } from "@/types/declaration";
 
+const vehiclePrice = {
+  Regular: 500,
+  Comfort: 1000,
+  VVIP: 1500,
+} as const;
+
+
+
+// a union type that includes the possible values for vechicleType and use it to type the value:
+type CarType = keyof typeof vehiclePrice; // 'Regular' | 'Comfort' | 'VVIP'
 interface PassengerDetailsProps {
   activeTab: string;
   setActiveTab: (index: string) => void;
   onFormSubmit: (data: DedicatedRideBookingProps) => void;
-
+  onFormDataChange: (updatedData: Partial<DedicatedRideBookingProps>) => void;
 }
 
-export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit }: Readonly<PassengerDetailsProps>) {
+export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit, onFormDataChange }: Readonly<PassengerDetailsProps>) {
 
   const [formData, setFormData] = useState<DedicatedRideBookingProps>({
     firstName: "",
@@ -21,6 +31,9 @@ export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit
     phoneNumber: "",
     email: "",
     pickUpLocation: "",
+    vehicleType: 'Regular',
+    price: vehiclePrice['Regular'],
+    isBookingForSelf: true,
     pickUpDate: format(new Date(), "yyyy-MM-dd"),
     pickUpTime: format(new Date(), "HH:mm"),
     dropOffLocation: "",
@@ -28,11 +41,25 @@ export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit
     dropOffTime: format(new Date(), "HH:mm"),
     numberOfPassengers: "",
     additionalInfo: "",
+    bookingForName: "",
+    bookingForPhone: "",
   });
 
+  // Handles changes for text inputs, select options, and text areas
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
+
+    // Check if vehicleType was changed
+    if (id === "vehicleType") {
+      const selectedPrice = vehiclePrice[value as CarType];
+      const updatedData = { vehicleType: value, price: selectedPrice };
+      setFormData((prevData) => ({ ...prevData, ...updatedData }));
+      onFormDataChange(updatedData); // Notify parent component
+    } else {
+      const updatedData = { [id]: value } as Partial<DedicatedRideBookingProps>;
+      setFormData((prevData) => ({ ...prevData, ...updatedData }));
+      onFormDataChange(updatedData); // Notify parent component
+    }
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
@@ -47,16 +74,75 @@ export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit
     setFormData({ ...formData, [field]: time });
   };
 
+  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isBookingForSelf = e.target.value === "yes";
+    setFormData((prevData) => ({
+      ...prevData,
+      isBookingForSelf,
+      bookingForName: "",
+      bookingForPhone: "",
+    }));
+    onFormDataChange({ isBookingForSelf }); // Notify parent component
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onFormSubmit(formData);
+
+    // Prepare the payload
+    const payload: Partial<DedicatedRideBookingProps> = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      phoneNumber: formData.phoneNumber,
+      email: formData.email,
+      pickUpLocation: formData.pickUpLocation,
+      vehicleType: formData.vehicleType,
+      price: formData.price,
+      isBookingForSelf: formData.isBookingForSelf,
+      pickUpDate: formData.pickUpDate,
+      pickUpTime: formData.pickUpTime,
+      dropOffLocation: formData.dropOffLocation,
+      dropOffDate: formData.dropOffDate,
+      dropOffTime: formData.dropOffTime,
+      numberOfPassengers: formData.numberOfPassengers,
+      additionalInfo: formData.additionalInfo,
+    };
+
+    // Conditionally add bookingForName and bookingForPhone if booking is for someone else
+    if (!formData.isBookingForSelf) {
+      payload.bookingForName = formData.bookingForName;
+      payload.bookingForPhone = formData.bookingForPhone;
+    }
+
+    // Submit the payload
+    onFormSubmit(payload as DedicatedRideBookingProps);
     setActiveTab("summary");
   };
 
+
   // Check if all required fields are filled
-  const isFormValid = Object.values(formData).every((field) =>
-    typeof field === 'string' && field.trim() !== ''
+  const requiredFields = [
+    "firstName",
+    "lastName",
+    "phoneNumber",
+    "email",
+    "pickUpLocation",
+    "pickUpDate",
+    "pickUpTime",
+    "dropOffLocation",
+    "dropOffDate",
+    "dropOffTime",
+    "numberOfPassengers"
+  ];
+
+  // If the booking is for someone else, these fields are also required:
+  if (!formData.isBookingForSelf) {
+    requiredFields.push("bookingForName", "bookingForPhone");
+  }
+
+  const isFormValid = requiredFields.every((field) =>
+    formData[field as keyof DedicatedRideBookingProps]?.toString().trim() !== ""
   );
+
   return (
     <main>
       <h3 className="text-2xl font-semibold mb-4">Passenger Details</h3>
@@ -199,6 +285,88 @@ export default function PassengerDetails({ activeTab, setActiveTab, onFormSubmit
 
         {/* Other options */}
         <h3 className="text-xl font-semibold mb-4">Other Options</h3>
+        {/* Vehicle Type Section */}
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label htmlFor="vehicleType" className="block mb-2">Vehicle Type</label>
+            <select
+              id="vehicleType"
+              value={formData.vehicleType}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            >
+              <option value="Regular">Regular</option>
+              <option value="Comfort">Comfort</option>
+              <option value="VVIP">VVIP</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="price" className="block mb-2">Price</label>
+            <input
+              type="text"
+              id="price"
+              value={`$${formData.price}`}
+              readOnly
+              className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+            />
+          </div>
+        </div>
+        <div className="mb-4">
+          <p className="text-lg font-medium">Is this booking for yourself?</p>
+          <div className="flex items-center space-x-4">
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                value="yes"
+                checked={formData.isBookingForSelf}
+                onChange={handleRadioChange}
+              />
+              <span>Yes</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                value="no"
+                checked={!formData.isBookingForSelf}
+                onChange={handleRadioChange}
+              />
+              <span>No</span>
+            </label>
+          </div>
+        </div>
+
+        {/* Show these fields only if "No" is selected */}
+        {!formData.isBookingForSelf && (
+          <div className="mb-6">
+            <h4 className="text-lg font-semibold mb-4">Details of the person you&apos;re booking for</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="bookingForName" className="block text-sm font-medium text-gray-700">
+                  Person Name
+                </label>
+                <input
+                  type="text"
+                  id="bookingForName"
+                  value={formData.bookingForName}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+                />
+              </div>
+              <div>
+                <label htmlFor="bookingForPhone" className="block text-sm font-medium text-gray-700">
+                  Person Phone Number
+                </label>
+                <input
+                  type="number"
+                  id="bookingForPhone"
+                  value={formData.bookingForPhone}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+                />
+              </div>
+            </div>
+          </div>
+        )}
         <div className="grid grid-cols-1 gap-4 mb-6">
           <div>
             <label htmlFor="numberOfPassengers" className="block text-sm font-medium text-gray-700">
