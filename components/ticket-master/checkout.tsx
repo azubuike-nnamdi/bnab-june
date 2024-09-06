@@ -6,9 +6,9 @@ import { Button } from "../ui/button";
 import { genId } from "@/lib/helper";
 
 const ticketPrices = {
-  Regular: 500,
-  VIP: 1000,
-  VVIP: 1500,
+  Regular: "500.00",
+  VIP: "1000.00",
+  VVIP: "1500.00",
 } as const;
 
 // a union type that includes the possible values for ticketType and use it to type the value:
@@ -28,8 +28,10 @@ export default function Checkout({
     ticketType: 'Regular',
     price: ticketPrices['Regular'],
     isBookingForSelf: true,
-    personName: '',
-    personPhoneNumber: '',
+    forBookingFirstName: '',
+    forBookingLastName: '',
+    forBookingEmail: '',
+    forBookingPhoneNumber: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -65,7 +67,7 @@ export default function Checkout({
     (formData.phoneNumber ?? '').trim() !== '' &&
     (formData.email ?? '').trim() !== '' &&
     (formData.ticketType ?? '').trim() !== '' &&
-    (formData.isBookingForSelf || (formData.personName ?? '').trim() !== '' && (formData.personPhoneNumber ?? '').trim() !== '');
+    (formData.isBookingForSelf || (formData.forBookingFirstName ?? '').trim() !== '' && (formData.forBookingLastName ?? '').trim() !== '' && (formData.forBookingEmail ?? '').trim() !== '' && (formData.forBookingPhoneNumber ?? '').trim() !== '');
 
   return (
     <div className="container mx-auto my-5 animate-fadeInUp">
@@ -174,30 +176,56 @@ export default function Checkout({
           </fieldset>
         </div>
         {!formData.isBookingForSelf && (
-          <div className="grid md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label htmlFor="personName" className="block mb-2">Person&apos;s Fullname</label>
-              <input
-                type="text"
-                id="personName"
-                placeholder="Person's Name"
-                value={formData.personName}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md"
-              />
+          <section>
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label htmlFor="forBookingFirstName" className="block mb-2">Person&apos;s First Name</label>
+                <input
+                  type="text"
+                  id="forBookingFirstName"
+                  placeholder="Person's First Name"
+                  value={formData.forBookingFirstName}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div>
+                <label htmlFor="forBookingLastName" className="block mb-2">Person&apos;s Last Name</label>
+                <input
+                  type="tel"
+                  id="forBookingLastName"
+                  placeholder="Person's Last Name"
+                  value={formData.forBookingLastName}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
             </div>
-            <div>
-              <label htmlFor="personPhoneNumber" className="block mb-2">Person&apos;s Phone Number</label>
-              <input
-                type="tel"
-                id="personPhoneNumber"
-                placeholder="Person's Phone Number"
-                value={formData.personPhoneNumber}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md"
-              />
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label htmlFor="forBookingEmail" className="block mb-2">Person&apos;s Email</label>
+                <input
+                  type="email"
+                  id="forBookingEmail"
+                  placeholder="Person's Email"
+                  value={formData.forBookingEmail}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div>
+                <label htmlFor="forBookingPhoneNumber" className="block mb-2">Person&apos;s Phone Number</label>
+                <input
+                  type="tel"
+                  id="forBookingPhoneNumber"
+                  placeholder="Person's Phone Number"
+                  value={formData.forBookingPhoneNumber}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
             </div>
-          </div>
+          </section>
         )}
         <div className="mt-4">
           <Button

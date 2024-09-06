@@ -45,8 +45,10 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
     ticketType: 'Regular',
     price: event.price,
     isBookingForSelf: true,
-    personName: '',
-    personPhoneNumber: '',
+    forBookingFirstName: '',
+    forBookingLastName: '',
+    forBookingEmail: '',
+    forBookingPhoneNumber: '',
   });
 
   const [paymentMethod, setPaymentMethod] = useState<string>('');

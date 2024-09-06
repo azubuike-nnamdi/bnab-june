@@ -77,28 +77,52 @@ export default function TicketSummary({
             />
           </div>
           {formData.isBookingForSelf ? null : (
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label htmlFor="personName" className="block mb-2">Person Name</label>
-                <input
-                  type="text"
-                  id="personName"
-                  value={formData.personName}
-                  disabled
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
+            <section>
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label htmlFor="forBookingFirstName" className="block mb-2">Person First Name</label>
+                  <input
+                    type="text"
+                    id="forBookingFirstName"
+                    value={formData.forBookingFirstName}
+                    disabled
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="forBookingLastName" className="block mb-2">Person Last Name</label>
+                  <input
+                    type="text"
+                    id="forBookingLastName"
+                    value={formData.forBookingLastName}
+                    disabled
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
               </div>
-              <div>
-                <label htmlFor="personPhoneNumber" className="block mb-2">Person Phone Number</label>
-                <input
-                  type="text"
-                  id="personPhoneNumber"
-                  value={formData.personPhoneNumber}
-                  disabled
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label htmlFor="forBookingEmail" className="block mb-2">Person Email</label>
+                  <input
+                    type="email"
+                    id="forBookingEmail"
+                    value={formData.forBookingEmail}
+                    disabled
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="forBookingPhoneNumber" className="block mb-2">Person Phone Number</label>
+                  <input
+                    type="text"
+                    id="forBookingPhoneNumber"
+                    value={formData.forBookingPhoneNumber}
+                    disabled
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
               </div>
-            </div>
+            </section>
           )}
           <div className="mt-4">
             <Button
