@@ -69,7 +69,7 @@ export type CheckoutProps = {
 
 export type TicketEvent = {
   id: string;
-  price?: number;
+  price?: string;
   title: string;
   desc: string;
   venue: string;
@@ -87,7 +87,7 @@ export type TicketBookingFormDataProps = {
   event?: TicketEvent
   transID?: string;
   ticketType?: string;
-  price?: number
+  price?: string
   isBookingForSelf: boolean;
   personName: string;
   personPhoneNumber: string
