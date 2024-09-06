@@ -43,8 +43,10 @@ export default function PassengerDetails({
     dropOffTime: format(new Date(), "HH:mm"),
     numberOfPassengers: "",
     additionalInfo: "",
-    bookingForName: "",
-    bookingForPhone: "",
+    bookingForFirstName: "",
+    bookingForLastName: "",
+    bookingForEmail: "",
+    bookingForPhoneNumber: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -79,8 +81,10 @@ export default function PassengerDetails({
     setFormData((prevData) => ({
       ...prevData,
       isBookingForSelf,
-      bookingForName: "",
-      bookingForPhone: "",
+      bookingForFirstName: "",
+      bookingForLastName: "",
+      bookingForEmail: "",
+      bookingForPhoneNumber: "",
     }));
     onFormDataChange({ isBookingForSelf });
   };
@@ -107,8 +111,10 @@ export default function PassengerDetails({
     };
 
     if (!formData.isBookingForSelf) {
-      payload.bookingForName = formData.bookingForName;
-      payload.bookingForPhone = formData.bookingForPhone;
+      payload.bookingForFirstName = formData.bookingForFirstName;
+      payload.bookingForLastName = formData.bookingForLastName;
+      payload.bookingForEmail = formData.bookingForEmail;
+      payload.bookingForPhoneNumber = formData.bookingForPhoneNumber;
     }
 
     onFormSubmit(payload as DedicatedRideBookingProps);
@@ -130,7 +136,7 @@ export default function PassengerDetails({
   ];
 
   if (!formData.isBookingForSelf) {
-    requiredFields.push("bookingForName", "bookingForPhone");
+    requiredFields.push("bookingForFirstName", "bookingForEmail", "bookingForLastName", "bookingForPhoneNumber");
   }
 
   const isFormValid = requiredFields.every((field) =>
@@ -332,28 +338,54 @@ export default function PassengerDetails({
         {/* Show these fields only if "No" is selected */}
         {!formData.isBookingForSelf && (
           <div className="mb-6">
-            <h4 className="text-lg font-semibold mb-4">Details of the person you&apos;re booking for</h4>
+            <h4 className="text-md font-semibold mb-4">Details of the person you&apos;re booking for</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="bookingForName" className="block text-sm font-medium text-gray-700">
-                  Person Name
+                <label htmlFor="bookingForFirstName" className="block text-sm font-medium text-gray-700">
+                  Person First Name
                 </label>
                 <input
                   type="text"
-                  id="bookingForName"
-                  value={formData.bookingForName}
+                  id="bookingForFirstName"
+                  value={formData.bookingForFirstName}
                   onChange={handleChange}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
                 />
               </div>
               <div>
-                <label htmlFor="bookingForPhone" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="bookingForLastName" className="block text-sm font-medium text-gray-700">
+                  Person Last Name
+                </label>
+                <input
+                  type="text"
+                  id="bookingForLastName"
+                  value={formData.bookingForLastName}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+              <div>
+                <label htmlFor="bookingForEmail" className="block text-sm font-medium text-gray-700">
+                  Person Email
+                </label>
+                <input
+                  type="text"
+                  id="bookingForEmail"
+                  value={formData.bookingForEmail}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+                />
+              </div>
+              <div>
+                <label htmlFor="bookingForPhoneNumber" className="block text-sm font-medium text-gray-700">
                   Person Phone Number
                 </label>
                 <input
                   type="number"
-                  id="bookingForPhone"
-                  value={formData.bookingForPhone}
+                  id="bookingForPhoneNumber"
+                  value={formData.bookingForPhoneNumber}
                   onChange={handleChange}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
                 />

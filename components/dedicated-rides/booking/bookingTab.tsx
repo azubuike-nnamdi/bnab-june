@@ -31,8 +31,10 @@ export default function DedicatedRideBookingTab({ car }: any) {
     dropOffTime: format(new Date(), "HH:mm"),
     numberOfPassengers: "",
     additionalInfo: "",
-    bookingForName: "",
-    bookingForPhone: "",
+    bookingForFirstName: "",
+    bookingForLastName: "",
+    bookingForEmail: "",
+    bookingForPhoneNumber: "",
   });
 
   const handlePaymentSelect = (method: string) => {

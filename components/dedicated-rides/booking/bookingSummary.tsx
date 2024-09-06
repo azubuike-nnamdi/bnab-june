@@ -14,7 +14,6 @@ interface SummaryProps {
 
 const BookingSummary: React.FC<SummaryProps> = ({ activeTab, setActiveTab, formData, goToNextTab, goToPreviousTab }) => {
 
-  console.log(formData)
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -181,28 +180,52 @@ const BookingSummary: React.FC<SummaryProps> = ({ activeTab, setActiveTab, formD
             </div>
 
             {formData.isBookingForSelf ? null : (
-              <div className="grid md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label htmlFor="bookingForName" className="block mb-2">Person Name</label>
-                  <input
-                    type="text"
-                    id="bookingForName"
-                    value={formData.bookingForName}
-                    disabled
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
+              <section>
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label htmlFor="bookingForFirstName" className="block mb-2">Person First Name</label>
+                    <input
+                      type="text"
+                      id="bookingForFirstName"
+                      value={formData.bookingForFirstName}
+                      disabled
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="bookingForLastName" className="block mb-2">Person Last Name</label>
+                    <input
+                      type="text"
+                      id="bookingForLastName"
+                      value={formData.bookingForLastName}
+                      disabled
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label htmlFor="bookingForPhone" className="block mb-2">Person Phone Number</label>
-                  <input
-                    type="text"
-                    id="bookingForPhone"
-                    value={formData.bookingForPhone}
-                    disabled
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label htmlFor="bookingForEmail" className="block mb-2">Person Email</label>
+                    <input
+                      type="text"
+                      id="bookingForEmail"
+                      value={formData.bookingForEmail}
+                      disabled
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="bookingForPhoneNumber" className="block mb-2">Person Phone Number</label>
+                    <input
+                      type="text"
+                      id="bookingForPhoneNumber"
+                      value={formData.bookingForPhoneNumber}
+                      disabled
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
                 </div>
-              </div>
+              </section>
             )}
             <div className="mb-3">
               <label htmlFor="numberOfPassengers" className="block text-sm font-medium text-gray-700">
