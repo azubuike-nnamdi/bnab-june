@@ -128,7 +128,7 @@ export type AccommodationBookingType = {
   timeOfArrival: string;
   departureDate: string;
   additionalInfo?: string;
-  isBookingSelf: boolean;
+  isBookingForSelf: boolean;
   forBookingFirstName?: string,
   forBookingLastName?: string;
   forBookingEmail?: string;
