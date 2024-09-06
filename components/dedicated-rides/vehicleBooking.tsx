@@ -49,9 +49,21 @@ const VehicleBooking: React.FC<VehicleBookingProps> = ({ car }) => {
           <div className="w-full lg:w-1/3">
             <div className="p-6 bg-gray-100 rounded-lg shadow-md">
               <ul className="mb-8">
-                <li className="flex justify-between py-2 border-b border-gray-300">
+                {/* <li className="flex justify-between py-2 border-b border-gray-300">
                   <span>Day rate</span>
                   <span>{car.amt}</span>
+                </li> */}
+                <li className="flex justify-between">
+                  <span className="text-sm font-semibold">Regular</span>
+                  <span className="text-sm">$500.00</span>
+                </li>
+                <li className="flex justify-between my-3">
+                  <span className="text-sm font-semibold">Comfort</span>
+                  <span className="text-sm">$1,000.00</span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="text-sm font-semibold">VVIP</span>
+                  <span className="text-sm">$1,500.00</span>
                 </li>
               </ul>
               <div className="mt-8">
