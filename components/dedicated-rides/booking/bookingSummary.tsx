@@ -12,6 +12,7 @@ interface SummaryProps {
 
 const BookingSummary: React.FC<SummaryProps> = ({ activeTab, setActiveTab, formData }) => {
 
+  console.log(formData)
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -163,6 +164,43 @@ const BookingSummary: React.FC<SummaryProps> = ({ activeTab, setActiveTab, formD
 
           <div className="my-3">
             <h4>Other Options</h4>
+            <div className="grid my-4">
+              <div className="mb-4">
+                <label htmlFor="vehicleType" className="block text-sm font-medium text-gray-70">Vehicle Type</label>
+                <input
+                  type="text"
+                  id="vehicleType"
+                  value={formData.vehicleType}
+                  disabled
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+            </div>
+
+            {formData.isBookingForSelf ? null : (
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label htmlFor="bookingForName" className="block mb-2">Person Name</label>
+                  <input
+                    type="text"
+                    id="bookingForName"
+                    value={formData.bookingForName}
+                    disabled
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="bookingForPhone" className="block mb-2">Person Phone Number</label>
+                  <input
+                    type="text"
+                    id="bookingForPhone"
+                    value={formData.bookingForPhone}
+                    disabled
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+            )}
             <div className="mb-3">
               <label htmlFor="numberOfPassengers" className="block text-sm font-medium text-gray-700">
                 Number of Passengers
