@@ -13,7 +13,8 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: "Hyea Me Ha",
-  description: "Welcome to BNAB Junes",
+  description: "...meet me there",
+
 };
 
 export default function RootLayout({
