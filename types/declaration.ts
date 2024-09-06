@@ -119,16 +119,20 @@ export type AirportBookingData = {
 }
 
 export type AccommodationBookingType = {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phoneNumber: string;
   budget: string;
   dateOfArrival: string;
   timeOfArrival: string;
+  departureDate: string;
   additionalInfo?: string;
   isBookingSelf: boolean;
-  bookingForName: string;
-  bookingForPhone: string;
+  forBookingFirstName?: string,
+  forBookingLastName?: string;
+  forBookingEmail?: string;
+  forBookingPhoneNumber?: string;
 }
 
 export type Car = {
@@ -151,11 +155,11 @@ export type DedicatedRideBookingProps = {
   phoneNumber?: string;
   email?: string;
   pickUpLocation?: string;
-  pickUpDate?: string;
-  pickUpTime?: string;
+  pickUpDate: string;
+  pickUpTime: string;
   dropOffLocation?: string;
-  dropOffDate?: string;
-  dropOffTime?: string;
+  dropOffDate: string;
+  dropOffTime: string;
   numberOfPassengers?: string;
   additionalInfo?: string;
   vehicleType?: string;
@@ -164,6 +168,10 @@ export type DedicatedRideBookingProps = {
   bookingForName?: string;
   bookingForPhone?: string;
   paymentStatus?: string;
+  bookingForFirstName?: string;
+  bookingForLastName?: string;
+  bookingForEmail?: string;
+  bookingForPhoneNumber?: string;
 };
 
 export type SendEmailOptions = {
