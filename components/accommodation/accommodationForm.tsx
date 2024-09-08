@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format, isValid, parseISO } from "date-fns";
+import { differenceInDays, format, isValid, parseISO } from "date-fns";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
@@ -13,8 +13,9 @@ import { useRouter } from "next/navigation";
 import { CHECKOUT_URL } from "@/config/routes";
 import { useCheckoutContext } from "@/context/checkoutContext";
 import { AccommodationBookingType, TransactionType } from "@/types/declaration";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { accommodationOptions, budgetOptions } from "@/lib/data/accommodation";
 
 // Define schemas with common fields and additional fields
 const commonFieldsSchema = z.object({
@@ -22,6 +23,7 @@ const commonFieldsSchema = z.object({
   lastName: z.string().min(1, { message: "Name is required" }),
   phoneNumber: z.string().min(1, { message: "Phone number is required" }),
   budget: z.string().min(1, { message: "Budget is required" }),
+  accommodationType: z.string().min(1, { message: "Accommodation type is required" }),
   email: z.string().email({ message: "Invalid email address" }),
   dateOfArrival: z.string().refine(date => isValid(parseISO(date)), { message: "Invalid date" }),
   timeOfArrival: z.string().min(1, { message: "Time of arrival is required" }),
@@ -53,6 +55,8 @@ export default function AccommodationBookingForm() {
   const router = useRouter();
   const { setCheckout } = useCheckoutContext();
   const [transactionType, setTransactionType] = useState<TransactionType>('accommodation');
+  const [numberOfDays, setNumberOfDays] = useState<number | null>(null); // State for number of days
+
 
   const defaultValues: Partial<BookingFormInputs> = {
     firstName: "",
@@ -60,6 +64,7 @@ export default function AccommodationBookingForm() {
     phoneNumber: "",
     budget: "",
     email: "",
+    accommodationType: "",
     dateOfArrival: format(new Date(), "yyyy-MM-dd"),
     timeOfArrival: format(new Date(), "HH:mm"),
     additionalInfo: "",
@@ -87,6 +92,22 @@ export default function AccommodationBookingForm() {
 
   const { watch, formState } = form;
 
+  // Watch for dateOfArrival and departureDate changes
+  const dateOfArrival = watch("dateOfArrival");
+  const departureDate = watch("departureDate");
+
+  useEffect(() => {
+    if (dateOfArrival && departureDate) {
+      const arrival = parseISO(dateOfArrival);
+      const departure = parseISO(departureDate);
+
+      // Ensure both dates are valid
+      if (isValid(arrival) && isValid(departure)) {
+        const days = differenceInDays(departure, arrival);
+        setNumberOfDays(days >= 0 ? days : 0); // Avoid negative days
+      }
+    }
+  }, [dateOfArrival, departureDate]); // Recalculate when dates change
 
   const handleRadioChange = (value: boolean, form: any) => {
     form.setValue('isBookingForSelf', value);
@@ -117,11 +138,13 @@ export default function AccommodationBookingForm() {
       email: data.email,
       phoneNumber: data.phoneNumber,
       budget: data.budget,
+      accommodationType: data.accommodationType,
       dateOfArrival: data.dateOfArrival,
       timeOfArrival: data.timeOfArrival,
       additionalInfo: data.additionalInfo,
       isBookingForSelf: data.isBookingForSelf,
       departureDate: data.departureDate,
+      numberOfDays: numberOfDays ?? 0,
       // Conditionally include fields for non-self booking
       ...(data.isBookingForSelf ? {} : {
         forBookingFirstName: data.forBookingFirstName,
@@ -135,13 +158,6 @@ export default function AccommodationBookingForm() {
     setCheckout(payload);
 
   };
-
-  const budgetOptions = [
-    { id: 1, name: "Economy", price: "$80.00 - $120.00" },
-    { id: 2, name: "Standard", price: "$120.00 - $200.00" },
-    { id: 3, name: "Premium", price: "$200.00 - $300.00" },
-    { id: 4, name: "Luxury", price: "$300.00 - $500.00" },
-  ];
 
   return (
     <Fade direction="up" triggerOnce cascade>
@@ -205,36 +221,43 @@ export default function AccommodationBookingForm() {
                 )}
               />
             </div>
-            <div className='grid sm:grid-cols-2 grid-cols-1 gap-3'>
-              <FormField
-                control={form.control}
-                name="dateOfArrival"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date Of Arrival</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="timeOfArrival"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Time Of Arrival</FormLabel>
-                    <FormControl>
-                      <Input type="time" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            {/* section for accommodation type and price range starts here */}
             <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
-
+              <FormField
+                control={form.control}
+                name="accommodationType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Accommodation Type</FormLabel>
+                    <FormControl>
+                      <Controller
+                        name="accommodationType"
+                        control={form.control}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                          <Select
+                            onValueChange={(value) => {
+                              onChange(value);
+                            }}
+                            defaultValue={value}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select your preferred accommodation" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {accommodationOptions.map((option) => (
+                                <SelectItem key={option.id} value={option.type}>
+                                  {option.type}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="budget"
@@ -270,6 +293,40 @@ export default function AccommodationBookingForm() {
                   </FormItem>
                 )}
               />
+
+            </div>
+            {/* section for accommodation type and price range ends here */}
+
+            {/* section for arrival date and time starts here */}
+            <div className='grid sm:grid-cols-2 grid-cols-1 gap-3'>
+              <FormField
+                control={form.control}
+                name="dateOfArrival"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date Of Arrival</FormLabel>
+                    <FormControl className="w-full">
+                      <Input type="date" {...field} className="w-full" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="timeOfArrival"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Time Of Arrival</FormLabel>
+                    <FormControl>
+                      <Input type="time" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid sm:grid-cols-2  grid-cols-1 gap-3">
               <FormField
                 control={form.control}
                 name="departureDate"
@@ -283,7 +340,18 @@ export default function AccommodationBookingForm() {
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="departureDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Number of Days</FormLabel>
+                    <FormControl>
+                      <Input type="text" value={numberOfDays !== null ? `${numberOfDays} day(s)` : ''} disabled />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             </div>
             <FormField
               control={form.control}

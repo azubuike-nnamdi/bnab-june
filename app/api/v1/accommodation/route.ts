@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
       dateOfArrival,
       timeOfArrival,
       departureDate,
+      numberOfDays,
       additionalInfo,
       isBookingForSelf,
       bookingForName,
@@ -85,6 +86,7 @@ export async function POST(req: NextRequest) {
       departureDate: string;
       additionalInfo: string;
       paymentStatus: string;
+      numberOfDays: number;
       createdAt: Date;
       updatedAt: Date;
       isBookingForSelf: boolean;
@@ -99,6 +101,7 @@ export async function POST(req: NextRequest) {
       accommodationType,
       dateOfArrival,
       timeOfArrival,
+      numberOfDays,
       departureDate,
       additionalInfo,
       paymentStatus: "not paid",

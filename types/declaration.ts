@@ -128,6 +128,7 @@ export type AccommodationBookingType = {
   dateOfArrival: string;
   timeOfArrival: string;
   departureDate: string;
+  numberOfDays: number;
   additionalInfo?: string;
   isBookingForSelf: boolean;
   forBookingFirstName?: string,
