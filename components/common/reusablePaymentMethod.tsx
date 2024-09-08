@@ -5,6 +5,8 @@ import { Button } from '../ui/button';
 import clsx from 'clsx';
 import { PaymentMethodOption } from '@/types/declaration';
 import { toast } from 'sonner';
+import { MoveLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 type ReusablePaymentMethodProps = {
   paymentMethods: PaymentMethodOption[];
@@ -26,6 +28,7 @@ const ReusablePaymentMethod: React.FC<ReusablePaymentMethodProps> = ({
   disabledMessage = 'Feature not available at the moment',
 }) => {
   const [selectedMethod, setSelectedMethod] = useState<string>('');
+  const router = useRouter()
 
 
   const handleMethodSelect = (method: string) => {
@@ -43,6 +46,10 @@ const ReusablePaymentMethod: React.FC<ReusablePaymentMethodProps> = ({
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="sm:w-6/12 w-full mx-auto sm:py-3 p-4">
+        <Button variant={"outline"} onClick={() => router.back()} className='my-6 gap-2'>
+          <MoveLeft className="w-4 h-4" />
+          Go back
+        </Button>
         <h2 className="text-2xl font-bold mb-4">Select Payment Method</h2>
         <div className="flex sm:space-x-6">
           {paymentMethods.map(({ id, method, icon }) => (
