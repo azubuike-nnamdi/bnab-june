@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
       firstName,
       lastName,
       budget,
+      accommodationType,
       phoneNumber,
       email,
       dateOfArrival,
@@ -39,6 +40,7 @@ export async function POST(req: NextRequest) {
       "lastName",
       "budget",
       "phoneNumber",
+      "accommodationType",
       "email",
       "dateOfArrival",
       "departureDate",
@@ -75,6 +77,7 @@ export async function POST(req: NextRequest) {
       firstName: string;
       lastName: string;
       budget: number;
+      accommodationType: string;
       phoneNumber: string;
       email: string;
       dateOfArrival: string;
@@ -93,6 +96,7 @@ export async function POST(req: NextRequest) {
       budget,
       phoneNumber,
       email,
+      accommodationType,
       dateOfArrival,
       timeOfArrival,
       departureDate,
