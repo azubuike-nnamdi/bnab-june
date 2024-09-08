@@ -124,6 +124,7 @@ export type AccommodationBookingType = {
   email: string;
   phoneNumber: string;
   budget: string;
+  accommodationType: string;
   dateOfArrival: string;
   timeOfArrival: string;
   departureDate: string;
