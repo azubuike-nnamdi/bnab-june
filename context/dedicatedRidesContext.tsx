@@ -35,7 +35,7 @@ export const DedicatedBookingProvider: React.FC<{ children: ReactNode }> = ({ ch
     bookingForLastName: "",
     bookingForEmail: "",
     bookingForPhoneNumber: "",
-    totalAmount: "0.00",
+    totalAmount: 0.00,
   });
   const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [transactionType, setTransactionType] = useState<TransactionType>('booking');
