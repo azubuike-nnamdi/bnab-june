@@ -74,10 +74,19 @@ export default function PickUpVehicles() {
                       src={elm.imgSrc}
                       alt={elm.title}
                     />
-                    <div className="flex items-center">
-                      <p className="font-bold mr-2">From</p>
-                      <p>{elm?.amt}</p>
-                      <p>{elm?.duration}</p>
+                    <div className="flex justify-between">
+                      <div className="flex items-center">
+                        <span className="icon-circle icon-passenger"></span>
+                        <span className="text-sm font-semibold">
+                          Passengers: <span className="font-normal">{" "}{elm.passenger}</span>
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="icon-circle icon-luggage"></span>
+                        <span className="text-sm ml-2 font-semibold">
+                          Luggage: <span className='font-normal'>{" "}{elm.luggage}</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
