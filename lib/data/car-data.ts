@@ -10,7 +10,7 @@ export const cars = [
     price: 500,
     carType: "Saloon",
     brand: "Audi",
-    amt: "GH₵ 500",
+    amt: "$500",
     duration: "/day",
   },
   {
@@ -23,7 +23,7 @@ export const cars = [
     price: 1000,
     carType: "SUV",
     brand: "Hatchback",
-    amt: "GH₵ 1,000",
+    amt: "$1,000",
     duration: "/day",
   },
   {
@@ -36,7 +36,7 @@ export const cars = [
     price: 1200,
     carType: "Mini Bus",
     brand: "Audi",
-    amt: "GH₵ 1,200",
+    amt: "$1,200",
     duration: "/day",
   },
   {
@@ -49,7 +49,7 @@ export const cars = [
     price: 1400,
     carType: "Coach",
     brand: "Hyundai",
-    amt: "GH₵ 1400",
+    amt: "$1,400",
     duration: "/day",
   },
   // {

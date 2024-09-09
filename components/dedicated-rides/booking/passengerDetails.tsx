@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+// 'use client'
+
+import React, { useEffect, useState } from "react";
 import { format, parseISO, isValid } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { DedicatedRideBookingProps } from "@/types/declaration";
@@ -42,11 +44,13 @@ export default function PassengerDetails({
     dropOffDate: format(new Date(), "yyyy-MM-dd"),
     dropOffTime: format(new Date(), "HH:mm"),
     numberOfPassengers: "",
+    numberOfDays: "",
     additionalInfo: "",
     bookingForFirstName: "",
     bookingForLastName: "",
     bookingForEmail: "",
     bookingForPhoneNumber: "",
+    totalAmount: "0.00",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -103,11 +107,13 @@ export default function PassengerDetails({
       isBookingForSelf: formData.isBookingForSelf,
       pickUpDate: formData.pickUpDate,
       pickUpTime: formData.pickUpTime,
+      numberOfDays: formData.numberOfDays,
       dropOffLocation: formData.dropOffLocation,
       dropOffDate: formData.dropOffDate,
       dropOffTime: formData.dropOffTime,
       numberOfPassengers: formData.numberOfPassengers,
       additionalInfo: formData.additionalInfo,
+      totalAmount: formData.totalAmount
     };
 
     if (!formData.isBookingForSelf) {
@@ -128,6 +134,7 @@ export default function PassengerDetails({
     "email",
     "pickUpLocation",
     "pickUpDate",
+    "numberOfDays",
     "pickUpTime",
     "dropOffLocation",
     "dropOffDate",
@@ -178,12 +185,15 @@ export default function PassengerDetails({
           <div>
             <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
               Phone Number
+              <span className="text-xs text-gray-500 ml-2" title="Enter your 10-digit phone number">*</span>
+
             </label>
             <input
               type="number"
               id="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleChange}
+              aria-label="Phone Number"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
             />
           </div>
@@ -311,6 +321,32 @@ export default function PassengerDetails({
             />
           </div>
         </div>
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label htmlFor="numberOfDays" className="block text-sm font-medium text-gray-700">
+              Number of Days
+            </label>
+            <input
+              type="number"
+              id="numberOfDays"
+              value={formData.numberOfDays}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+            />
+          </div>
+          <div>
+            <label htmlFor="numberOfPassengers" className="block text-sm font-medium text-gray-700">
+              Number of passengers
+            </label>
+            <input
+              type="number"
+              id="numberOfPassengers"
+              value={formData.numberOfPassengers}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+            />
+          </div>
+        </div>
         <div className="mb-4">
           <p className="text-lg font-medium">Is this booking for yourself?</p>
           <div className="flex items-center space-x-4">
@@ -394,22 +430,6 @@ export default function PassengerDetails({
           </div>
         )}
         <div className="grid grid-cols-1 gap-4 mb-6">
-          <div>
-            <label htmlFor="numberOfPassengers" className="block text-sm font-medium text-gray-700">
-              Number of passengers
-            </label>
-            <select
-              id="numberOfPassengers"
-              value={formData.numberOfPassengers}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
-            >
-              <option value="">Select</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
-          </div>
           <div>
             <label htmlFor="additionalInfo" className="block text-sm font-medium text-gray-700">
               Additional Information

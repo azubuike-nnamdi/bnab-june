@@ -1,17 +1,17 @@
-"use client";
+'use client'
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { tabs } from "@/lib/data/tabs-data";
 import { DedicatedRideBookingProps, TransactionType } from "@/types/declaration";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PassengerDetails from "./passengerDetails";
 import BookingSidebar from "./bookingSidebar";
 import BookingSummary from "./bookingSummary";
+import PaymentMethod from "@/components/common/payment-method";
 import { format } from "date-fns";
 import clsx from "clsx";
-import PaymentMethod from "@/components/common/payment-method";
 
 export default function DedicatedRideBookingTab({ car }: any) {
-
   const [activeTab, setActiveTab] = useState<string>("passenger");
   const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [transactionType, setTransactionType] = useState<TransactionType>('booking');
@@ -22,7 +22,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
     email: "",
     pickUpLocation: "",
     vehicleType: 'Regular', // Default vehicle type
-    price: car?.price, // Initial price
+    price: car?.price || "0", // Initial price
     isBookingForSelf: true,
     pickUpDate: format(new Date(), "yyyy-MM-dd"),
     pickUpTime: format(new Date(), "HH:mm"),
@@ -31,11 +31,23 @@ export default function DedicatedRideBookingTab({ car }: any) {
     dropOffTime: format(new Date(), "HH:mm"),
     numberOfPassengers: "",
     additionalInfo: "",
+    numberOfDays: "",
     bookingForFirstName: "",
     bookingForLastName: "",
     bookingForEmail: "",
     bookingForPhoneNumber: "",
+    totalAmount: (parseFloat(car?.price || "0") * parseInt("0", 10)).toFixed(2), // Initialize total amount
   });
+
+  useEffect(() => {
+    // Calculate total amount based on price and number of days
+    const price = parseFloat(formData.price || "0");
+    const days = parseInt(formData.numberOfDays || "0", 10);
+    const totalAmount = (price * days).toFixed(2);
+
+    // Update formData with the new total amount
+    setFormData(prevData => ({ ...prevData, totalAmount }));
+  }, [formData.price, formData.numberOfDays, formData.totalAmount]);
 
   const handlePaymentSelect = (method: string) => {
     setPaymentMethod(method);
@@ -51,7 +63,6 @@ export default function DedicatedRideBookingTab({ car }: any) {
     setFormData(prevData => ({ ...prevData, ...updatedData }));
   };
 
-  // Control tab changes via component functions
   const goToNextTab = () => {
     if (activeTab === 'passenger' && formData.firstName && formData.lastName && formData.email && formData.phoneNumber) {
       setActiveTab('summary');
@@ -73,7 +84,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
       <div className="flex flex-col md:flex-row">
         {/* Tabs and Main Content */}
         <div className="md:w-2/3 p-4">
-          <Tabs defaultValue="passenger" value={activeTab} onValueChange={() => { }} className="w-full bg-white">
+          <Tabs defaultValue="passenger" value={activeTab} onValueChange={setActiveTab} className="w-full bg-white">
             <TabsList className="flex justify-center space-x-4 bg-white">
               {tabs.map((elm) => (
                 <TabsTrigger key={elm.id} value={elm.value} className={clsx(
@@ -95,7 +106,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
                 setActiveTab={setActiveTab}
                 onFormSubmit={handleFormSubmit}
                 onFormDataChange={handleFormDataChange}
-                goToNextTab={goToNextTab} // Function to handle moving to next tab
+                goToNextTab={goToNextTab}
               />
             </TabsContent>
 
@@ -105,8 +116,8 @@ export default function DedicatedRideBookingTab({ car }: any) {
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 formData={formData}
-                goToNextTab={goToNextTab} // Function to handle moving to next tab
-                goToPreviousTab={goToPreviousTab} // Function to handle moving to previous tab
+                goToNextTab={goToNextTab}
+                goToPreviousTab={goToPreviousTab}
               />
             </TabsContent>
 
@@ -117,7 +128,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
                 onPaymentSelect={handlePaymentSelect}
                 transactionType={transactionType}
                 formData={formData}
-                goToPreviousTab={goToPreviousTab} // Function to handle moving to previous tab
+                goToPreviousTab={goToPreviousTab}
               />
             </TabsContent>
           </Tabs>
@@ -125,7 +136,9 @@ export default function DedicatedRideBookingTab({ car }: any) {
 
         {/* Booking Sidebar */}
         <div className="md:w-1/3 p-4">
-          <BookingSidebar formData={formData} />
+          <BookingSidebar
+            formData={formData}
+          />
         </div>
       </div>
     </div>

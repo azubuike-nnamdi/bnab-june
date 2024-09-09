@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
 import { CheckoutProvider } from "./checkoutContext";
+import { DedicatedBookingProvider } from "./dedicatedRidesContext";
 
 interface TanstackProviderProps {
   children: ReactNode;
@@ -17,9 +18,11 @@ const TanstackProvider = ({ children }: TanstackProviderProps) => {
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
         <CheckoutProvider>
-          {children}
-          <ReactQueryDevtools initialIsOpen={false} />
-          <Toaster position="bottom-right" richColors />
+          <DedicatedBookingProvider>
+            {children}
+            <ReactQueryDevtools initialIsOpen={false} />
+            <Toaster position="bottom-right" richColors />
+          </DedicatedBookingProvider>
         </CheckoutProvider>
       </SessionProvider>
     </QueryClientProvider>

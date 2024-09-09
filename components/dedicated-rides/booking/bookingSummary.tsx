@@ -179,6 +179,33 @@ const BookingSummary: React.FC<SummaryProps> = ({ activeTab, setActiveTab, formD
               </div>
             </div>
 
+
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label htmlFor="numberOfDays" className="block text-sm font-medium text-gray-700">
+                  Number of Days
+                </label>
+                <input
+                  type="number"
+                  id="numberOfDays"
+                  value={formData.numberOfDays}
+                  disabled
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+                />
+              </div>
+              <div>
+                <label htmlFor="numberOfPassengers" className="block text-sm font-medium text-gray-700">
+                  Number of Passengers
+                </label>
+                <input
+                  type="number"
+                  id="numberOfPassengers"
+                  value={formData.numberOfPassengers}
+                  disabled
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+                />
+              </div>
+            </div>
             {formData.isBookingForSelf ? null : (
               <section>
                 <div className="grid md:grid-cols-2 gap-4 mb-4">
@@ -227,22 +254,7 @@ const BookingSummary: React.FC<SummaryProps> = ({ activeTab, setActiveTab, formD
                 </div>
               </section>
             )}
-            <div className="mb-3">
-              <label htmlFor="numberOfPassengers" className="block text-sm font-medium text-gray-700">
-                Number of Passengers
-              </label>
-              <select
-                id="numberOfPassengers"
-                value={formData.numberOfPassengers}
-                disabled
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
-              >
-                <option value="">Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </select>
-            </div>
+
             <div className="mb-3">
               <label htmlFor="additionalInfo" className="block text-sm font-medium text-gray-700">
                 Additional Information

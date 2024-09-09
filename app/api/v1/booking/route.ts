@@ -42,6 +42,8 @@ export async function POST(req: NextRequest) {
       bookingForPhoneNumber,
       vehicleType,
       price,
+      numberOfDays,
+      totalAmount
     } = body;
 
     // Define a type guard function for checking required fields
@@ -63,6 +65,7 @@ export async function POST(req: NextRequest) {
       "price",
       "isBookingForSelf",
       "numberOfPassengers",
+      "numberOfDays",
     ];
 
     for (const field of requiredFields) {
@@ -106,6 +109,8 @@ export async function POST(req: NextRequest) {
       vehicleType,
       price,
       numberOfPassengers,
+      numberOfDays,
+      totalAmount,
       paymentStatus: "not paid",
       additionalInfo,
       createdAt: new Date().toISOString(),
@@ -143,6 +148,8 @@ export async function POST(req: NextRequest) {
       bookingForPhoneNumber,
       vehicleType,
       price,
+      numberOfDays,
+      totalAmount,
     });
 
     await sendEmail({ to: "blessedmarcel1@gmail.com", subject: "Booking Confirmation", text: userContent });

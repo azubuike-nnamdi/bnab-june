@@ -165,7 +165,8 @@ export type DedicatedRideBookingProps = {
   numberOfPassengers?: string;
   additionalInfo?: string;
   vehicleType?: string;
-  price?: string;
+  price: string;
+  numberOfDays: string;
   isBookingForSelf: boolean;
   bookingForName?: string;
   bookingForPhone?: string;
@@ -174,6 +175,7 @@ export type DedicatedRideBookingProps = {
   bookingForLastName?: string;
   bookingForEmail?: string;
   bookingForPhoneNumber?: string;
+  totalAmount: string,
 };
 
 export type SendEmailOptions = {

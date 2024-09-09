@@ -9,7 +9,7 @@ import { DedicatedRideBookingProps } from "@/types/declaration";
 
 interface SideBarProps {
   // car: Car | null;
-  formData: DedicatedRideBookingProps; // Accept formData as a prop
+  formData: DedicatedRideBookingProps;
 }
 
 const BookingSidebar: React.FC<SideBarProps> = ({ formData }) => {
@@ -37,8 +37,12 @@ const BookingSidebar: React.FC<SideBarProps> = ({ formData }) => {
             <span className="text-base text-gray-800">{formData.dropOffLocation}</span>
           </li>
           <li className="flex justify-between items-center">
-            <span className="text-base text-gray-800">Price:</span>
-            <span className="text-base text-gray-800">{formData.price}</span>
+            <span className="text-base text-gray-800">Price per day:</span>
+            <span className="text-base text-gray-800">${formData.price}</span>
+          </li>
+          <li className="flex justify-between items-center">
+            <span className="text-base text-gray-800">Total Number of Days:</span>
+            <span className="text-base text-gray-800">{formData.numberOfDays}</span>
           </li>
         </ul>
       </div>
@@ -49,7 +53,7 @@ const BookingSidebar: React.FC<SideBarProps> = ({ formData }) => {
         <ul className="list-disc list-inside">
           <li className="flex justify-between items-center">
             <span className="text-lg font-medium text-gray-800">Total:</span>
-            <span className="text-lg font-medium text-gray-800">{formData.price}</span>
+            <span className="text-lg font-medium text-gray-800">${formData.totalAmount}</span>
           </li>
         </ul>
       </div>
