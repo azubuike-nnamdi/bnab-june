@@ -1,5 +1,6 @@
 import React from "react";
 import { DedicatedRideBookingProps } from "@/types/declaration";
+import { formatCurrency } from "@/lib/helper";
 
 
 // interface Car {
@@ -24,24 +25,24 @@ const BookingSidebar: React.FC<SideBarProps> = ({ formData }) => {
 
       <div className="mb-6">
         <ul className="list-disc list-inside">
-          <li className="flex justify-between items-center">
-            <span className="text-base text-gray-800">Selected vehicle:</span>
+          <li className="flex justify-between items-center my-2">
+            <span className="text-base text-gray-800 sm:text-xs">Selected vehicle:</span>
             <span className="text-base text-gray-800">{formData.vehicleType}</span>
           </li>
-          <li className="flex justify-between items-center">
-            <span className="text-base text-gray-800">Pickup Location:</span>
+          <li className="flex justify-between items-center my-2">
+            <span className="text-base text-gray-800 sm:text-xs">Pickup Location:</span>
             <span className="text-base text-gray-800">{formData.pickUpLocation}</span>
           </li>
-          <li className="flex justify-between items-center">
-            <span className="text-base text-gray-800">Dropoff Location:</span>
+          <li className="flex justify-between items-center my-2">
+            <span className="text-base text-gray-800 sm:text-xs">Dropoff Location:</span>
             <span className="text-base text-gray-800">{formData.dropOffLocation}</span>
           </li>
-          <li className="flex justify-between items-center">
-            <span className="text-base text-gray-800">Price per day:</span>
+          <li className="flex justify-between items-center my-2">
+            <span className="text-base text-gray-800 sm:text-xs">Price:</span>
             <span className="text-base text-gray-800">${formData.price}</span>
           </li>
-          <li className="flex justify-between items-center">
-            <span className="text-base text-gray-800">Total Number of Days:</span>
+          <li className="flex justify-between items-center my-2">
+            <span className="text-base text-gray-800 sm:text-xs">Total Number of Days:</span>
             <span className="text-base text-gray-800">{formData.numberOfDays}</span>
           </li>
         </ul>
@@ -53,7 +54,7 @@ const BookingSidebar: React.FC<SideBarProps> = ({ formData }) => {
         <ul className="list-disc list-inside">
           <li className="flex justify-between items-center">
             <span className="text-lg font-medium text-gray-800">Total:</span>
-            <span className="text-lg font-medium text-gray-800">${formData.totalAmount}</span>
+            <span className="text-lg font-medium text-gray-800">{formatCurrency(formData.totalAmount)}</span>
           </li>
         </ul>
       </div>
