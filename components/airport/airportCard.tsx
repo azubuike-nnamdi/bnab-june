@@ -14,7 +14,7 @@ export default function AirportCard() {
     <Fade direction='up' cascade triggerOnce>
       <div className='sm:p-24 p-4'>
         <h1 className='sm:text-3xl text-xl font-semibold py-3'>Book Your Airport Taxi</h1>
-        <p>Easy airport transfers to and from your accommodation</p>
+        <p>Seamless Airport Transfers for Arrival and Departure</p>
         <div className="grid sm:grid-cols-3 grid-cols-1 gap-4  sm:py-8 py-4">
           {PickUpAndDropOffData.map((pickup) => (
             <main key={pickup.id} className='text-center items-center'>

@@ -6,7 +6,7 @@ import { airportBookingLink } from "@/lib/data/breadcrumb";
 export default function page() {
   return (
     <main className="">
-      <BreadCrumb title="Easy Airport Pick Up To & From Your Accommodation" links={airportBookingLink} />
+      <BreadCrumb title="Seamless Airport Transfers for Arrival and Departure" links={airportBookingLink} />
       <AirportBooking />
       <Faq />
     </main>
