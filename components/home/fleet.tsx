@@ -88,10 +88,10 @@ export default function Fleet() {
                         />
                       </Link>
                     </div>
-                    <div className="flex items-center mb-4">
+                    {/* <div className="flex items-center mb-4">
                       <p className="font-bold mr-2">{elm.amt}</p>
                       <p className="text-gray-600">{elm.duration}</p>
-                    </div>
+                    </div> */}
                     <div className="flex justify-between">
                       <div className="flex items-center">
                         <span className="icon-circle icon-passenger"></span>
