@@ -4,18 +4,14 @@ import React, { useEffect, useState } from "react";
 import { format, parseISO, isValid } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { DedicatedRideBookingProps } from "@/types/declaration";
-
-const vehiclePrice = {
-  Regular: "500.00",
-  Comfort: "1000.00",
-  VVIP: "1500.00",
-} as const;
+import { vehiclePrice } from "@/lib/data/car-data";
 
 type CarType = keyof typeof vehiclePrice;
 
 interface PassengerDetailsProps {
   activeTab: string;
   setActiveTab: (index: string) => void;
+  numberOfPassengers: string;
   onFormSubmit: (data: DedicatedRideBookingProps) => void;
   onFormDataChange: (updatedData: Partial<DedicatedRideBookingProps>) => void;
   goToNextTab: () => void;
@@ -26,6 +22,7 @@ export default function PassengerDetails({
   setActiveTab,
   onFormSubmit,
   onFormDataChange,
+  numberOfPassengers,
   goToNextTab, // Destructure goToNextTab from props
 }: Readonly<PassengerDetailsProps>) {
 
@@ -43,14 +40,14 @@ export default function PassengerDetails({
     dropOffLocation: "",
     dropOffDate: format(new Date(), "yyyy-MM-dd"),
     dropOffTime: format(new Date(), "HH:mm"),
-    numberOfPassengers: "",
+    numberOfPassengers,
     numberOfDays: "",
     additionalInfo: "",
     bookingForFirstName: "",
     bookingForLastName: "",
     bookingForEmail: "",
     bookingForPhoneNumber: "",
-    totalAmount: "0.00",
+    totalAmount: 0.00,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -342,8 +339,9 @@ export default function PassengerDetails({
               type="number"
               id="numberOfPassengers"
               value={formData.numberOfPassengers}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+              readOnly
+              disabled
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black disabled:cursor-not-allowed"
             />
           </div>
         </div>
