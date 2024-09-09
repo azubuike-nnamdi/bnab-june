@@ -63,3 +63,12 @@ export const genId = (entropy?: TransactionIdParams['entropy'], len?: Transactio
 
   return customAlphabet(useParams.entropy, useParams.len)()
 }
+
+
+// Function to format numbers as currency
+export const formatCurrency = (amount: number) => {
+  return amount.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+};
