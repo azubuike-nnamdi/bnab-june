@@ -10,6 +10,7 @@ import BookingSummary from "./bookingSummary";
 import PaymentMethod from "@/components/common/payment-method";
 import { format } from "date-fns";
 import clsx from "clsx";
+import { vehiclePrice } from "@/lib/data/car-data";
 
 export default function DedicatedRideBookingTab({ car }: any) {
   const [activeTab, setActiveTab] = useState<string>("passenger");
@@ -22,28 +23,28 @@ export default function DedicatedRideBookingTab({ car }: any) {
     email: "",
     pickUpLocation: "",
     vehicleType: 'Regular', // Default vehicle type
-    price: car?.price || "0", // Initial price
+    price: vehiclePrice['Regular'], // Initial price
     isBookingForSelf: true,
     pickUpDate: format(new Date(), "yyyy-MM-dd"),
     pickUpTime: format(new Date(), "HH:mm"),
     dropOffLocation: "",
     dropOffDate: format(new Date(), "yyyy-MM-dd"),
     dropOffTime: format(new Date(), "HH:mm"),
-    numberOfPassengers: "",
+    numberOfPassengers: car?.passenger,
     additionalInfo: "",
     numberOfDays: "",
     bookingForFirstName: "",
     bookingForLastName: "",
     bookingForEmail: "",
     bookingForPhoneNumber: "",
-    totalAmount: (parseFloat(car?.price || "0") * parseInt("0", 10)).toFixed(2), // Initialize total amount
+    totalAmount: 0, // Initialize totalAmount as a number
   });
 
   useEffect(() => {
     // Calculate total amount based on price and number of days
     const price = parseFloat(formData.price || "0");
     const days = parseInt(formData.numberOfDays || "0", 10);
-    const totalAmount = (price * days).toFixed(2);
+    const totalAmount = price * days;
 
     // Update formData with the new total amount
     setFormData(prevData => ({ ...prevData, totalAmount }));
@@ -103,6 +104,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
             <TabsContent value="passenger" className="mt-4">
               <PassengerDetails
                 activeTab={activeTab}
+                numberOfPassengers={formData.numberOfPassengers}
                 setActiveTab={setActiveTab}
                 onFormSubmit={handleFormSubmit}
                 onFormDataChange={handleFormDataChange}
@@ -136,9 +138,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
 
         {/* Booking Sidebar */}
         <div className="md:w-1/3 p-4">
-          <BookingSidebar
-            formData={formData}
-          />
+          <BookingSidebar formData={formData} />
         </div>
       </div>
     </div>
