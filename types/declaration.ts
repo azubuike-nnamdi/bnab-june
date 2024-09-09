@@ -144,7 +144,7 @@ export type Car = {
   description: string;
   passenger: number;
   luggage: number;
-  price: number;
+  // price: number;
   carType: string;
   brand: string;
   amt: string;
@@ -162,7 +162,7 @@ export type DedicatedRideBookingProps = {
   dropOffLocation?: string;
   dropOffDate: string;
   dropOffTime: string;
-  numberOfPassengers?: string;
+  numberOfPassengers: string;
   additionalInfo?: string;
   vehicleType?: string;
   price: string;
@@ -175,7 +175,7 @@ export type DedicatedRideBookingProps = {
   bookingForLastName?: string;
   bookingForEmail?: string;
   bookingForPhoneNumber?: string;
-  totalAmount: string,
+  totalAmount: number,
 };
 
 export type SendEmailOptions = {

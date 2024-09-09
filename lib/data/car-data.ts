@@ -5,9 +5,9 @@ export const cars = [
     title: "Saloon",
     description:
       "A sophisticated exterior with smooth lines and a modern silhouette",
-    passenger: 4,
+    passenger: 3,
     luggage: 2,
-    price: 500,
+    // price: 500,
     carType: "Saloon",
     brand: "Audi",
     amt: "$500",
@@ -18,9 +18,9 @@ export const cars = [
     imgSrc: "https://bnab-june.s3.amazonaws.com/img/SUV-2.png",
     title: "SUV",
     description: "Superior off-road performance with all-wheel drive",
-    passenger: 6,
+    passenger: 5,
     luggage: 3,
-    price: 1000,
+    // price: 1000,
     carType: "SUV",
     brand: "Hatchback",
     amt: "$1,000",
@@ -31,9 +31,9 @@ export const cars = [
     imgSrc: "https://bnab-june.s3.amazonaws.com/img/minibus-2.png",
     title: "Mini Bus",
     description: "Equipped with air conditioning and infotainment system",
-    passenger: 10,
+    passenger: 15,
     luggage: 5,
-    price: 1200,
+    // price: 1200,
     carType: "Mini Bus",
     brand: "Audi",
     amt: "$1,200",
@@ -44,9 +44,9 @@ export const cars = [
     imgSrc: "https://bnab-june.s3.amazonaws.com/img/coach-2.png",
     title: "Coach",
     description: "Equipped with ABS, multiple airbags, and stability control",
-    passenger: 15,
+    passenger: 45,
     luggage: 10,
-    price: 1400,
+    // price: 1400,
     carType: "Coach",
     brand: "Hyundai",
     amt: "$1,400",
@@ -152,3 +152,10 @@ export const extras = [
     description: "A bouquet of seasonal flowers prepared by a local florist",
   },
 ];
+
+
+export const vehiclePrice = {
+  Regular: "500.00",
+  Comfort: "1000.00",
+  VVIP: "1500.00",
+} as const;
