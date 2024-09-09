@@ -6,7 +6,7 @@ export const contactCards = [
     imageSrc: "https://bnab-june.s3.amazonaws.com/img/justice-and-freedom.png",
     address: "No 5, Nii Ashong Miltse Avenue, Adjiringanor, Accra, Ghana",
     phone: "+233 24 222 2231",
-    email: "accra@example.com",
+    email: "info@hyeameha.com",
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const contactCards = [
     box: "Prempeh II Museum",
     address: "Kumasi, southern part of Ghana (Ashanti Region)",
     phone: "+233 20 455 3111",
-    email: "accra@example.com",
+    email: "info@hyeameha.com",
   },
 
   // {
