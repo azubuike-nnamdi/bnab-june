@@ -5,6 +5,7 @@ import { format, parseISO, isValid } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { DedicatedRideBookingProps } from "@/types/declaration";
 import { vehiclePrice } from "@/lib/data/car-data";
+import { genId } from "@/lib/helper";
 
 type CarType = keyof typeof vehiclePrice;
 
@@ -27,6 +28,7 @@ export default function PassengerDetails({
 }: Readonly<PassengerDetailsProps>) {
 
   const [formData, setFormData] = useState<DedicatedRideBookingProps>({
+    transactionId: "",
     firstName: "",
     lastName: "",
     phoneNumber: "",
@@ -48,6 +50,8 @@ export default function PassengerDetails({
     bookingForEmail: "",
     bookingForPhoneNumber: "",
     totalAmount: 0.00,
+    bookingType: "dedicatedRides",
+    budget: 0.00
   });
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -121,7 +125,10 @@ export default function PassengerDetails({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    const transId = genId('numeric', 25)
+
     const payload: Partial<DedicatedRideBookingProps> = {
+      transactionId: transId,
       firstName: formData.firstName,
       lastName: formData.lastName,
       phoneNumber: formData.phoneNumber,
@@ -138,7 +145,9 @@ export default function PassengerDetails({
       dropOffTime: formData.dropOffTime,
       numberOfPassengers: formData.numberOfPassengers,
       additionalInfo: formData.additionalInfo,
-      totalAmount: formData.totalAmount
+      totalAmount: formData.totalAmount,
+      bookingType: "dedicatedRides",
+      budget: formData.totalAmount
     };
 
     if (!formData.isBookingForSelf) {
