@@ -8,7 +8,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   // Ensure environment variables are set
   if (!PAYSTACK_SECRET_KEY || !HOSTNAME) {
-    return NextResponse.json({ message: 'Server configuration error: Missing Paystack credentials.' }, { status: 500 });
+    return NextResponse.json({ message: ' Missing  credentials.' }, { status: 500 });
   }
 
   const { email, amount, reference, currency } = await req.json();
