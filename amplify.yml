@@ -22,7 +22,7 @@ frontend:
         - echo "SMTP_FROM=$SMTP_FROM" >> .env
         - echo "SMTP_TO=$SMTP_TO" >> .env
         - echo "PAYSTACK_SECRET_KEY=$PAYSTACK_SECRET_KEY" >> .env
-        - echo "PAYSTACK_HOSTNAME:$PAYSTACK_HOSTNAME" >> .env
+        - echo "PAYSTACK_HOSTNAME=$PAYSTACK_HOSTNAME" >> .env
         - npx pnpm run build
   artifacts:
     baseDirectory: .next
