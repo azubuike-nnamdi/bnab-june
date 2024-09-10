@@ -119,6 +119,7 @@ export type AirportBookingData = {
 }
 
 export type AccommodationBookingType = {
+  transactionId: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -134,6 +135,7 @@ export type AccommodationBookingType = {
   forBookingFirstName?: string,
   forBookingLastName?: string;
   forBookingEmail?: string;
+  bookingType: string;
   forBookingPhoneNumber?: string;
 }
 
@@ -151,20 +153,21 @@ export type Car = {
   duration: string;
 };
 
-export type DedicatedRideBookingProps = {
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
-  email?: string;
-  pickUpLocation?: string;
+export type DedicatedRidesBooking = {
+  transactionId: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  pickUpLocation: string;
   pickUpDate: string;
   pickUpTime: string;
-  dropOffLocation?: string;
+  dropOffLocation: string;
   dropOffDate: string;
   dropOffTime: string;
   numberOfPassengers: string;
   additionalInfo?: string;
-  vehicleType?: string;
+  vehicleType: string;
   price: string;
   numberOfDays: string;
   isBookingForSelf: boolean;
@@ -176,6 +179,35 @@ export type DedicatedRideBookingProps = {
   bookingForEmail?: string;
   bookingForPhoneNumber?: string;
   totalAmount: number,
+  bookingType: string;
+  budget: number;
+  createdAt: string;
+}
+export type DedicatedRideBookingProps = {
+  transactionId: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  pickUpLocation: string;
+  pickUpDate: string;
+  pickUpTime: string;
+  dropOffLocation: string;
+  dropOffDate: string;
+  dropOffTime: string;
+  numberOfPassengers: string;
+  additionalInfo: string;
+  vehicleType: string;
+  price: string;
+  numberOfDays: string;
+  isBookingForSelf: boolean;
+  bookingForFirstName: string;
+  bookingForLastName: string;
+  bookingForEmail: string;
+  bookingForPhoneNumber: string;
+  totalAmount: number,
+  bookingType: string;
+  budget: number;
 };
 
 export type SendEmailOptions = {
@@ -287,3 +319,13 @@ export type TransactionDataMap = {
   booking: DedicatedRideBookingProps
   ticket: TicketBookingFormDataProps
 };
+
+export interface TransactionData {
+  transactionId: string;
+  firstName: string;
+  lastName: string;
+  bookingType: string;
+  email: string;
+  phoneNumber: string;
+  budget: number;
+}

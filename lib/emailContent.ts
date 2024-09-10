@@ -1,6 +1,18 @@
 import { DedicatedRideBookingProps } from "@/types/declaration";
 
-export const getEmailContent = (formData: DedicatedRideBookingProps) => {
+type emailProps = {
+  firstName: string;
+  lastName: string;
+  pickUpLocation: string
+  pickUpDate: string
+  pickUpTime: string
+  dropOffLocation: string
+  dropOffDate: string
+  dropOffTime: string
+  totalAmount: number;
+}
+
+export const getEmailContent = (formData: emailProps) => {
   const {
     firstName,
     lastName,
@@ -10,6 +22,7 @@ export const getEmailContent = (formData: DedicatedRideBookingProps) => {
     dropOffLocation,
     dropOffDate,
     dropOffTime,
+    totalAmount
   } = formData;
 
   // Ensure the dates and times are valid
@@ -23,7 +36,7 @@ export const getEmailContent = (formData: DedicatedRideBookingProps) => {
   const userContent = `
     Hi ${firstName},
 
-    Your booking has been confirmed.
+    Your booking with the amount $${totalAmount} has been confirmed.
     Pick-Up Location: ${pickUpLocation}
     Pick-Up Date: ${pickUpDateTime.toLocaleDateString()}
     Pick-Up Time: ${pickUpDateTime.toLocaleTimeString()}
