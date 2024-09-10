@@ -2,35 +2,31 @@ import https from 'https';
 import { NextRequest, NextResponse } from 'next/server';
 
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
-const HOSTNAME = process.env.PAYSTACK_HOSTNAME
+const HOSTNAME = process.env.PAYSTACK_HOSTNAME;
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
 
   // Ensure environment variables are set
   if (!PAYSTACK_SECRET_KEY || !HOSTNAME) {
     return NextResponse.json({ message: 'Server configuration error: Missing Paystack credentials.' }, { status: 500 });
-  }
-  // Ensure the request is a POST method
-  if (req.method !== 'POST') {
-    return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
   }
 
   const { email, amount, reference, currency } = await req.json();
 
   // Check if email and amount are provided
   if (!email || !amount || !reference) {
-    return NextResponse.json({ message: 'Email and amount are required' }, { status: 400 });
+    return NextResponse.json({ message: 'Email, amount, and reference are required' }, { status: 400 });
   }
 
   const params = JSON.stringify({
     reference,
     email,
     amount,
-    // currency
+    currency, // Uncomment if you want to include currency
   });
 
   const options = {
-    hostname: `${HOSTNAME}`,
+    hostname: HOSTNAME,
     port: 443,
     path: '/transaction/initialize',
     method: 'POST',
@@ -40,43 +36,40 @@ export async function POST(req: NextRequest) {
     },
   };
 
-  return new Promise((resolve, reject) => {
-    const paystackReq = https.request(options, (paystackRes) => {
-      let data = '';
+  try {
+    const paystackResponse = await new Promise<{ statusCode: number; body: string }>((resolve, reject) => {
+      const req = https.request(options, (res) => {
+        let data = '';
 
-      // Listen for data chunks
-      paystackRes.on('data', (chunk) => {
-        data += chunk;
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        res.on('end', () => {
+          resolve({ statusCode: res.statusCode || 500, body: data });
+        });
       });
 
-      // When response ends, parse and return the result
-      paystackRes.on('end', () => {
-        try {
-          const responseData = JSON.parse(data);
-
-          if (paystackRes.statusCode === 200) {
-            resolve(NextResponse.json(responseData, { status: 200 }));
-          } else {
-            resolve(
-              NextResponse.json(
-                { message: responseData.message || 'An error occurred while processing your request.' },
-                { status: paystackRes.statusCode || 500 }
-              )
-            );
-          }
-        } catch (error) {
-          resolve(NextResponse.json({ message: 'Error parsing Paystack response' }, { status: 500 }));
-        }
+      req.on('error', (error) => {
+        reject(error);
       });
+
+      req.write(params);
+      req.end();
     });
 
-    // Handle request errors
-    paystackReq.on('error', (error) => {
-      resolve(NextResponse.json({ message: `Paystack request failed: ${error.message}` }, { status: 500 }));
-    });
+    const responseData = JSON.parse(paystackResponse.body);
 
-    // Write the request parameters and end the request
-    paystackReq.write(params);
-    paystackReq.end();
-  });
+    if (paystackResponse.statusCode === 200) {
+      return NextResponse.json(responseData, { status: 200 });
+    } else {
+      return NextResponse.json(
+        { message: responseData.message || 'An error occurred while processing your request.' },
+        { status: paystackResponse.statusCode }
+      );
+    }
+
+  } catch (error) {
+    return NextResponse.json({ message: `Paystack request failed: ${(error as Error).message}` }, { status: 500 });
+  }
 }
