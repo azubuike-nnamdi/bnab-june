@@ -50,8 +50,36 @@ export default function PassengerDetails({
     totalAmount: 0.00,
   });
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    // Reset error message when the number of passengers changes
+    setErrorMessage(null);
+  }, [formData.numberOfPassengers]);
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
+
+    const maxPassengers = Number(numberOfPassengers); // Set your default maximum number of passengers
+
+    if (id === "numberOfPassengers") {
+      const number = parseInt(value, 10);
+
+      if (number > maxPassengers) {
+        // Show the error message without updating formData unnecessarily
+        setErrorMessage("Passenger number has exceeded the maximum allowed.");
+      } else {
+        setErrorMessage(null); // Clear the error message if the number is valid
+
+        // Update formData only when the value is within the valid range
+        setFormData((prevData) => ({ ...prevData, numberOfPassengers: value }));
+      }
+
+      return; // Exit early so other state changes don't happen
+    }
+
 
     if (id === "vehicleType") {
       const selectedPrice = vehiclePrice[value as CarType];
@@ -182,8 +210,6 @@ export default function PassengerDetails({
           <div>
             <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
               Phone Number
-              <span className="text-xs text-gray-500 ml-2" title="Enter your 10-digit phone number">*</span>
-
             </label>
             <input
               type="number"
@@ -331,18 +357,19 @@ export default function PassengerDetails({
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
             />
           </div>
-          <div>
+          <div className="mb-6">
             <label htmlFor="numberOfPassengers" className="block text-sm font-medium text-gray-700">
-              Number of passengers
+              Number of Passengers
             </label>
             <input
               type="number"
               id="numberOfPassengers"
               value={formData.numberOfPassengers}
-              readOnly
-              disabled
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black disabled:cursor-not-allowed"
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
             />
+            <span className="text-xs text-gray-400">The maximum number of passenger for this  vehicle is {numberOfPassengers}</span>
+            {errorMessage && <p className="text-red-500 mt-2 text-xs">{errorMessage}</p>}
           </div>
         </div>
         <div className="mb-4">
