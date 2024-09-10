@@ -4,7 +4,7 @@ import { options } from "../../auth/[...nextauth]/options";
 import clientPromise from "@/lib/db";
 import { getEmailContent } from "@/lib/emailContent";
 import { sendEmail } from "@/lib/sendEmail";
-import { DedicatedRideBookingProps } from "@/types/declaration";
+import { DedicatedRidesBooking } from "@/types/declaration";
 import { formatDate, formatTime } from "@/lib/helper";
 
 export async function POST(req: NextRequest) {
@@ -20,9 +20,10 @@ export async function POST(req: NextRequest) {
 
   try {
     // Parse booking data from the request body
-    const body: DedicatedRideBookingProps = await req.json();
+    const body: DedicatedRidesBooking = await req.json();
 
     const {
+      transactionId,
       firstName,
       lastName,
       phoneNumber,
@@ -43,6 +44,8 @@ export async function POST(req: NextRequest) {
       vehicleType,
       price,
       numberOfDays,
+      budget,
+      bookingType,
       totalAmount
     } = body;
 
@@ -50,7 +53,7 @@ export async function POST(req: NextRequest) {
     const isDefined = (value: any): boolean => value !== undefined && value !== null && value !== '';
 
     // Validate required fields
-    const requiredFields: Array<keyof DedicatedRideBookingProps> = [
+    const requiredFields: Array<keyof DedicatedRidesBooking> = [
       "firstName",
       "lastName",
       "phoneNumber",
@@ -94,7 +97,8 @@ export async function POST(req: NextRequest) {
 
 
     // Create a new booking object
-    const newBooking: DedicatedRideBookingProps & { createdAt: string } = {
+    const newBooking: DedicatedRidesBooking = {
+      transactionId,
       firstName,
       lastName,
       phoneNumber,
@@ -113,6 +117,8 @@ export async function POST(req: NextRequest) {
       totalAmount,
       paymentStatus: "not paid",
       additionalInfo,
+      budget,
+      bookingType,
       createdAt: new Date().toISOString(),
     };
 
@@ -131,25 +137,13 @@ export async function POST(req: NextRequest) {
     const { userContent, adminContent } = getEmailContent({
       firstName,
       lastName,
-      phoneNumber,
-      email,
       pickUpLocation,
       pickUpDate,
       pickUpTime,
       dropOffLocation,
       dropOffDate,
       dropOffTime,
-      isBookingForSelf,
-      numberOfPassengers,
-      additionalInfo,
-      bookingForFirstName,
-      bookingForLastName,
-      bookingForEmail,
-      bookingForPhoneNumber,
-      vehicleType,
-      price,
-      numberOfDays,
-      totalAmount,
+      totalAmount
     });
 
     await sendEmail({ to: "blessedmarcel1@gmail.com", subject: "Booking Confirmation", text: userContent });
