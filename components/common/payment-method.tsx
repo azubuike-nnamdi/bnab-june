@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 import { CreditCard } from 'lucide-react';
 import { Button } from '../ui/button';
 import clsx from 'clsx';
-import { PaymentMethodProps } from '@/types/declaration';
+import { PaymentMethodProps, TransactionData } from '@/types/declaration';
 import { toast } from 'sonner';
 import { useSubmitTicket } from '@/hooks/mutations/useSubmitTicket';
 import { useSubmitTransaction } from '@/hooks/mutations/useSubmitTransaction';
+import { useSaveTransaction } from '@/hooks/mutations/useSaveTransaction';
 
 const paymentMethods = [
   { id: 1, method: 'Credit Card', icon: <CreditCard /> },
@@ -20,12 +21,14 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData
 
 
   const { handleSubmitTransaction, isPending } = useSubmitTransaction(transactionType);
+  const { handleSaveTransaction, isPending: isSavingTransaction } = useSaveTransaction();
 
 
   const handleMethodSelect = (method: string) => {
     setSelectedMethod(method);
     onPaymentSelect(method);
   };
+
 
   const handlePayment = () => {
     if (!selectedMethod) {
@@ -37,7 +40,10 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData
       return;
     }
 
-    toast.warning("Feature not available at the moment");
+    handleSaveTransaction(formData as any)
+
+
+    // toast.warning("Feature not available at the moment");
   };
 
   return (
@@ -88,7 +94,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ onPaymentSelect, formData
 
       <div className="mt-4">
         <Button
-          loading={isPending}
+          loading={isPending || isSavingTransaction}
           loadingText="Processing..."
           type="button"
           onClick={handlePayment}

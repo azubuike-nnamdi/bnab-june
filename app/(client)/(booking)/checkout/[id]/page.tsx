@@ -2,8 +2,9 @@
 
 import ReusablePaymentMethod from "@/components/common/reusablePaymentMethod";
 import { useCheckoutContext } from "@/context/checkoutContext"
+import { useSaveTransaction } from "@/hooks/mutations/useSaveTransaction";
 import { useSubmitTransaction } from "@/hooks/mutations/useSubmitTransaction";
-import { CheckoutPageProps } from "@/types/declaration";
+import { CheckoutPageProps, TransactionData } from "@/types/declaration";
 import { CreditCard } from "lucide-react";
 import { toast } from "sonner";
 
@@ -12,6 +13,7 @@ export default function Page({ params }: Readonly<CheckoutPageProps>) {
   const transactionType = params.id
   const { checkout } = useCheckoutContext();
   const { handleSubmitTransaction, isPending } = useSubmitTransaction(transactionType);
+  const { handleSaveTransaction, isPending: isSavingTransaction } = useSaveTransaction();
 
   const handlePaymentSelect = (method: string) => {
     console.log('Selected payment method:', method);
@@ -19,12 +21,14 @@ export default function Page({ params }: Readonly<CheckoutPageProps>) {
 
   const formData = checkout;
   const handleSubmitPayment = async (selectedMethod: string) => {
+
     if (selectedMethod === 'Pay Later') {
       if (formData) {
         handleSubmitTransaction(formData);
       }
     } else {
-      toast.warning('Feature not available at the moment');
+      // toast.warning('Feature not available at the moment');
+      handleSaveTransaction(formData as any)
     }
 
   };
@@ -35,7 +39,7 @@ export default function Page({ params }: Readonly<CheckoutPageProps>) {
         onPaymentSelect={handlePaymentSelect}
         onSubmitPayment={handleSubmitPayment}
         formData={formData}
-        loading={isPending}
+        loading={isPending || isSavingTransaction}
         loadingText="Processing..."
       />
     </main>

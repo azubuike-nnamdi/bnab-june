@@ -16,6 +16,7 @@ import { AccommodationBookingType, TransactionType } from "@/types/declaration";
 import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { accommodationOptions, budgetOptions } from "@/lib/data/accommodation";
+import { genId } from "@/lib/helper";
 
 // Define schemas with common fields and additional fields
 const commonFieldsSchema = z.object({
@@ -132,7 +133,9 @@ export default function AccommodationBookingForm() {
   const onSubmit = (data: BookingFormInputs) => {
     setTransactionType("accommodation");
 
+    const transId = genId('numeric', 24)
     const payload: AccommodationBookingType = {
+      transactionId: transId,
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
@@ -145,6 +148,7 @@ export default function AccommodationBookingForm() {
       isBookingForSelf: data.isBookingForSelf,
       departureDate: data.departureDate,
       numberOfDays: numberOfDays ?? 0,
+      bookingType: transactionType,
       // Conditionally include fields for non-self booking
       ...(data.isBookingForSelf ? {} : {
         forBookingFirstName: data.forBookingFirstName,

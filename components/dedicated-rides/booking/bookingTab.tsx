@@ -17,6 +17,7 @@ export default function DedicatedRideBookingTab({ car }: any) {
   const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [transactionType, setTransactionType] = useState<TransactionType>('booking');
   const [formData, setFormData] = useState<DedicatedRideBookingProps>({
+    transactionId: "",
     firstName: "",
     lastName: "",
     phoneNumber: "",
@@ -38,6 +39,8 @@ export default function DedicatedRideBookingTab({ car }: any) {
     bookingForEmail: "",
     bookingForPhoneNumber: "",
     totalAmount: 0, // Initialize totalAmount as a number
+    bookingType: "dedicatedRides",
+    budget: 0,
   });
 
   useEffect(() => {
@@ -47,8 +50,8 @@ export default function DedicatedRideBookingTab({ car }: any) {
     const totalAmount = price * days;
 
     // Update formData with the new total amount
-    setFormData(prevData => ({ ...prevData, totalAmount }));
-  }, [formData.price, formData.numberOfDays, formData.totalAmount]);
+    setFormData(prevData => ({ ...prevData, totalAmount, budget: totalAmount }));
+  }, [formData.price, formData.numberOfDays, formData.totalAmount, formData.budget]);
 
   const handlePaymentSelect = (method: string) => {
     setPaymentMethod(method);
