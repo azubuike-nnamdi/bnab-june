@@ -18,11 +18,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ message: 'Email, amount, and reference are required' }, { status: 400 });
   }
 
+  const convertedAmount = amount * 100;
+
   const params = JSON.stringify({
     reference,
     email,
-    amount,
-    currency, // Uncomment if you want to include currency
+    amount: convertedAmount,
+    currency,
   });
 
   const options = {
@@ -46,7 +48,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         });
 
         res.on('end', () => {
-          resolve({ statusCode: res.statusCode || 500, body: data });
+          resolve({ statusCode: res.statusCode ?? 500, body: data });
         });
       });
 
