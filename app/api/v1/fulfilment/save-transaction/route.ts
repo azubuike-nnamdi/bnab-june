@@ -4,8 +4,8 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  //check user session
-  const session = await getServerSession(options)
+  // Check user session
+  const session = await getServerSession(options);
 
   // if user is not logged in, return unauthorized response
   // if (!session) {
@@ -14,9 +14,8 @@ export async function POST(req: NextRequest) {
   //   });
   // }
 
-  // if user is logged in, continue to process the request
   try {
-    const body = await req.json()
+    const body = await req.json();
     const {
       transactionId,
       firstName,
@@ -25,10 +24,9 @@ export async function POST(req: NextRequest) {
       email,
       phoneNumber,
       budget
-    } = body
+    } = body;
 
-
-    //validate required fields
+    // Validate required fields
     const requiredFields = [
       "transactionId",
       "firstName",
@@ -37,7 +35,7 @@ export async function POST(req: NextRequest) {
       "email",
       "phoneNumber",
       "budget"
-    ]
+    ];
 
     for (const field of requiredFields) {
       if (!body[field]) {
@@ -47,12 +45,22 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    //connect to database
+    // Connect to database
     const client = await clientPromise;
     const db = client.db();
-    const payment = db.collection("save-transaction");
+    const paymentCollection = db.collection("save-transaction");
 
-    //process the request data here...
+    // Check if the transactionId already exists
+    const existingTransaction = await paymentCollection.findOne({ transactionId });
+
+    if (existingTransaction) {
+      return new NextResponse(
+        JSON.stringify({ message: 'Transaction with this ID already exists' }),
+        { status: 409 } // 409 Conflict status
+      );
+    }
+
+    // Process the request data and insert the new record
     const newPayment = {
       transactionId,
       firstName,
@@ -65,7 +73,7 @@ export async function POST(req: NextRequest) {
       // createdBy: session.user.id
     };
 
-    await payment.insertOne(newPayment);
+    await paymentCollection.insertOne(newPayment);
 
     return new NextResponse(JSON.stringify({ message: 'Transaction saved successfully' }), {
       status: 201,
