@@ -23,7 +23,7 @@ export const useSaveTransaction = () => {
         email: transaction.email,
         amount: transaction.budget,
         reference: transaction.transactionId,
-        // currency: "USD",
+        currency: "GHS",
       });
 
       return { saveResponse: saveResponse.data, paystackResponse: paystackResponse.data };
@@ -37,7 +37,7 @@ export const useSaveTransaction = () => {
         if (paystackResponse?.data?.authorization_url) {
           const paystackUrl = paystackResponse.data.authorization_url;
 
-          toast.success("Redirecting to Paystack for payment...");
+          toast.success("Redirecting you to complete payment...");
           window.location.href = paystackUrl;
         } else {
           toast.error("Failed to initialize Paystack payment");
