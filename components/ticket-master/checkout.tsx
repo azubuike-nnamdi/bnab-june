@@ -4,12 +4,7 @@ import { CheckoutProps, TicketBookingFormDataProps } from "@/types/declaration";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { genId } from "@/lib/helper";
-
-const ticketPrices = {
-  Regular: "500.00",
-  VIP: "1000.00",
-  VVIP: "1500.00",
-} as const;
+import { ticketPrices } from "@/lib/data/data";
 
 // a union type that includes the possible values for ticketType and use it to type the value:
 type TicketType = keyof typeof ticketPrices; // 'Regular' | 'VIP' | 'VVIP'
@@ -21,6 +16,7 @@ export default function Checkout({
   onFormSubmit,
 }: Readonly<CheckoutProps>) {
   const [formData, setFormData] = useState<TicketBookingFormDataProps>({
+    transactionId: "",
     firstName: '',
     lastName: '',
     phoneNumber: '',
@@ -32,6 +28,8 @@ export default function Checkout({
     forBookingLastName: '',
     forBookingEmail: '',
     forBookingPhoneNumber: '',
+    bookingType: "ticket-master",
+    budget: ticketPrices['Regular'],
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -55,8 +53,14 @@ export default function Checkout({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const transID = genId('numeric', 24);
-    onFormSubmit({ ...formData, transID });
+    const transactionId = genId('numeric', 24); // Generate transactionId
+    const updatedFormData = {
+      ...formData,
+      transactionId,
+      bookingType: formData.bookingType,
+      budget: formData.price,
+    };
+    onFormSubmit(updatedFormData);
     setActiveTabIndex(activeTabIndex + 1);
   };
 

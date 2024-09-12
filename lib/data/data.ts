@@ -175,6 +175,13 @@ export const airport = [
   },
 ];
 
+
+export const ticketPrices = {
+  Regular: "500.00",
+  VIP: "1000.00",
+  VVIP: "1500.00",
+} as const;
+
 export const accommodation = [
   {
     id: 1,

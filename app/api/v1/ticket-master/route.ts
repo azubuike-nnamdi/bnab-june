@@ -3,7 +3,7 @@ import { options } from "../../auth/[...nextauth]/options";
 import clientPromise from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { genId } from "@/lib/helper";
-import { TicketBookingFormDataProps } from "@/types/declaration";
+import { TicketBookingProps } from "@/types/declaration";
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(options);
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     const ticketBooking = db.collection("ticket-booking");
 
     // Create a new ticket object
-    const ticket: TicketBookingFormDataProps = {
+    const ticket: TicketBookingProps = {
       id: bookingId,
       firstName,
       lastName,
@@ -110,6 +110,7 @@ export async function POST(req: NextRequest) {
     });
   }
 }
+
 
 
 export async function GET(req: NextRequest) {

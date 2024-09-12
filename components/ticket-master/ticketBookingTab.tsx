@@ -5,6 +5,7 @@ import { TicketBookingFormDataProps, TicketEvent, TransactionType } from '@/type
 import TicketSummary from './ticketSummary';
 import { CreditCard, Truck } from 'lucide-react';
 import PaymentMethod from '../common/payment-method';
+import { ticketPrices } from '@/lib/data/data';
 
 interface TicketBookingTabProps {
   event: TicketEvent;
@@ -36,18 +37,21 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [transactionType, setTransactionType] = useState<TransactionType>('ticket');
   const [formData, setFormData] = useState<TicketBookingFormDataProps>({
+    transactionId: "",
     firstName: '',
     lastName: '',
     phoneNumber: '',
     email: '',
     event: event,
     ticketType: 'Regular',
-    price: event.price,
+    price: ticketPrices['Regular'],
     isBookingForSelf: true,
     forBookingFirstName: '',
     forBookingLastName: '',
     forBookingEmail: '',
     forBookingPhoneNumber: '',
+    bookingType: "ticket-master",
+    budget: ticketPrices['Regular'],
   });
 
   const [paymentMethod, setPaymentMethod] = useState<string>('');
