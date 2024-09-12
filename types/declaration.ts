@@ -79,7 +79,25 @@ export type TicketEvent = {
   time: string;
   phoneNo: string;
 }
+
+export type TicketBookingProps = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  event: string;
+  paymentStatus: "not paid" | "paid";
+  createdAt: Date;
+  updatedAt: Date;
+  isBookingForSelf: boolean;
+  forBookingFirstName?: string;
+  forBookingLastName?: string;
+  forBookingEmail?: string;
+  forBookingPhoneNumber?: string;
+}
 export type TicketBookingFormDataProps = {
+  transactionId: string;
   id?: string;
   firstName: string;
   lastName: string;
@@ -88,7 +106,7 @@ export type TicketBookingFormDataProps = {
   event?: TicketEvent
   transID?: string;
   ticketType?: string;
-  price?: string
+  price: string
   isBookingForSelf: boolean;
   forBookingFirstName?: string;
   forBookingLastName?: string;
@@ -97,6 +115,8 @@ export type TicketBookingFormDataProps = {
   paymentStatus?: string;
   createdAt?: Date;
   updatedAt?: Date;
+  bookingType: string;
+  budget: string;
 }
 
 export type AirportBookingData = {
