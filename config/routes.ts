@@ -7,6 +7,7 @@ const CONTACT_URL: string = "/contact"
 
 // DASHBOARD_URL constants
 const DASHBOARD_URL: string = "/dashboard";
+const BOOKING_URL: string = `${DASHBOARD_URL}/bookings`
 const CUSTOMER_URL: string = `${DASHBOARD_URL}/customers`
 const SETTING_URL: string = `${DASHBOARD_URL}/settings`
 const ADMINCONTACT_URL: string = `${DASHBOARD_URL}/contact-info`
@@ -39,6 +40,7 @@ export {
 
   // DASHBOARD_URL constants
   DASHBOARD_URL,
+  BOOKING_URL,
   CUSTOMER_URL,
   ADMINCONTACT_URL,
   SETTING_URL,

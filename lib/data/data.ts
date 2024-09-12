@@ -1,6 +1,6 @@
 import { Home, Phone, Settings, User } from "lucide-react";
 
-import { ABOUT_URL, ACCOMMODATION_URL, ADMINCONTACT_URL, AIRPORT_PICK_UP_DROP_OFF_URL, CONTACT_URL, CUSTOMER_URL, DASHBOARD_URL, DEDICATED_RIDES_URL, HOME_URL, SERVICES_URL, SETTING_URL, TICKET_MASTER_URL, TRAINING_URL } from "@/config/routes";
+import { ABOUT_URL, ACCOMMODATION_URL, ADMINCONTACT_URL, AIRPORT_PICK_UP_DROP_OFF_URL, BOOKING_URL, CONTACT_URL, CUSTOMER_URL, DASHBOARD_URL, DEDICATED_RIDES_URL, HOME_URL, SERVICES_URL, SETTING_URL, TICKET_MASTER_URL, TRAINING_URL } from "@/config/routes";
 
 export const menuItems = [
   {
@@ -299,15 +299,15 @@ export const BackOfficeNavItem = [
     tooltip: "Dashboard",
     title: 'Dashboard'
   },
-  // {
-  //   id: 2,
-  //   href: CUSTOMER_URL,
-  //   icon: User,
-  //   tooltip: "Customers",
-  //   title: 'Customers'
-  // },
   {
     id: 2,
+    href: BOOKING_URL,
+    icon: User,
+    tooltip: "Bookings",
+    title: 'Bookings'
+  },
+  {
+    id: 3,
     href: ADMINCONTACT_URL,
     icon: Phone,
     tooltip: "Contact",
