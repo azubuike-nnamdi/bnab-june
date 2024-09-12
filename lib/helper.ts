@@ -72,3 +72,10 @@ export const formatCurrency = (amount: number) => {
     currency: "USD",
   });
 };
+
+
+export function checkEnvVariable(name: string): void {
+  if (!process.env[name]) {
+    throw new Error(`Invalid/Missing environment variable: "${name}"`)
+  }
+}
