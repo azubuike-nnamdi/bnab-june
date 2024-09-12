@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { UserChart } from "@/components/back-office/dashboard/piechart";
+import { UserChart } from "@/components/back-office/dashboard/users/userChart";
 import { UserTable } from "@/components/back-office/dashboard/users/userTable";
 
 export const metadata: Metadata = {
