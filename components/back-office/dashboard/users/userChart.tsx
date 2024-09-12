@@ -31,7 +31,7 @@ export function UserChart() {
 
   // Create chart data with a single data point for total users
   const chartData = [
-    { name: "Users", value: totalUsers, fill: "var(--color-primary)" }
+    { name: "Users", value: totalUsers, fill: "var(--color-secondary)" }
   ];
 
   const totalVisitors = React.useMemo(() => {
@@ -43,8 +43,7 @@ export function UserChart() {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>User Chart - Total Users</CardTitle>
-        <CardDescription>Showing total number of users</CardDescription>
+        <CardTitle>Total Users</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
