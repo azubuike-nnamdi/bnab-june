@@ -126,8 +126,13 @@ export default function ContactForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isPending} className="w-full">
-            {isPending ? 'Submitting...' : "Submit"}
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="w-full"
+            loadingText="Submitting..."
+            loading={isPending}>
+            Submit
           </Button>
         </form>
       </Form>
