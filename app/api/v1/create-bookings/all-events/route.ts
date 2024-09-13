@@ -26,6 +26,7 @@ export async function POST(req: Request) {
       time,
       image: base64Image,
       createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     return NextResponse.json({ message: 'Event saved successfully', result }, { status: 201 });
