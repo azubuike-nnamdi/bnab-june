@@ -53,8 +53,8 @@ export default function FormTemplate({
 
     if (selectedFile) {
       // Check if the file type is PNG, JPG, or SVG
-      if (!['image/png', 'image/jpeg', 'image/svg+xml'].includes(selectedFile.type)) {
-        toast.error('Invalid file type. Only PNG, JPG, and SVG files are allowed.');
+      if (!['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'].includes(selectedFile.type)) {
+        toast.error('Invalid file type. Only PNG, JPG,  WEBP, and SVG files are allowed.');
         setBase64Image(null); // Reset the image state if the type is invalid
         return;
       }
