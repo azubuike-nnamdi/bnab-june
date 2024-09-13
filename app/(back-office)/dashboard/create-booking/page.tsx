@@ -1,4 +1,5 @@
 import CreateEventForm from "@/components/back-office/dashboard/bookings/createEventForm";
+import CreateRideForm from "@/components/back-office/dashboard/bookings/createRideForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Page() {
@@ -18,7 +19,7 @@ export default function Page() {
               <CreateEventForm />
             </TabsContent>
             <TabsContent value="dedicated-rides">
-              lorem
+              <CreateRideForm />
             </TabsContent>
           </Tabs>
         </div>
