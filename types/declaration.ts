@@ -360,3 +360,14 @@ export interface Event {
   createdAt: Date;
   updateAt: Date;
 }
+
+
+export interface CreateRide {
+  title: string;
+  description: string;
+  passenger: string;
+  luggage: string;
+  file: string | null;
+  createdAt: Date;
+  updateAt: Date;
+}

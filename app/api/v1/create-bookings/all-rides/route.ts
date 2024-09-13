@@ -11,27 +11,27 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     // Ensure all required fields are provided
-    const { title, description, address, date, time, base64Image } = body;
+    const { title, description, passenger, luggage, base64Image } = body;
 
-    if (!title || !description || !address || !date || !time || !base64Image) {
+    if (!title || !description || !passenger || !luggage || !base64Image) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
     }
 
     // Insert the event data into the `save-ticketmaster-event` collection
-    const result = await db.collection('all-ticketmaster-event').insertOne({
+    const result = await db.collection('all-rides').insertOne({
       title,
       description,
-      address,
-      date,
-      time,
+      passenger,
+      luggage,
       image: base64Image,
       createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
-    return NextResponse.json({ message: 'Event saved successfully', result }, { status: 201 });
+    return NextResponse.json({ message: 'Rides created successfully', result }, { status: 201 });
   } catch (error) {
     console.error('Error saving event:', error);
-    return NextResponse.json({ message: 'Error saving event', error }, { status: 500 });
+    return NextResponse.json({ message: 'Error creating rides', error }, { status: 500 });
   }
 }
 
@@ -42,7 +42,7 @@ export async function GET(req: Request) {
     const db = client.db();
 
     // Fetch all events from the `all-ticketmaster-event` collection
-    const events = await db.collection('all-ticketmaster-event').find({}).toArray();
+    const events = await db.collection('all-rides').find({}).toArray();
 
     return NextResponse.json({ events }, { status: 200 });
   } catch (error) {
