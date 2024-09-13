@@ -10,6 +10,7 @@ const DASHBOARD_URL: string = "/dashboard";
 const BOOKING_URL: string = `${DASHBOARD_URL}/bookings`
 const CUSTOMER_URL: string = `${DASHBOARD_URL}/customers`
 const SETTING_URL: string = `${DASHBOARD_URL}/settings`
+const CREATE_BOOKING_URL: string = `${DASHBOARD_URL}/create-booking`
 const ADMINCONTACT_URL: string = `${DASHBOARD_URL}/contact-info`
 //Booking journey
 const TICKET_MASTER_URL: string = '/ticket-master'
@@ -43,5 +44,6 @@ export {
   BOOKING_URL,
   CUSTOMER_URL,
   ADMINCONTACT_URL,
+  CREATE_BOOKING_URL,
   SETTING_URL,
 }

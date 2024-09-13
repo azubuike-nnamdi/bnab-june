@@ -31,7 +31,7 @@ export function UserChart() {
 
   // Create chart data with a single data point for total users
   const chartData = [
-    { name: "Users", value: totalUsers, fill: "var(--color-secondary)" }
+    { name: "Users", value: totalUsers, fill: "var(--color-chrome)" }
   ];
 
   const totalVisitors = React.useMemo(() => {

@@ -349,3 +349,14 @@ export interface TransactionData {
   phoneNumber: string;
   budget: number;
 }
+
+export interface Event {
+  title: string;
+  description: string;
+  address: string;
+  date: string; // ISO date string (e.g., '2024-01-01')
+  time: string; // Time string (e.g., '12:00')
+  file: string | null; // This could be a URL or file path after uploading
+  createdAt: Date;
+  updateAt: Date;
+}
