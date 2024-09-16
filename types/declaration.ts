@@ -371,3 +371,7 @@ export interface CreateRide {
   createdAt: Date;
   updateAt: Date;
 }
+
+export type thankYouPropType = {
+  status: string;
+}
