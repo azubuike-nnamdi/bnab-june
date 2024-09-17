@@ -81,8 +81,18 @@ export function checkEnvVariable(name: string): void {
 }
 
 
-export const sanitize = (string: string): string => {
-  const regex = /\/^[0-9]{24}$\//
-  const sanitizedString = regex.test(string) ? string : ""
-  return sanitizedString;
-}
+export const sanitize = (input: string): string => {
+  // Regex to match exactly 24 digits
+  const regex = /^[0-9]{24}$/;
+  // Return the input if it matches the regex; otherwise, return an empty string
+  return regex.test(input) ? input : "";
+};
+
+
+//checks if the sanitized versions of trxref and reference are equal.
+export const validateReferences = (trxref: string | null, reference: string | null): boolean => {
+  // Handle null values
+  if (trxref === null || reference === null) return false;
+  // Compare sanitized values
+  return sanitize(trxref) === sanitize(reference);
+};
