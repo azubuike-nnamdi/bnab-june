@@ -69,6 +69,7 @@ export async function POST(req: NextRequest) {
       email,
       phoneNumber,
       budget,
+      transaction_status: "initiate",
       createdAt: new Date(),
       // createdBy: session.user.id
     };

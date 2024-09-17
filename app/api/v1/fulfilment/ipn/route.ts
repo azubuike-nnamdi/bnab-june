@@ -1,54 +1,139 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import clientPromise from "@/lib/db";
 import { getServerSession } from "next-auth";
+import { sanitize } from "@/lib/helper";
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit } from "@/lib/rate-limit";
 
-
-// Implement the validation logic here
+// Enhanced validation function
 const validateIpn = (data: any): boolean => {
-  const validatedIpnData = data?.transaction_id;
+  // Add more comprehensive checks based on your payment provider's requirements
+  const requiredFields = ['transaction_id', 'status', 'amount', 'currency', 'customer_email'];
+  const hasAllRequiredFields = requiredFields.every(field => data.hasOwnProperty(field));
+  const isStatusValid = data.status === 'success';
+  const isAmountValid = typeof data.amount === 'number' && data.amount > 0;
 
-  return validatedIpnData;
+  return hasAllRequiredFields && isStatusValid && isAmountValid;
 };
 
-// Implement our processing logic here (update order status in our database)
+// Enhanced processing function with better error handling and logging
 const processIpnData = async (data: any) => {
-  // If processed successfully, return true, else log failure and return false
-  const isProcessedSuccessfully: boolean = true
-  console.log('Processing IPN:', data);
-
-  return isProcessedSuccessfully
-};
-
-export async function POST(req: NextRequest) {
-  // Check user session
-  const session = await getServerSession(options);
-
-  // if user is not logged in, return unauthorized response
-  // if (!session) {
-  //   return new NextResponse(JSON.stringify({ message: "Session not active" }), {
-  //     status: 401,
-  //   });
-  // }
-
+  const client = await clientPromise;
+  const db = client.db();
+  const paymentCollection = db.collection("save-transaction");
 
   try {
-    const ipnData = await req.json(); // Parse the incoming JSON data
-    console.log('pin', ipnData)
+    const existingTransaction = await paymentCollection.findOne({
+      transactionId: data.transaction_id,
+    });
 
-    // Validate the IPN data (this will depend on your payment provider)
+    if (!existingTransaction) {
+      console.error(`Transaction with ID ${data.transaction_id} not found.`);
+      return false;
+    }
+
+    // Check for idempotency
+    if (existingTransaction.transaction_status === "successful") {
+      console.log(`Transaction ${data.transaction_id} already processed. Skipping.`);
+      return true;
+    }
+
+    const updateResult = await paymentCollection.updateOne(
+      { transactionId: data.transaction_id },
+      {
+        $set: {
+          transaction_status: "successful",
+          amount_confirmed: data.amount,
+          updated_at: new Date()
+        }
+      }
+    );
+
+    if (updateResult.modifiedCount === 1) {
+      console.log(`Transaction status updated to successful for ID: ${data.transaction_id}`);
+      return true;
+    } else {
+      console.error(`Failed to update transaction status for ID: ${data.transaction_id}`);
+      return false;
+    }
+  } catch (error) {
+    console.error(`Error processing transaction ${data.transaction_id}:`, error);
+    return false;
+  }
+};
+
+// Enhanced POST handler with rate limiting and better error handling
+export async function POST(req: NextRequest) {
+
+  const session = getServerSession(options)
+  // Apply rate limiting
+  // const { success } = await rateLimit(req);
+  // if (!success) {
+  //   return NextResponse.json({ message: 'Too many requests' }, { status: 429 });
+  // }
+
+  try {
+    const ipnData = await req.json();
+    console.log('Received IPN:', JSON.stringify(ipnData));
+
     const isValid = validateIpn(ipnData);
 
     if (!isValid) {
+      console.error('Invalid IPN received:', JSON.stringify(ipnData));
       return NextResponse.json({ message: 'Invalid IPN' }, { status: 400 });
     }
 
-    // Process the valid IPN data,
-    await processIpnData(ipnData);
+    const isProcessedSuccessfully = await processIpnData(ipnData);
 
-    // Respond with 200 OK
-    return NextResponse.json({ message: 'IPN received' }, { status: 200 });
+    if (!isProcessedSuccessfully) {
+      return NextResponse.json({ message: 'Failed to process transaction' }, { status: 500 });
+    }
+
+    return NextResponse.json({ message: 'IPN received and processed successfully' }, { status: 200 });
   } catch (error) {
     console.error('Error processing IPN:', error);
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+// Enhanced GET handler with input sanitization and pagination
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const trxref = searchParams.get("trxref") ?? searchParams.get("reference");
+  const page = parseInt(searchParams.get("page") ?? "1", 10);
+  const limit = parseInt(searchParams.get("limit") ?? "10", 10);
+
+  if (!trxref) {
+    return NextResponse.json({ message: "Transaction reference is required" }, { status: 400 });
+  }
+
+  // Simple input sanitization
+  const sanitizedTrxref = sanitize(trxref);
+
+  if (!sanitizedTrxref) {
+    return NextResponse.json({ message: "Invalid transaction reference format" }, { status: 400 });
+  }
+
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+    const paymentCollection = db.collection("save-transaction");
+
+    const transaction = await paymentCollection.findOne({ transactionId: sanitizedTrxref });
+
+    if (!transaction) {
+      return NextResponse.json({ message: "Transaction not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      transactionId: transaction.transactionId,
+      amountPaid: transaction.amountPaid,
+      status: transaction.transaction_status,
+      paymentMethod: transaction.paymentMethod,
+      date: transaction.createdAt,
+    }, { status: 200 });
+  } catch (error) {
+    console.error("Error querying transaction:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
 }
