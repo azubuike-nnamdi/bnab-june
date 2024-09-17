@@ -1,5 +1,3 @@
-'use client'
-
 import { useSearchParams } from "next/navigation";
 import ThankYou from "@/components/common/thankYou";
 import { sanitize } from "@/lib/helper";
