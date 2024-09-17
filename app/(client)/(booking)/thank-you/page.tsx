@@ -10,10 +10,10 @@ const validateReferences = (trxref: string | null, reference: string | null): bo
   return sanitize(trxref) === sanitize(reference);
 };
 
-const getPaymentStatus = (isValid: boolean): 'success' | 'failure' => {
-  // TODO: Replace this with actual payment status verification
-  return isValid ? 'success' : 'failure';
-};
+// const getPaymentStatus = (isValid: boolean): 'success' | 'failure' => {
+//   // TODO: Replace this with actual payment status verification
+//   return isValid ? 'success' : 'failure';
+// };
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -21,7 +21,9 @@ export default function Page() {
   const reference = searchParams.get('reference');
 
   const isValid = validateReferences(trxref, reference);
-  const paymentStatus = getPaymentStatus(isValid);
+  // const paymentStatus = getPaymentStatus(isValid);
+
+  const sanitizedReference = reference ? sanitize(reference) : "";
 
   if (!isValid) {
     console.error("Invalid or mismatched transaction reference");
@@ -30,5 +32,5 @@ export default function Page() {
 
   // TODO: Query transaction using IPN to confirm payment status
 
-  return <ThankYou reference={paymentStatus} />;
+  return <ThankYou reference={sanitizedReference} />;
 }
