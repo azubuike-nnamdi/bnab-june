@@ -3,78 +3,21 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, XCircle, Clock } from "lucide-react";
-import { thankYouPropType } from '@/types/declaration';
+import { ThankYouPropType, TransStatus } from '@/types/declaration';
 
-// const CelebrationSpray = () => {
-//   const [particles, setParticles] = useState([]);
+const ThankYou = ({ reference }: Readonly<ThankYouPropType>) => {
 
-//   useEffect(() => {
-//     const colors = ['#FFD700', '#FF6347', '#00CED1', '#FF69B4', '#32CD32'];
-//     const newParticles = Array.from({ length: 50 }, (_, i) => ({
-//       id: i,
-//       x: Math.random() * 100,
-//       y: 110 + Math.random() * 20,
-//       size: Math.random() * 5 + 2,
-//       color: colors[Math.floor(Math.random() * colors.length)],
-//       speed: 2 + Math.random() * 3,
-//     }));
-//     setParticles(newParticles);
 
-//     const animationFrame = requestAnimationFrame(function animate() {
-//       setParticles(currentParticles =>
-//         currentParticles.map(particle => ({
-//           ...particle,
-//           y: particle.y - particle.speed,
-//         })).filter(particle => particle.y > -10)
-//       );
-//       if (particles.length > 0) {
-//         requestAnimationFrame(animate);
-//       }
-//     });
+  let status: TransStatus = "pending";
+  const getTransStatus = (reference: string): TransStatus => {
 
-//     const timer = setTimeout(() => {
-//       cancelAnimationFrame(animationFrame);
-//       setParticles([]);
-//     }, 3000);
-
-//     return () => {
-//       clearTimeout(timer);
-//       cancelAnimationFrame(animationFrame);
-//     };
-//   }, []);
-
-//   return (
-//     <div className="fixed inset-0 pointer-events-none overflow-hidden">
-//       {particles.map((particle) => (
-//         <div
-//           key={particle.id}
-//           className="absolute rounded-full"
-//           style={{
-//             left: `${particle.x}%`,
-//             bottom: `${particle.y}%`,
-//             width: `${particle.size}px`,
-//             height: `${particle.size}px`,
-//             backgroundColor: particle.color,
-//             transition: 'bottom 0.1s linear',
-//           }}
-//         />
-//       ))}
-//     </div>
-//   );
-// };
-
-const ThankYou = ({ status }: Readonly<thankYouPropType>) => {
-  const [showCelebration, setShowCelebration] = useState(false);
-
-  // useEffect(() => {
-  //   if (status === 'success') {
-  //     setShowCelebration(true);
-  //   }
-  // }, [status]);
-
+    //TODO: make an api call that would check the transaction status and update the status to be returned based on the response.
+    status = "success"
+    return status;
+  }
   const getStatusContent = () => {
-    switch (status) {
-      case 'success':
+    switch (getTransStatus(reference)) {
+      case "success":
         return {
           icon: <CheckCircle className="w-16 h-16 text-green-500 mb-4" />,
           title: "System, your order was submitted successfully!",
