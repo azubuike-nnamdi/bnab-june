@@ -79,3 +79,10 @@ export function checkEnvVariable(name: string): void {
     throw new Error(`Invalid/Missing environment variable: "${name}"`)
   }
 }
+
+
+export const sanitize = (string: string): string => {
+  const regex = /\/^[0-9]{24}$\//
+  const sanitizedString = regex.test(string) ? string : ""
+  return sanitizedString;
+}

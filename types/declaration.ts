@@ -372,6 +372,9 @@ export interface CreateRide {
   updateAt: Date;
 }
 
-export type thankYouPropType = {
-  status: string;
+export type TransStatus = "success" | "failure" | "pending"
+
+export type ThankYouPropType = {
+  // status: string;
+  reference: string;
 }
