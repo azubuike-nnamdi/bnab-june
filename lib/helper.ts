@@ -96,3 +96,8 @@ export const validateReferences = (trxref: string | null, reference: string | nu
   // Compare sanitized values
   return sanitize(trxref) === sanitize(reference);
 };
+
+
+export function appEnv(env: 'test' | 'production'): boolean {
+  return process?.env?.NEXT_PUBLIC_APP_ENV === env
+}
