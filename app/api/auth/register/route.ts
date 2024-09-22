@@ -1,4 +1,6 @@
 import clientPromise from '@/lib/db';
+import { generateVerificationToken } from '@/lib/helper';
+import { sendVerificationEmail } from '@/lib/send-verification-email';
 import bcrypt from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod'; // For input validation
@@ -43,6 +45,13 @@ export async function POST(req: NextRequest) {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 12); // Increased rounds for better security
 
+    // Generate verification token
+    const verificationToken = generateVerificationToken();
+
+
+    // Hash the token to store it securely in the DB
+    const hashedVerificationToken = await bcrypt.hash(verificationToken, 12);
+
     // Prepare user payload
     const userPayload = {
       fullName,
@@ -51,11 +60,28 @@ export async function POST(req: NextRequest) {
       password: hashedPassword,
       role: 'client',
       createdAt: new Date(),
-      emailVerified: null, // Added for Next-Auth compatibility
+      emailVerified: null,  // Email not verified yet
+      verificationToken: hashedVerificationToken,  // Store the hashed token
+      verificationTokenExpires: new Date(Date.now() + 24 * 60 * 60 * 1000), // Token expires in 24 hours
     };
 
     // Insert the new user into the db
     const result = await userCollection.insertOne(userPayload);
+
+    // Generate verification link
+    const verificationLink = `${process.env.APP_URL}/api/auth/verify-email?token=${verificationToken}`;
+
+
+    // Send verification email
+    try {
+      await sendVerificationEmail(email, verificationLink);
+    } catch (error) {
+      console.error('Failed to send verification email:', error);
+      // You might want to delete the user if email sending fails
+      await userCollection.deleteOne({ _id: result.insertedId });
+      return NextResponse.json({ message: "Failed to send verification email. Please try again later." }, { status: 500 });
+    }
+
 
     // Prepare the response (excluding sensitive information)
     const user = {
@@ -66,7 +92,7 @@ export async function POST(req: NextRequest) {
       role: 'client',
     };
 
-    return NextResponse.json({ message: 'User registered successfully', user }, { status: 201 });
+    return NextResponse.json({ message: 'User registered successfully.Please check your email to verify your account.', user }, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ message: "Invalid input", errors: error.errors }, { status: 400 });
