@@ -1,3 +1,4 @@
+'use client'
 import { useMutateResetPassword } from "@/hooks/mutations/useMutateResetPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
