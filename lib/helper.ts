@@ -2,6 +2,8 @@ import { format, parseISO } from "date-fns";
 import { ALPHABET, ALPHANUMERIC, NUMERIC } from "./constants";
 import { customAlphabet } from 'nanoid'
 import { TransactionIdParams } from "@/types/declaration";
+import crypto from 'crypto';
+
 
 
 export const truncateText = (text: string, length: number) => {
@@ -101,3 +103,12 @@ export const validateReferences = (trxref: string | null, reference: string | nu
 export function appEnv(env: 'test' | 'production'): boolean {
   return process?.env?.NEXT_PUBLIC_APP_ENV === env
 }
+
+export function generateVerificationToken(): string {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+// Utility function to get the first name from full name
+export const getFirstName = (fullName: string | undefined | null): string => {
+  return typeof fullName === 'string' ? fullName.split(' ')[0] : 'User';
+};
