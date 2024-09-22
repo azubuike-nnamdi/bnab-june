@@ -1,20 +1,16 @@
-"use client";
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useForm } from "react-hook-form";
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
-import { useMutateResetPassword } from '@/hooks/mutations/useMutateResetPassword';
-import { Button } from '@/components/ui/button';
+// app/auth/reset-password/page.tsx
 import Link from 'next/link';
-import { HOME_URL, REGISTER_URL } from '@/config/routes';
+import { HOME_URL } from '@/config/routes';
 import UserResetPassword from '@/components/auth/reset-password';
 
 
+export default function ResetPasswordPage({
+  searchParams,
+}: Readonly<{
+  searchParams: { token?: string };
+}>) {
+  const token = searchParams.token ?? "";
 
-export default function Page() {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token") ?? ""; // Extract token from the query params
 
   return (
     <div className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -53,5 +49,6 @@ export default function Page() {
         </div>
       </div>
     </div>
+
   );
 }

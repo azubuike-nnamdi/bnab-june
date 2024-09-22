@@ -2,7 +2,6 @@
 import VerifyEmail from "@/components/auth/verify-email";
 import { HOME_URL } from "@/config/routes";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 export default function Page() {
 

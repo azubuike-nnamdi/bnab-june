@@ -1,7 +1,7 @@
 'use client'
 import { useMutateResetPassword } from "@/hooks/mutations/useMutateResetPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "../ui/button";
@@ -17,7 +17,7 @@ const ResetPasswordSchema = z.object({
   path: ["confirmPassword"],
 });
 
-export default function UserResetPassword({ token }: { token: string }) {
+export default function UserResetPassword({ token }: { readonly token: string }) {
   const { isPending, handleResetPassword } = useMutateResetPassword();
 
   // Initialize form validation with Zod and React Hook Form
