@@ -1,3 +1,5 @@
+import { TransportOptions } from "nodemailer";
+
 export type TransactionIdParams = {
   entropy: 'alphabet' | 'alphanumeric' | 'numeric'
   len: number
@@ -377,4 +379,41 @@ export type TransStatus = "success" | "failure" | "pending"
 export type ThankYouPropType = {
   // status: string;
   reference: string;
+}
+
+
+
+export type RegisterProps = {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  confirmPassword: string;
+}
+
+
+export interface ExtendedTransportOptions extends TransportOptions {
+  host: string;
+  port: number;
+  secure: boolean;
+  auth: {
+    user: string;
+    pass: string;
+  };
+}
+
+// Define the type for OTP verification payload
+export type VerifyOtpType = {
+  email: string;
+  otp: string;
+}
+
+export type ForgotPasswordType = {
+  email: string;
+}
+
+export type ResetPasswordPropType = {
+  password: string;
+  confirmPassword: string;
+  token: string;
 }

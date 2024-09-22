@@ -15,8 +15,8 @@ const TanstackProvider = ({ children }: TanstackProviderProps) => {
   const [queryClient] = useState(() => new QueryClient({}));
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SessionProvider>
+    <SessionProvider>
+      <QueryClientProvider client={queryClient}>
         <CheckoutProvider>
           <DedicatedBookingProvider>
             {children}
@@ -24,8 +24,8 @@ const TanstackProvider = ({ children }: TanstackProviderProps) => {
             <Toaster position="bottom-right" richColors />
           </DedicatedBookingProvider>
         </CheckoutProvider>
-      </SessionProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </SessionProvider>
   );
 };
 

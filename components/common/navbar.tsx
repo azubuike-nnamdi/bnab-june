@@ -4,11 +4,12 @@ import { ChevronDown, Menu, Phone, X } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { signIn, useSession, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { Button } from "../ui/button";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { HOME_URL } from "@/config/routes";
+import { HOME_URL, LOGIN_URL, REGISTER_URL } from "@/config/routes";
+import { getFirstName } from "@/lib/helper";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -56,7 +57,7 @@ const Navbar = () => {
         {session ? (
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center">
-              {session?.user?.name}
+              {getFirstName(session?.user?.name)}
               <ChevronDown className="ml-1" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -70,17 +71,18 @@ const Navbar = () => {
           </DropdownMenu>
         ) : (
           <div className="gap-4 flex">
-            <Button
-              onClick={() => signIn()}
-            >
-              Log In
-            </Button>
-            <Button
-              variant={'outline'}
-              className="text-black"
-              onClick={() => signIn()}>
-              Sign Up
-            </Button>
+            <Link href={LOGIN_URL}>
+              <Button>
+                Log In
+              </Button>
+            </Link>
+            <Link href={REGISTER_URL}>
+              <Button
+                variant={'outline'}
+                className="text-black">
+                Sign Up
+              </Button>
+            </Link>
           </div>
         )}
       </div>

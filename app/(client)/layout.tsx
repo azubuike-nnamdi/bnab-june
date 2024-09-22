@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+// app/booking/layout.tsx
 import { Inter as FontSans } from "next/font/google";
 import "../globals.css";
 import { cn } from "@/lib/utils";
@@ -9,29 +9,18 @@ import Footer from "@/components/common/footer";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 
-export const metadata: Metadata = {
-  title: "Hyea Me Ha",
-  description: "...meet me there",
-
-};
-
-export default function RootLayout({
+export default function BookingLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={cn(
-        "min-h-screen bg-background font-sans antialiased",
-        fontSans.variable
-      )}>
-        <Navbar />
-        {children}
-        <Footer />
-      </body>
-    </html>
+    <div className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
+      <Navbar />
+      {children}
+      <Footer />
+    </div>
   );
 }
