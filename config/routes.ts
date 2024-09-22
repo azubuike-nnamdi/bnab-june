@@ -5,6 +5,14 @@ const SERVICES_URL: string = "/services"
 const CONTACT_URL: string = "/contact"
 
 
+
+//AUTH ROUTE
+const LOGIN_URL: string = "/auth/login"
+const REGISTER_URL: string = "/auth/register"
+const VERIFY_OTP_URL: string = "/auth/verify-otp"
+const FORGOT_PASSWORD_URL: string = "/auth/forgot-password"
+const RESET_PASSWORD_URL: string = "/reset-password"
+
 // DASHBOARD_URL constants
 const DASHBOARD_URL: string = "/dashboard";
 const BOOKING_URL: string = `${DASHBOARD_URL}/bookings`
@@ -46,4 +54,9 @@ export {
   ADMINCONTACT_URL,
   CREATE_BOOKING_URL,
   SETTING_URL,
+  LOGIN_URL,
+  REGISTER_URL,
+  VERIFY_OTP_URL,
+  FORGOT_PASSWORD_URL,
+  RESET_PASSWORD_URL,
 }
