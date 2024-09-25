@@ -7,14 +7,15 @@ const { PAYSTACK_HOSTNAME, PAYSTACK_SECRET_KEY } = process.env;
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const reference = searchParams.get('reference');
+    const transactionId = searchParams.get('reference'); // Rename reference to transactionId
+    console.log('Transaction ID:', transactionId);
 
-    if (!reference) {
-      return NextResponse.json({ message: 'Reference is required' }, { status: 400 });
+    if (!transactionId) {
+      return NextResponse.json({ message: 'Transaction ID is required' }, { status: 400 });
     }
 
     const response = await axios.get(
-      `https://${PAYSTACK_HOSTNAME}/transaction/verify/${reference}`,
+      `https://${PAYSTACK_HOSTNAME}/transaction/verify/${transactionId}`,
       {
         headers: {
           Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
@@ -22,6 +23,7 @@ export async function GET(req: NextRequest) {
       }
     );
     const paystackTransaction = response.data.data;
+    console.log('Paystack Transaction:', paystackTransaction);
 
     // Connect to database
     const client = await clientPromise;
@@ -31,13 +33,13 @@ export async function GET(req: NextRequest) {
     await db.collection('verify-transaction-log').insertOne(paystackTransaction);
 
     // Fetch the transaction from the 'payment-history' collection
-    const transaction = await db.collection('payment-history').findOne({ reference });
+    const transaction = await db.collection('payment-history').findOne({ transactionId }); // Use transactionId
     if (!transaction) {
       return NextResponse.json({ message: 'Transaction not found' }, { status: 404 });
     }
 
-    // Check if the reference matches and the amount (budget) in the database matches the Paystack response
-    const isReferenceMatching = transaction.reference === paystackTransaction.reference;
+    // Check if the transactionId matches and the amount (budget) in the database matches the Paystack response
+    const isReferenceMatching = transaction.transactionId === paystackTransaction.reference; // Compare with transactionId
     const isAmountMatching = transaction.budget === paystackTransaction.amount;
 
     if (!isReferenceMatching || !isAmountMatching) {
@@ -46,17 +48,17 @@ export async function GET(req: NextRequest) {
       }, { status: 400 });
     }
 
-
-    // If reference and amount match, update the transaction status to depending on the status from paystack and set count to 1
+    // If reference and amount match, update the transaction status depending on the status from Paystack and set count to 1
     await db.collection('payment-history').updateOne(
-      { reference: paystackTransaction.reference }, // find the document by reference
+      { transactionId: paystackTransaction.reference }, // Use transactionId
       {
         $set: {
-          transaction_status: paystackTransaction.status, // dynamically update the status from Paystack
-          count: 1 // set count to 1
+          transaction_status: paystackTransaction.status, // Dynamically update the status from Paystack
+          count: 1 // Set count to 1
         }
       }
     );
+
     return NextResponse.json({
       message: "Transaction verified",
       paystackTransaction

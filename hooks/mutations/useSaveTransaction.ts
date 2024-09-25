@@ -11,8 +11,14 @@ export const useSaveTransaction = () => {
   // Mutation for saving a transaction
   const mutation = useMutation({
     mutationFn: async (transaction: TransactionData) => {
+      // Ensure budget is correctly formatted for smallest currency unit
+      const convertedAmount = Math.round(transaction.budget * 100); // Convert to smallest unit
+
       // First, save the transaction
-      const saveResponse = await axios.post("/api/v1/fulfilment/save-transaction", transaction);
+      const saveResponse = await axios.post("/api/v1/fulfilment/save-transaction", {
+        ...transaction,
+        budget: convertedAmount, // Send converted amount
+      });
 
       if (!saveResponse.data) {
         throw new Error("Failed to save the transaction");
