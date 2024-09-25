@@ -1,5 +1,10 @@
-import ThankYouClient from "@/components/thank-you/thankYouClient";
+'use client'
+
+import Loading from "@/components/common/loader";
+import ThankYou from "@/components/common/thankYou";
+import useQueryTransaction from "@/hooks/useQueryTransaction";
 import { validateReferences, sanitize } from "@/lib/helper";
+import { toast } from "sonner";
 
 export const dynamic = 'force-dynamic'
 
@@ -11,11 +16,14 @@ export default function ThankYouPage({ searchParams }: Readonly<{ searchParams: 
   const sanitizedReference = reference ? sanitize(reference) : "";
 
   if (!isValid) {
-    console.error("Invalid or mismatched transaction reference");
-    // TODO: Handle invalid reference (e.g., redirect or show error message)
+    toast.error('We are unable to complete your request, please contact administrator!')
   }
 
-  // TODO: Query transaction using IPN to confirm payment status (this should be done server-side)
+  const { isPending, data } = useQueryTransaction(sanitizedReference)
 
-  return <ThankYouClient sanitizedReference={sanitizedReference} />;
+  if (isPending) return <Loading />
+
+  console.log('data', data)
+
+  return <ThankYou reference={sanitizedReference} />;
 }
