@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     // Connect to database
     const client = await clientPromise;
     const db = client.db();
-    const paymentCollection = db.collection("save-transaction");
+    const paymentCollection = db.collection("payment-history");
 
     // Check if the transactionId already exists
     const existingTransaction = await paymentCollection.findOne({ transactionId });
@@ -71,6 +71,7 @@ export async function POST(req: NextRequest) {
       budget,
       transaction_status: "initiate",
       createdAt: new Date(),
+      count: 0,
       // createdBy: session.user.id
     };
 
