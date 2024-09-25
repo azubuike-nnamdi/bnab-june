@@ -1,9 +1,12 @@
 'use client'
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, XCircle, Clock } from "lucide-react";
 import { ThankYouPropType, TransStatus } from '@/types/declaration';
+import { Button } from '../ui/button';
+import Link from 'next/link';
+import { HOME_URL } from '@/config/routes';
 
 const ThankYou = ({ reference }: Readonly<ThankYouPropType>) => {
 
@@ -83,14 +86,13 @@ const ThankYou = ({ reference }: Readonly<ThankYouPropType>) => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Reservation Information</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-500">Reservation details would go here...</p>
-          </CardContent>
-        </Card>
+        <div className='flex justify-center items-center '>
+          <Button>
+            <Link href={HOME_URL}>
+              Go back home
+            </Link>
+          </Button>
+        </div>
       </div>
     </div>
   );
