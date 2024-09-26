@@ -10,7 +10,7 @@ import { HOME_URL } from '@/config/routes';
 import { formatDateString } from '@/lib/helper';
 
 const ThankYou = ({ transactionData }: { transactionData: any }) => {
-  const { amount, reference, paid_at, channel, currency, status: transactionStatus } = transactionData || {};
+  const { amount, reference, paid_at, channel, currency, status: transactionStatus } = transactionData.paystackTransaction || {};
 
   let status: TransStatus = transactionStatus;
   const getTransStatus = (): TransStatus => {
@@ -55,6 +55,14 @@ const ThankYou = ({ transactionData }: { transactionData: any }) => {
   // Format amount to currency
   const formattedAmount = (amount / 100).toFixed(2); // assuming amount is in smallest unit
 
+  // Format the reference to show first 4 and last 4 digits
+  const formattedReference = reference
+    ? `${reference.substring(0, 4)}-${reference.slice(-4)}`
+    : "N/A";
+
+  // Handle undefined `paid_at` by providing a fallback value
+  const formattedDate = paid_at ? formatDateString(paid_at) : "N/A";
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="w-full max-w-md space-y-6">
@@ -69,11 +77,11 @@ const ThankYou = ({ transactionData }: { transactionData: any }) => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm font-medium text-gray-500">Order Number</p>
-                <p className="text-sm font-bold">{reference}</p>
+                <p className="text-sm font-bold">{formattedReference}</p> {/* Formatted reference */}
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500">Date</p>
-                <p className="text-sm">{formatDateString(paid_at)}</p>
+                <p className="text-sm">{formattedDate}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500">Total</p>
