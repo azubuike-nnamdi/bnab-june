@@ -1,31 +1,30 @@
 'use client'
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, XCircle, Clock } from "lucide-react";
 import { ThankYouPropType, TransStatus } from '@/types/declaration';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { HOME_URL } from '@/config/routes';
+import { formatDateString } from '@/lib/helper';
 
-const ThankYou = ({ reference }: Readonly<ThankYouPropType>) => {
+const ThankYou = ({ transactionData }: { transactionData: any }) => {
+  const { amount, reference, paid_at, channel, currency, status: transactionStatus } = transactionData || {};
 
-
-  let status: TransStatus = "pending";
-  const getTransStatus = (reference: string): TransStatus => {
-
-    //TODO: make an api call that would check the transaction status and update the status to be returned based on the response.
-    status = "success"
+  let status: TransStatus = transactionStatus;
+  const getTransStatus = (): TransStatus => {
     return status;
   }
+
   const getStatusContent = () => {
-    switch (getTransStatus(reference)) {
+    switch (getTransStatus()) {
       case "success":
         return {
           icon: <CheckCircle className="w-16 h-16 text-green-500 mb-4" />,
           title: "System, your order was submitted successfully!",
           color: "text-green-500",
-          message: "Booking details has been sent to: booking@luxride.com"
+          message: "Booking details have been sent to: booking@luxride.com"
         };
       case 'failure':
         return {
@@ -53,9 +52,11 @@ const ThankYou = ({ reference }: Readonly<ThankYouPropType>) => {
 
   const { icon, title, color, message } = getStatusContent();
 
+  // Format amount to currency
+  const formattedAmount = (amount / 100).toFixed(2); // assuming amount is in smallest unit
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      {/* {showCelebration && <CelebrationSpray />} */}
       <div className="w-full max-w-md space-y-6">
         <div className="flex flex-col items-center">
           {icon}
@@ -68,19 +69,19 @@ const ThankYou = ({ reference }: Readonly<ThankYouPropType>) => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm font-medium text-gray-500">Order Number</p>
-                <p className="text-sm font-bold">#4039</p>
+                <p className="text-sm font-bold">{reference}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500">Date</p>
-                <p className="text-sm">Thu, Oct 06, 2022</p>
+                <p className="text-sm">{formatDateString(paid_at)}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500">Total</p>
-                <p className="text-sm font-bold">$40.10</p>
+                <p className="text-sm font-bold">{currency} {formattedAmount}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500">Payment Method</p>
-                <p className="text-sm">Direct Bank Transfer</p>
+                <p className="text-sm capitalize">{channel}</p>
               </div>
             </div>
           </CardContent>

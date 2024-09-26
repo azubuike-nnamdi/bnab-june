@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
     // Fetch the transaction from the 'payment-history' collection
     const transaction = await db.collection('payment-history').findOne({ transactionId }); // Use transactionId
     if (!transaction) {
-      return NextResponse.json({ message: 'Transaction not found' }, { status: 404 });
+      return NextResponse.json({ message: 'Transaction not found' }, { status: 422 });
     }
 
     // Check if the transactionId matches and the amount (budget) in the database matches the Paystack response
