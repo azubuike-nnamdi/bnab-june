@@ -5,7 +5,7 @@ import axios from "axios";
 
 const useGetAllTicketEvents = () => {
   const fetchAllTicketEvent = async () => {
-    const data = await axios.get("/api/v1/create-bookings/all-events");
+    const data = await axios.get("/api/v1/create-bookings/ticket-master");
     return data;
   };
 
