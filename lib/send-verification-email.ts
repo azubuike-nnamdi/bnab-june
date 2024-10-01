@@ -12,6 +12,7 @@ interface ExtendedTransportOptions extends TransportOptions {
 
 const { SMTP_PASSWORD, SMTP_HOST, SMTP_USERNAME, SMTP_PORT, SMTP_FROM } = process.env;
 
+
 if (!SMTP_PASSWORD || !SMTP_HOST || !SMTP_USERNAME || !SMTP_PORT || !SMTP_FROM) {
   throw new Error("Missing SMTP credentials");
 }
@@ -19,8 +20,8 @@ if (!SMTP_PASSWORD || !SMTP_HOST || !SMTP_USERNAME || !SMTP_PORT || !SMTP_FROM) 
 export async function sendVerificationEmail(email: string, verificationLink: string) {
   const transporter = nodemailer.createTransport({
     host: SMTP_HOST,
-    port: parseInt(SMTP_PORT ?? '0', 10),
-    secure: false, // Set to true if your SMTP server requires it
+    port: parseInt(SMTP_PORT ?? "465"),
+    secure: true, // Set to true if your SMTP server requires it
     auth: {
       user: SMTP_USERNAME,
       pass: SMTP_PASSWORD,
@@ -33,7 +34,6 @@ export async function sendVerificationEmail(email: string, verificationLink: str
     subject: "Verify your email address",
     text: `Please click on the following link to verify your email address: ${verificationLink}`,
     html: `
-      <h1>Email Verification</h1>
       <p>Thank you for registering. Please click on the link below to verify your email address:</p>
       <p><a href="${verificationLink}" style="color: #1a73e8; text-decoration: none;">Verify your email address</a></p>
       <p>If you didn't request this, you can safely ignore this email.</p>
