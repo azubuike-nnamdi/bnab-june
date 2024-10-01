@@ -1,5 +1,3 @@
-import { DedicatedRideBookingProps } from "@/types/declaration";
-
 type emailProps = {
   firstName: string;
   lastName: string;
