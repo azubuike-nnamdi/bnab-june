@@ -20,7 +20,15 @@ export async function GET(req: NextRequest) {
     const usersCollection = db.collection("users");
 
     // Fetch all users
-    const users = await usersCollection.find({}).toArray();
+    const users = await usersCollection.find({}, {
+      projection: {
+        fullName: 1,
+        email: 1,
+        phoneNumber: 1,
+        role: 1,
+        _id: 1
+      }
+    }).toArray();
 
     // Return the users list
     return new NextResponse(JSON.stringify(users), { status: 200 });

@@ -12,14 +12,14 @@ export const useCreateEvent = () => {
   const router = useRouter();
   const mutation = useMutation({
     mutationFn: (event: Event) => {
-      return axios.post("/api/v1/create-bookings/all-events", event);
+      return axios.post("/api/v1/create-bookings/ticket-master", event);
     },
     onSuccess: ({ data }) => {
       if (data) {
         toast.success(data?.message);
         router.push(DASHBOARD_URL);
       }
-      queryClient.invalidateQueries({ queryKey: ["events"] });
+      queryClient.invalidateQueries({ queryKey: ["ticket"] });
     },
     onError: (error: { response: { data: { message: string } } }) => {
       const errorMsg = error.response.data.message

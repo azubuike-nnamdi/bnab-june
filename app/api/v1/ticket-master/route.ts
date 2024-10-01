@@ -126,7 +126,7 @@ export async function GET(req: NextRequest) {
   try {
     const client = await clientPromise;
     const db = client.db();
-    const ticketBooking = db.collection("ticket-booking");
+    const ticketBooking = db.collection("all-ticketmaster-event");
 
     // Retrieve ID from query params if present
     const { searchParams } = new URL(req.url);

@@ -46,16 +46,16 @@ export type ParamProps = {
 
 
 export type EventCardProps = {
-  id: string;
+  _id: string;
   title: string;
-  desc: string;
-  venue: string;
-  img: string;
+  description: string;
+  address: string;
+  image: string;
   city: string;
   date: string;
   time: string;
   price?: string;
-  phoneNo: string;
+  phoneNumber: string;
 }
 
 export type BookingTicket = {

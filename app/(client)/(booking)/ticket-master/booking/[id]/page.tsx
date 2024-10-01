@@ -1,17 +1,20 @@
+'use client'
+
+import SkeletonBookingTicketCard from "@/components/common/booking-card-skeleton";
 import TicketBookingTab from "@/components/ticket-master/ticketBookingTab";
-import { eventData } from "@/lib/data/event-data";
+import useTicketMasterById from "@/hooks/useTicketMasterById";
 import { PageProps } from "@/types/declaration";
-import { redirect } from "next/navigation";
+export default function Page({ params }: Readonly<PageProps>) {
+  const id = params?.id
 
-export default function page({ params }: PageProps) {
-  const event = eventData.find((e) => e.id === params.id)
+  const { data, isPending } = useTicketMasterById({ id });
 
-  if (!event) {
-    redirect('/not-found');
-  }
+  const event = data?.data?.ticket
   return (
     <main>
-      <TicketBookingTab event={event} />
+      {isPending ? <SkeletonBookingTicketCard /> : (
+        <TicketBookingTab event={event} />
+      )}
     </main>
   )
 }

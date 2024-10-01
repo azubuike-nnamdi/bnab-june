@@ -5,14 +5,15 @@ import axios from "axios";
 
 const useTicketMasterById = ({ id }: { id: string }) => {
   const fetchTicketBookingById = async () => {
-    const data = await axios.get(`/api/v1/ticket-master?id=${id}`);
+    const data = await axios.get(`/api/v1/create-bookings/ticket-master/${id}`);
     return data;
   };
 
   const { isPending, error, data } = useQuery({
-    queryKey: ["ticket"],
+    queryKey: ["ticket", id],
     queryFn: fetchTicketBookingById,
     staleTime: 300000,
+    enabled: !!id,
   });
 
   return {
