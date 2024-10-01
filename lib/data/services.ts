@@ -1,9 +1,12 @@
+import { ACCOMMODATION_URL, AIRPORT_PICK_UP_DROP_OFF_URL, DEDICATED_RIDES_URL, TICKET_MASTER_URL, TRAINING_URL } from "@/config/routes";
+
 export const services = [
   {
     id: 1,
     title: "Ticket Master",
     description: "Tickets for all events",
     image: "https://bnab-june.s3.amazonaws.com/img/tick-8.png",
+    href: TICKET_MASTER_URL,
     subTitle1: "Your Ultimate Event Ticket Hub",
     paragraph1:
       "We help you discover the easiest way to access the best events in town.Exceptional concerts, festivals, theater, and sports. Our platform connects you with tickets to the most exciting happenings. Join today and never miss out on the fun!",
@@ -21,6 +24,7 @@ export const services = [
     title: "Training",
     description: "Gain skills by taking relevant courses",
     image: "https://bnab-june.s3.amazonaws.com/img/growth-1.png",
+    href: TRAINING_URL,
     subTitle1: "Skills Enhancement Workshops ",
     paragraph1:
       "We help you learn new skills to boost career development. Our training sessions can provide valuable opportunities for young people to gain essential skills and improve their career prospects.",
@@ -38,6 +42,7 @@ export const services = [
     title: "Airport Pickup & Dropoff",
     description: "Reach your desired destination from the airport",
     image: "https://bnab-june.s3.amazonaws.com/img/convey-1.png",
+    href: AIRPORT_PICK_UP_DROP_OFF_URL,
     subTitle1: "Airport Pickup & Dropoff Service",
     paragraph1:
       "By choosing our airport transfer service, you are opting for convenience, reliability, and a premium travel experience tailored to your needs.",
@@ -55,6 +60,7 @@ export const services = [
     title: "Accommodation",
     description: "Find budget-friendly accommodations",
     image: "https://bnab-june.s3.amazonaws.com/img/accom-1.png",
+    href: ACCOMMODATION_URL,
     subTitle1: "Your Ideal Travel Accommodations",
     paragraph1:
       "Our accommodations are designed with guest comfort in mind, offering luxurious bedding, climate control, and serene environments to ensure restful stays.",
@@ -80,6 +86,7 @@ export const services = [
     title: "Transport Transfers",
     description: "Effortless travel to your dream spot",
     image: "https://bnab-june.s3.amazonaws.com/img/trans-1.png",
+    href: DEDICATED_RIDES_URL,
     subTitle1: "Your Reliable and Comfortable Transport Solution",
     paragraph1:
       "Our extensive service coverage and flexible scheduling ensure that you have transport available whenever and wherever you need it. ",

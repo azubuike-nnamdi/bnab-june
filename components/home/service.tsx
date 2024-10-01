@@ -19,6 +19,7 @@ interface ServiceItem {
   title: string;
   description: string;
   image: string;
+  href: string;
 }
 
 const Service: React.FC = () => {
@@ -27,10 +28,6 @@ const Service: React.FC = () => {
     slidesPerView: 4,
     slidesPerGroup: 1,
     loop: true,
-    navigation: {
-      nextEl: ".snbn3",
-      prevEl: ".snbp3",
-    },
     modules: [Autoplay],
     autoplay: {
       delay: 10000,
@@ -86,7 +83,7 @@ const Service: React.FC = () => {
           >
             {services.map((elm: ServiceItem) => (
               <SwiperSlide key={elm.id} className="swiper-slide">
-                <Link href={`/service-single/${elm.id}`}>
+                <Link href={elm?.href}>
                   <div className="relative bg-white shadow-lg rounded-lg overflow-hidden group">
                     <div className="relative h-80">
                       <Image
@@ -109,26 +106,7 @@ const Service: React.FC = () => {
           </Swiper>
         </div>
       </section>
-      <div className="swiper-button-prev swiper-button-prev-fleet snbp3 absolute bottom-5 left-5 text-white">
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-          ></path>
-        </svg>
-      </div>
-      <div className="">
 
-      </div>
     </Fade>
   );
 };
