@@ -3,7 +3,7 @@ import Faq from "@/components/common/faq";
 import EventCard from "@/components/ticket-master/eventCard";
 import { ticketMasterLink } from "@/lib/data/breadcrumb";
 
-export default function page() {
+export default function Page() {
   return (
     <main>
       <BreadCrumb title="Ticket Master" links={ticketMasterLink} />
