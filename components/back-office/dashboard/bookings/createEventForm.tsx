@@ -13,6 +13,7 @@ const formSchema = z.object({
   date: z.string().refine(date => isValid(parseISO(date)), { message: "Invalid date" }),
   time: z.string().min(1, { message: "Time is required" }),
   phoneNumber: z.string().min(1, { message: "Phone number is required" }),
+  noOfTickets: z.coerce.number().min(1, { message: "Number of tickets must be at least 1" }),
   price: z.string().min(1, { message: "Price is required" }),
 });
 
@@ -20,18 +21,19 @@ const fields = [
   { name: 'title', type: 'text', label: 'Title', placeholder: 'Enter title' },
   { name: 'description', type: 'textarea', label: 'Description', placeholder: 'Enter description' },
   { name: 'address', type: 'textarea', label: 'Address', placeholder: 'Enter address' },
-  { name: 'phoneNumber', type: 'number', label: 'Phone Number', placeholder: 'Enter phone number' },
+  { name: 'phoneNumber', type: 'tel', label: 'Phone Number', placeholder: 'Enter phone number' },
   { name: 'price', type: 'number', label: 'Price', placeholder: 'Enter Price' },
   { name: 'date', type: 'date', label: 'Date' },
   { name: 'time', type: 'time', label: 'Time' },
-  { name: 'image', type: 'file', label: 'Upload Image', accept: 'image/*' }, // Accept only images
+  { name: "noOfTickets", type: 'number', label: "Number of Tickets", placeholder: "Enter number of tickets" },
+  { name: 'image', type: 'file', label: 'Upload Image', accept: 'image/*' },
 ];
 
 export default function CreateEventForm() {
   const { isPending, handleCreateEvent } = useCreateEvent();
 
   const handleSubmit = (formData: any) => {
-    // Call the mutation to create the event
+    // No need to parse noOfTickets here, as it's already handled by the schema
     handleCreateEvent(formData);
   };
 
@@ -48,6 +50,7 @@ export default function CreateEventForm() {
         date: '',
         time: '',
         phoneNumber: '',
+        noOfTickets: '',
         price: '',
       }}
       onSubmit={handleSubmit}

@@ -417,3 +417,17 @@ export type ResetPasswordPropType = {
   confirmPassword: string;
   token: string;
 }
+
+export type Payment = {
+  transactionId: string;
+  firstName: string;
+  lastName: string;
+  bookingType: string;
+  email: string;
+  phoneNumber: string;
+  budget: number;
+  transaction_status: string;
+  createdAt: Date;
+  count: number;
+  event?: any; // Make event optional and of type 'any' for flexibility
+}

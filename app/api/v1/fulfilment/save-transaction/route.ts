@@ -1,5 +1,6 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import clientPromise from "@/lib/db";
+import { Payment } from "@/types/declaration";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -8,11 +9,11 @@ export async function POST(req: NextRequest) {
   const session = await getServerSession(options);
 
   // if user is not logged in, return unauthorized response
-  // if (!session) {
-  //   return new NextResponse(JSON.stringify({ message: "Session not active" }), {
-  //     status: 401,
-  //   });
-  // }
+  if (!session) {
+    return new NextResponse(JSON.stringify({ message: "Session not active" }), {
+      status: 401,
+    });
+  }
 
   try {
     const body = await req.json();
@@ -23,7 +24,8 @@ export async function POST(req: NextRequest) {
       bookingType,
       email,
       phoneNumber,
-      budget
+      budget,
+      event
     } = body;
 
     // Validate required fields
@@ -45,6 +47,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
+
+    // Additional validation for ticket-master booking type
+    if (bookingType === "ticket-master" && !event) {
+      return new NextResponse(JSON.stringify({ message: "Event information is required for your bookings" }), {
+        status: 400,
+      });
+    }
     // Connect to database
     const client = await clientPromise;
     const db = client.db();
@@ -61,7 +70,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Process the request data and insert the new record
-    const newPayment = {
+    const newPayment: Payment = {
       transactionId,
       firstName,
       lastName,
@@ -74,6 +83,11 @@ export async function POST(req: NextRequest) {
       count: 0,
       // createdBy: session.user.id
     };
+
+    // Include event information for ticket-master bookings
+    if (bookingType === "ticket-master") {
+      newPayment.event = event;
+    }
 
     await paymentCollection.insertOne(newPayment);
 

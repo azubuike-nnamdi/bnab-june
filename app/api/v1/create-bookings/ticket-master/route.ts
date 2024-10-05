@@ -11,9 +11,9 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     // Ensure all required fields are provided
-    const { title, description, address, date, time, phoneNumber, price, base64Image } = body;
+    const { title, description, address, date, time, phoneNumber, price, noOfTickets, base64Image } = body;
 
-    if (!title || !description || !address || !date || !time || !phoneNumber || !price || !base64Image) {
+    if (!title || !description || !address || !date || !time || !phoneNumber || !price || !noOfTickets || !base64Image) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
     }
 
@@ -26,6 +26,7 @@ export async function POST(req: Request) {
       time,
       phoneNumber,
       price,
+      noOfTickets,
       image: base64Image,
       createdAt: new Date(),
       updatedAt: new Date(),
