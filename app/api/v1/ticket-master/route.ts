@@ -4,78 +4,84 @@ import clientPromise from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { genId } from "@/lib/helper";
 import { TicketBookingProps } from "@/types/declaration";
+import { ObjectId } from "mongodb"; // Use ObjectId from the mongodb package
+
+// Helper function to validate required fields
+const validateRequiredFields = (data: any, fields: string[], messagePrefix = "") => {
+  for (const field of fields) {
+    if (data[field] === undefined || data[field] === null || data[field] === "") {
+      return { message: `${messagePrefix}${field} is required`, isValid: false };
+    }
+  }
+  return { isValid: true };
+};
+
+// Function to fetch event by ID
+const getEventById = async (db: any, eventId: string) => {
+  return await db.collection("all-ticketmaster-event").findOne({ _id: new ObjectId(eventId) });
+};
+
+// Function to reduce ticket count
+const decrementTicketCount = async (db: any, eventId: string) => {
+  return await db.collection("all-ticketmaster-event").updateOne(
+    { _id: new ObjectId(eventId) },
+    { $inc: { noOfTickets: -1 } }
+  );
+};
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(options);
 
-  // Check user session
-  // if (!session) {
-  //   return new Response(JSON.stringify({ message: "Session not active" }), {
-  //     status: 401,
-  //   });
-  // }
+  if (!session) {
+    return new Response(JSON.stringify({ message: "Session not active" }), {
+      status: 401,
+    });
+  }
 
   try {
     const data = await req.json();
+    const { firstName, lastName, email, phoneNumber, event, isBookingForSelf } = data;
 
-    const {
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      event,
-      isBookingForSelf,
-      forBookingFirstName,
-      forBookingLastName,
-      forBookingEmail,
-      forBookingPhoneNumber
-    } = data;
-
-    // Validate the fields
-    const requiredFields = [
-      "firstName",
-      "lastName",
-      "email",
-      "phoneNumber",
-      "event",
-      "isBookingForSelf",
-    ];
-
-    for (const field of requiredFields) {
-      if (data[field] === undefined || data[field] === null || data[field] === '') {
-        return new Response(JSON.stringify({ message: `${field} is required` }), {
-          status: 400,
-        });
-      }
+    // Validate required fields
+    const requiredFields = ["firstName", "lastName", "email", "phoneNumber", "event", "isBookingForSelf"];
+    const validation = validateRequiredFields(data, requiredFields);
+    if (!validation.isValid) {
+      return new Response(JSON.stringify({ message: validation.message }), { status: 400 });
     }
 
-    // Additional validation for non-self bookings
+    // Additional validation if not booking for self
     if (!isBookingForSelf) {
-      const additionalFields = [
-        "forBookingFirstName",
-        "forBookingLastName",
-        "forBookingEmail",
-        "forBookingPhoneNumber",
-      ];
-
-      for (const field of additionalFields) {
-        if (data[field] === undefined || data[field] === null || data[field] === '') {
-          return new Response(JSON.stringify({ message: `${field} is required when booking for someone else` }), {
-            status: 400,
-          });
-        }
+      const additionalFields = ["forBookingFirstName", "forBookingLastName", "forBookingEmail", "forBookingPhoneNumber"];
+      const additionalValidation = validateRequiredFields(data, additionalFields, "forBooking ");
+      if (!additionalValidation.isValid) {
+        return new Response(JSON.stringify({ message: additionalValidation.message }), { status: 400 });
       }
     }
 
-    // Generate unique ID for the booking
-    const bookingId = genId();
-
-    // Connect to the database
     const client = await clientPromise;
     const db = client.db();
+
+    const bookedEvent = await getEventById(db, event._id);
+
+    if (!bookedEvent) {
+      return new Response(JSON.stringify({ message: "Event not found" }), { status: 404 });
+    }
+
+    if (bookedEvent.noOfTickets <= 0) {
+      return new Response(JSON.stringify({ message: "No tickets available for this event" }), { status: 400 });
+    }
+
+    // Decrease the number of tickets available
+    const updateResult = await decrementTicketCount(db, event._id);
+
+    // Check if the ticket decrement was successful
+    if (updateResult.matchedCount === 0) {
+      return new Response(JSON.stringify({ message: "Failed to update tickets" }), { status: 500 });
+    }
+
+    const bookingId = genId();
     const ticketBooking = db.collection("ticket-booking");
 
-    // Create a new ticket object
     const ticket: TicketBookingProps = {
       id: bookingId,
       firstName,
@@ -87,71 +93,51 @@ export async function POST(req: NextRequest) {
       createdAt: new Date(),
       updatedAt: new Date(),
       isBookingForSelf,
+      ...(isBookingForSelf ? {} : {
+        forBookingFirstName: data.forBookingFirstName,
+        forBookingLastName: data.forBookingLastName,
+        forBookingEmail: data.forBookingEmail,
+        forBookingPhoneNumber: data.forBookingPhoneNumber,
+      }),
     };
 
-    // Include additional fields if booking for someone else
-    if (!isBookingForSelf) {
-      ticket.forBookingFirstName = forBookingFirstName;
-      ticket.forBookingLastName = forBookingLastName;
-      ticket.forBookingEmail = forBookingEmail;
-      ticket.forBookingPhoneNumber = forBookingPhoneNumber;
-    }
-
-    // Insert the new booking into the database
     await ticketBooking.insertOne(ticket);
 
-    return new Response(JSON.stringify({ message: "Ticket booking is successful" }), {
-      status: 201,
-    });
+    return new Response(JSON.stringify({ message: "Ticket booking is successful" }), { status: 201 });
+
   } catch (error) {
-    console.log(error);
-    return new Response(JSON.stringify({ message: "Something went wrong" }), {
-      status: 500,
-    });
+    console.error(error);
+    return new Response(JSON.stringify({ message: "Something went wrong" }), { status: 500 });
   }
 }
 
-
-
+// Simplified GET handler
 export async function GET(req: NextRequest) {
   const session = await getServerSession(options);
 
-  // Check user session
-  // if (!session) {
-  //   return new Response(JSON.stringify({ message: "Session not active" }), {
-  //     status: 401,
-  //   });
-  // }
+  if (!session) {
+    return new Response(JSON.stringify({ message: "Session not active" }), {
+      status: 401,
+    });
+  }
 
   try {
     const client = await clientPromise;
     const db = client.db();
     const ticketBooking = db.collection("ticket-booking");
 
-    // Retrieve ID from query params if present
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
+    const id = searchParams.get("id");
 
-    let tickets;
+    const tickets = id ? await ticketBooking.findOne({ id }) : await ticketBooking.find().toArray();
 
-    if (id) {
-      // Fetch a specific ticket by ID
-      tickets = await ticketBooking.findOne({ id });
-      if (!tickets) {
-        return new Response(JSON.stringify({ message: "Ticket not found" }), {
-          status: 404,
-        });
-      }
-    } else {
-      // Fetch all tickets
-      tickets = await ticketBooking.find().toArray();
+    if (id && !tickets) {
+      return new Response(JSON.stringify({ message: "Ticket not found" }), { status: 404 });
     }
 
     return new NextResponse(JSON.stringify(tickets), { status: 200 });
   } catch (error) {
-    console.log(error);
-    return new Response(JSON.stringify({ message: "Something went wrong" }), {
-      status: 500,
-    });
+    console.error(error);
+    return new Response(JSON.stringify({ message: "Something went wrong" }), { status: 500 });
   }
 }
