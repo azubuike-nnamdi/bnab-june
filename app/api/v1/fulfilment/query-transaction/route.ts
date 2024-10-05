@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 import clientPromise from '@/lib/db';
+import { ObjectId } from "mongodb"; // Use ObjectId from the mongodb package
+
 
 const { PAYSTACK_HOSTNAME, PAYSTACK_SECRET_KEY } = process.env;
 
@@ -64,7 +66,7 @@ export async function GET(req: NextRequest) {
 
       const eventId = transaction.event._id;
       const updateResult = await db.collection('all-ticketmaster-event').updateOne(
-        { _id: eventId },
+        { _id: new ObjectId(eventId) },
         { $inc: { noOfTickets: - 1 } }
       );
 
