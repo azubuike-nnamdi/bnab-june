@@ -20,6 +20,7 @@ interface Event {
   address: string;
   time: string;
   price: string;
+  noOfTickets: number;
 }
 
 export default function EventCard() {
@@ -85,9 +86,13 @@ export default function EventCard() {
           </div>
         </CardContent>
         <CardFooter>
-          <Link href={`/ticket-master/${event._id}`}>
-            <Button>Buy Ticket</Button>
-          </Link>
+          {event.noOfTickets > 0 ? (
+            <Link href={`/ticket-master/${event._id}`}>
+              <Button>Buy Ticket</Button>
+            </Link>
+          ) : (
+            <Button disabled>Ticket is Sold Out</Button>
+          )}
         </CardFooter>
       </Card>
     ));
