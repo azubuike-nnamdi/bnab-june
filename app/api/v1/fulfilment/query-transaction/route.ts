@@ -23,7 +23,6 @@ export async function GET(req: NextRequest) {
       }
     );
     const paystackTransaction = response.data.data;
-    console.log('Paystack Transaction:', paystackTransaction);
 
     // Connect to database
     const client = await clientPromise;
@@ -58,6 +57,21 @@ export async function GET(req: NextRequest) {
         }
       }
     );
+
+    // If the booking type is ticket-master, decrease the noOfTickets in the all-ticketmaster-event collection
+    if (transaction.bookingType === 'ticket-master' && transaction.event) {
+      console.log('Attempting to update ticket count for event:', transaction.event);
+
+      const eventId = transaction.event._id;
+      const updateResult = await db.collection('all-ticketmaster-event').updateOne(
+        { _id: eventId },
+        { $inc: { noOfTickets: - 1 } }
+      );
+
+      if (updateResult.modifiedCount === 0) {
+        console.warn(`Failed to update ticket count for event ${eventId}`);
+      }
+    }
 
     return NextResponse.json({
       message: "Transaction verified",
