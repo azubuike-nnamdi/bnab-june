@@ -10,7 +10,7 @@ const useTicketMasterById = ({ id }: { id: string }) => {
   };
 
   const { isPending, error, data } = useQuery({
-    queryKey: ["ticket", id],
+    queryKey: ["event-ticket", id],
     queryFn: fetchTicketBookingById,
     staleTime: 300000,
     enabled: !!id,

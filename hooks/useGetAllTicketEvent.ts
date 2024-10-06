@@ -10,7 +10,7 @@ const useGetAllTicketEvents = () => {
   };
 
   const { isPending, error, data } = useQuery({
-    queryKey: ["ticket"],
+    queryKey: ["event-ticket"],
     queryFn: fetchAllTicketEvent,
     staleTime: 300000,
   });

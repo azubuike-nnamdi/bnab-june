@@ -19,7 +19,7 @@ export const useCreateEvent = () => {
         toast.success(data?.message);
         router.push(DASHBOARD_URL);
       }
-      queryClient.invalidateQueries({ queryKey: ["ticket"] });
+      queryClient.invalidateQueries({ queryKey: ["event-ticket"] });
     },
     onError: (error: { response: { data: { message: string } } }) => {
       const errorMsg = error.response.data.message
