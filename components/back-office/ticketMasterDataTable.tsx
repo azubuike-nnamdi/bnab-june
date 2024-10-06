@@ -5,6 +5,7 @@ import useTicketMaster from "@/hooks/useTicketMaster";
 
 export function TicketmasterDataTable() {
   const { isPending, data } = useTicketMaster();
+  const ticketData = data?.data ?? [];
 
   const headers = [
     "Full Name",
@@ -18,7 +19,7 @@ export function TicketmasterDataTable() {
 
   // Define a function to map the ticket master data to the table format
   const mapTicketMasterData = (data: any[]) => {
-    return data.map(ticket => ({
+    return data?.map(ticket => ({
       "Full Name": `${ticket.firstName} ${ticket.lastName}`,
       "Email": ticket.email,
       "Contact": ticket.phoneNumber,
@@ -34,7 +35,7 @@ export function TicketmasterDataTable() {
       <DataTable
         caption="Ticket Master Information"
         headers={headers}
-        data={data?.data || []}
+        data={ticketData}
         isPending={isPending}
         mapData={mapTicketMasterData}
       />
