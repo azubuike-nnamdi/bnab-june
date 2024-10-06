@@ -112,3 +112,9 @@ export function generateVerificationToken(): string {
 export const getFirstName = (fullName: string | undefined | null): string => {
   return typeof fullName === 'string' ? fullName.split(' ')[0] : 'User';
 };
+
+
+export const truncateString = (str: string, length: number) => {
+  if (str.length <= length) return str;
+  return str.slice(0, length) + "...";
+};
