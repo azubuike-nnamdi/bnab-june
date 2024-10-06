@@ -361,6 +361,7 @@ export interface Event {
   file: string | null; // This could be a URL or file path after uploading
   createdAt: Date;
   updateAt: Date;
+  noOfTicket: number;
 }
 
 
@@ -431,3 +432,19 @@ export type Payment = {
   count: number;
   event?: any; // Make event optional and of type 'any' for flexibility
 }
+
+
+export type EventTicket = {
+  id?: string;
+  _id: string;
+  title: string;
+  description: string;
+  address: string;
+  date: string;
+  time: string;
+  phoneNumber: string;
+  price: number;
+  noOfTickets: number;
+  createdAt: string;
+  updatedAt: string;
+};
