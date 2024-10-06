@@ -150,16 +150,16 @@ export default function Page() {
         <div className="overflow-x-auto">
           {!isViewingData && (
             <Tabs defaultValue="ticket-master" className="space-y-4">
-              <TabsList className="grid w-[400px] grid-cols-2">
+              <TabsList className="grid w-[400px]">
                 <TabsTrigger value="ticket-master">Ticket Master</TabsTrigger>
-                <TabsTrigger value="dedicated-rides">Dedicated Rides</TabsTrigger>
+                {/* <TabsTrigger value="dedicated-rides">Dedicated Rides</TabsTrigger> */}
               </TabsList>
               <TabsContent value="ticket-master" className="space-y-4">
                 <CreateEventForm />
               </TabsContent>
-              <TabsContent value="dedicated-rides">
+              {/* <TabsContent value="dedicated-rides">
                 <CreateRideForm />
-              </TabsContent>
+              </TabsContent> */}
             </Tabs>
           )}
           {isViewingData && (
