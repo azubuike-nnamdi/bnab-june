@@ -55,33 +55,3 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: 'Error fetching events', error }, { status: 500 });
   }
 }
-
-// DELETE method to remove an event by ID
-export async function DELETE(req: Request) {
-  try {
-    const client = await clientPromise;
-    const db = client.db();
-
-    // Parse the incoming request body
-    const body = await req.json();
-
-    // Ensure all required fields are provided
-    const { id } = body;
-
-    if (!id) {
-      return NextResponse.json({ message: 'Event ID is required' }, { status: 400 });
-    }
-
-    // Delete the event by ID
-    const result = await db.collection('all-ticketmaster-event').deleteOne({ _id: new ObjectId(id) });
-
-    if (result.deletedCount === 0) {
-      return NextResponse.json({ message: 'Event not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ message: 'Event deleted successfully' }, { status: 200 });
-  } catch (error) {
-    console.error('Error deleting event:', error);
-    return NextResponse.json({ message: 'Error deleting event', error }, { status: 500 });
-  }
-}
