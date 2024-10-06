@@ -21,7 +21,7 @@ export function UserNav() {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <Button
-              className="w-full"
+              className="w-full text-white"
               onClick={() => signOut()}
             >
               Sign Out
