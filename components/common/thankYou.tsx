@@ -3,14 +3,18 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, XCircle, Clock } from "lucide-react";
-import { ThankYouPropType, TransStatus } from '@/types/declaration';
+import { TransStatus } from '@/types/declaration';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { HOME_URL } from '@/config/routes';
 import { formatDateString } from '@/lib/helper';
+import { useSession } from 'next-auth/react';
 
 const ThankYou = ({ transactionData }: { transactionData: any }) => {
-  const { amount, reference, paid_at, channel, currency, status: transactionStatus } = transactionData.paystackTransaction || {};
+  const { amount, reference, paid_at, channel, currency, status: transactionStatus } = transactionData?.paystackTransaction || {};
+  const { data: session } = useSession();
+
+  const email = session?.user?.email
 
   let status: TransStatus = transactionStatus;
   const getTransStatus = (): TransStatus => {
@@ -24,7 +28,7 @@ const ThankYou = ({ transactionData }: { transactionData: any }) => {
           icon: <CheckCircle className="w-16 h-16 text-green-500 mb-4" />,
           title: "System, your order was submitted successfully!",
           color: "text-green-500",
-          message: "Booking details have been sent to: booking@luxride.com"
+          message: `Booking details have been sent to: ${email}`
         };
       case 'failure':
         return {
