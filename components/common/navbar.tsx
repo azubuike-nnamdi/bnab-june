@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "../ui/button";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import clsx from "clsx";
 import { HOME_URL, LOGIN_URL, REGISTER_URL } from "@/config/routes";
 import { getFirstName } from "@/lib/helper";
@@ -15,6 +15,10 @@ const Navbar = () => {
   const [nav, setNav] = useState(false);
   const { data: session } = useSession();
 
+  const handleSignOut = async () => {
+    await signOut(); // Await the sign out
+    redirect(HOME_URL); // Redirect to the homepage after sign out
+  };
   const pathname = usePathname();
   return (
     <div className="flex justify-between items-center w-full h-20 px-6 py-2 text-white bg-black nav">
@@ -63,7 +67,7 @@ const Navbar = () => {
             <DropdownMenuContent>
               <Button
                 className="w-full"
-                onClick={() => signOut()}
+                onClick={handleSignOut}
               >
                 Sign Out
               </Button>
