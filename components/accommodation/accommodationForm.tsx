@@ -59,6 +59,7 @@ export default function AccommodationBookingForm() {
   const [numberOfDays, setNumberOfDays] = useState<number | null>(null); // State for number of days
 
 
+
   const defaultValues: Partial<BookingFormInputs> = {
     firstName: "",
     lastName: "",
@@ -129,18 +130,39 @@ export default function AccommodationBookingForm() {
     watch('forBookingPhoneNumber')
   ));
 
+  // Calculate total budget
+  function calculateTotalBudget(budgetStr: string, numberOfDays: number | null): string {
+    if (!numberOfDays || !budgetStr) return "0.00"; // Ensure valid input
+    // Remove the "$" signs and split the budget range
+    const budgetRange = budgetStr.replace(/\$/g, '').split(' - ');
+
+    // Convert the values to numbers
+    const minBudget = parseFloat(budgetRange[0]);
+    const maxBudget = parseFloat(budgetRange[1]);
+
+    // Calculate the average
+    const averageBudget = (minBudget + maxBudget) / 2;
+
+    // Calculate the total by multiplying the average with the number of days
+    const totalBudget = averageBudget * numberOfDays;
+
+    return totalBudget.toFixed(2); // Return the total rounded to 2 decimal places
+  }
 
   const onSubmit = (data: BookingFormInputs) => {
     setTransactionType("accommodation");
 
     const transId = genId('numeric', 24)
+    const calculatedBudget = calculateTotalBudget(data.budget, numberOfDays);
+
+
     const payload: AccommodationBookingType = {
       transactionId: transId,
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       phoneNumber: data.phoneNumber,
-      budget: data.budget,
+      budget: calculatedBudget,
       accommodationType: data.accommodationType,
       dateOfArrival: data.dateOfArrival,
       timeOfArrival: data.timeOfArrival,
