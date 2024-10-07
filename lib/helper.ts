@@ -118,3 +118,23 @@ export const truncateString = (str: string, length: number) => {
   if (str.length <= length) return str;
   return str.slice(0, length) + "...";
 };
+
+
+// Calculate total budget
+export function calculateTotalBudget(budgetStr: string, numberOfDays: number | null): string {
+  if (!numberOfDays || !budgetStr) return "0.00"; // Ensure valid input
+  // Remove the "$" signs and split the budget range
+  const budgetRange = budgetStr.replace(/\$/g, '').split(' - ');
+
+  // Convert the values to numbers
+  const minBudget = parseFloat(budgetRange[0]);
+  const maxBudget = parseFloat(budgetRange[1]);
+
+  // Calculate the average
+  const averageBudget = (minBudget + maxBudget) / 2;
+
+  // Calculate the total by multiplying the average with the number of days
+  const totalBudget = averageBudget * numberOfDays;
+
+  return totalBudget.toFixed(2); // Return the total rounded to 2 decimal places
+}

@@ -16,7 +16,7 @@ import { AccommodationBookingType, TransactionType } from "@/types/declaration";
 import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { accommodationOptions, budgetOptions } from "@/lib/data/accommodation";
-import { genId } from "@/lib/helper";
+import { calculateTotalBudget, genId } from "@/lib/helper";
 
 // Define schemas with common fields and additional fields
 const commonFieldsSchema = z.object({
@@ -129,25 +129,6 @@ export default function AccommodationBookingForm() {
     watch('forBookingEmail') &&
     watch('forBookingPhoneNumber')
   ));
-
-  // Calculate total budget
-  function calculateTotalBudget(budgetStr: string, numberOfDays: number | null): string {
-    if (!numberOfDays || !budgetStr) return "0.00"; // Ensure valid input
-    // Remove the "$" signs and split the budget range
-    const budgetRange = budgetStr.replace(/\$/g, '').split(' - ');
-
-    // Convert the values to numbers
-    const minBudget = parseFloat(budgetRange[0]);
-    const maxBudget = parseFloat(budgetRange[1]);
-
-    // Calculate the average
-    const averageBudget = (minBudget + maxBudget) / 2;
-
-    // Calculate the total by multiplying the average with the number of days
-    const totalBudget = averageBudget * numberOfDays;
-
-    return totalBudget.toFixed(2); // Return the total rounded to 2 decimal places
-  }
 
   const onSubmit = (data: BookingFormInputs) => {
     setTransactionType("accommodation");
