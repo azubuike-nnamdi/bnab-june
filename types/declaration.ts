@@ -448,3 +448,15 @@ export type EventTicket = {
   createdAt: string;
   updatedAt: string;
 };
+
+
+
+export interface TransactionEmailData {
+  email: string;
+  status: string;
+  amount: number;
+  currency: string;
+  paid_at: string;
+  channel: string;
+  reference: string;
+}
