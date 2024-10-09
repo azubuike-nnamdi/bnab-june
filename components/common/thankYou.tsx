@@ -1,18 +1,21 @@
 'use client'
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, XCircle, Clock } from "lucide-react";
-import { TransStatus } from '@/types/declaration';
+import { TransactionEmailData, TransStatus } from '@/types/declaration';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { HOME_URL } from '@/config/routes';
 import { formatDateString } from '@/lib/helper';
 import { useSession } from 'next-auth/react';
+import { useSendTransactionEmail } from '@/hooks/mutations/useSendTransactionStatusEmail';
 
 const ThankYou = ({ transactionData }: { transactionData: any }) => {
   const { amount, reference, paid_at, channel, currency, status: transactionStatus } = transactionData?.paystackTransaction || {};
   const { data: session } = useSession();
+
+  const { sendTransactionEmail } = useSendTransactionEmail();
 
   const email = session?.user?.email
 
@@ -66,6 +69,25 @@ const ThankYou = ({ transactionData }: { transactionData: any }) => {
 
   // Handle undefined `paid_at` by providing a fallback value
   const formattedDate = paid_at ? formatDateString(paid_at) : "N/A";
+
+
+  // Send transaction email for all statuses
+  useEffect(() => {
+    if (transactionStatus && email) {
+      const payload: TransactionEmailData = {
+        email,
+        amount: Number(formattedAmount),
+        reference: formattedReference,
+        paid_at: formattedDate,
+        channel,
+        currency,
+        status: getTransStatus(),
+      };
+
+      sendTransactionEmail(payload);  // Call the hook function with typed payload
+    }
+  }, [transactionStatus, email]);
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
