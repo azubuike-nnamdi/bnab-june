@@ -8,11 +8,14 @@ import { useRouter } from 'next/navigation';
 import { useCheckoutContext } from '@/context/checkoutContext';
 import { CHECKOUT_URL } from '@/config/routes';
 import { airlinesInAccra } from '@/lib/data/data';
+import { genId } from '@/lib/helper';
 
 export default function AirportBooking() {
   const [formData, setFormData] = useState<AirportBookingData>({
+    transactionId: "", // Unique transaction ID
     pickUpLocation: 'Kotoka International Airport (Accra)',
-    fullName: '',
+    firstName: '',
+    lastName: '',
     dropOffLocation: '',
     phoneNumber: '',
     email: '',
@@ -27,6 +30,7 @@ export default function AirportBooking() {
     forBookingEmail: '',
     forBookingPhoneNumber: '',
     additionalNote: '',
+    bookingType: 'airport-booking'
   });
 
   const router = useRouter();
@@ -61,7 +65,8 @@ export default function AirportBooking() {
 
     const {
       isBookingForSelf,
-      fullName,
+      firstName,
+      lastName,
       pickUpLocation,
       dropOffLocation,
       phoneNumber,
@@ -76,13 +81,18 @@ export default function AirportBooking() {
       forBookingLastName,
       forBookingEmail,
       forBookingPhoneNumber,
+      bookingType,
     } = formData;
+
+    const transId = genId('numeric', 24)
 
     // Build the payload
     const payload: AirportBookingData = {
+      transactionId: transId,
       isBookingForSelf,
       pickUpLocation,
-      fullName,
+      firstName,
+      lastName,
       dropOffLocation,
       phoneNumber,
       email,
@@ -92,6 +102,7 @@ export default function AirportBooking() {
       pickUpTime,
       numberOfPassengers,
       additionalNote,
+      bookingType
     };
 
     // If booking is not for self, include the additional person's details
@@ -111,7 +122,8 @@ export default function AirportBooking() {
   const isFormValid = () => {
     // Required fields for all cases
     const requiredFields = [
-      formData.fullName,
+      formData.firstName,
+      formData.lastName,
       formData.pickUpLocation,
       formData.dropOffLocation,
       formData.phoneNumber,
@@ -148,14 +160,25 @@ export default function AirportBooking() {
     <div className="sm:p-24 p-4">
       <h1 className="sm:text-2xl text-xl font-medium">Seamless Airport Transfers for Arrival and Departure</h1>
       <form className="space-y-4 pt-4" onSubmit={handleSubmit}>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-3 gap-4">
           <div>
-            <label htmlFor="fullName" className="block mb-2">Full Name</label>
+            <label htmlFor="firstName" className="block mb-2">First Name</label>
             <input
               type="text"
-              id="fullName"
-              placeholder="Enter Name"
-              value={formData.fullName}
+              id="firstName"
+              placeholder="Enter first Name"
+              value={formData.firstName}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div>
+            <label htmlFor="lastName" className="block mb-2">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              placeholder="Enter Last Name"
+              value={formData.lastName}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-md"
             />
