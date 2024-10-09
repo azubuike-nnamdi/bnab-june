@@ -86,7 +86,7 @@ const ThankYou = ({ transactionData }: { transactionData: any }) => {
 
       sendTransactionEmail(payload);  // Call the hook function with typed payload
     }
-  }, [transactionStatus, email]);
+  }, [transactionStatus, email, channel, currency, currency, status]);
 
 
   return (
