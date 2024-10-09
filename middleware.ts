@@ -8,7 +8,6 @@ import { LOGIN_URL } from './config/routes'
 export function middleware(request: NextRequest) {
   let token = request.cookies.get('next-auth.session-token')?.value
 
-  console.log('token', token)
   if (!token) return NextResponse.redirect(new URL(LOGIN_URL, request.url))
 }
 
