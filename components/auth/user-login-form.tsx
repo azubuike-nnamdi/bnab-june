@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { FORGOT_PASSWORD_URL, HOME_URL } from "@/config/routes";
 import Link from "next/link";
+// import { cookies } from "next/headers";
 
 // Form validation schema
 const FormSchema = z.object({
@@ -52,6 +53,8 @@ export function UserLoginForm() {
       // Show error using toast or set local error state
       toast.error(result.error);
     } else {
+      // Set the user role in cookies
+      // cookies().set("userRole", result?.role, { path: "/" });
       // Redirect to the home page on successful sign-in
       toast.success("Login Successfully, Redirecting shortly...");
       router.push(HOME_URL);  // Redirect user to the home page
