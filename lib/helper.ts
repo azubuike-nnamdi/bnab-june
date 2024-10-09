@@ -138,3 +138,13 @@ export function calculateTotalBudget(budgetStr: string, numberOfDays: number | n
 
   return totalBudget.toFixed(2); // Return the total rounded to 2 decimal places
 }
+
+
+// Helper function to get required environment variables
+export function getRequiredEnvVar(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+  return value;
+}
