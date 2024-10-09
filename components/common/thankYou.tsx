@@ -73,7 +73,7 @@ const ThankYou = ({ transactionData }: { transactionData: any }) => {
 
   // Send transaction email for all statuses
   useEffect(() => {
-    if (transactionStatus && email) {
+    if (transactionStatus && email && reference) {
       const payload: TransactionEmailData = {
         email,
         amount: Number(formattedAmount),
