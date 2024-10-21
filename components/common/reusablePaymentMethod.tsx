@@ -16,6 +16,7 @@ type ReusablePaymentMethodProps = {
   loading?: boolean;
   loadingText?: string;
   disabledMessage?: string;
+  transactionType: string;
 };
 
 const ReusablePaymentMethod: React.FC<ReusablePaymentMethodProps> = ({
@@ -26,10 +27,10 @@ const ReusablePaymentMethod: React.FC<ReusablePaymentMethodProps> = ({
   loading = false,
   loadingText = 'Processing...',
   disabledMessage = 'Feature not available at the moment',
+  transactionType,
 }) => {
   const [selectedMethod, setSelectedMethod] = useState<string>('');
-  const router = useRouter()
-
+  const router = useRouter();
 
   const handleMethodSelect = (method: string) => {
     setSelectedMethod(method);
@@ -43,8 +44,13 @@ const ReusablePaymentMethod: React.FC<ReusablePaymentMethodProps> = ({
     onSubmitPayment(selectedMethod, formData);
   };
 
+  // Filter payment methods based on transactionType
+  const filteredPaymentMethods = transactionType === 'airportBooking'
+    ? paymentMethods.filter(({ method }) => method === 'Pay Later') // Show only 'Pay Later'
+    : paymentMethods; // Show all methods for other transaction types
+
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen mx-auto">
       <div className="sm:w-6/12 w-full mx-auto sm:py-3 p-4">
         <Button variant={"outline"} onClick={() => router.back()} className='my-6 gap-2'>
           <MoveLeft className="w-4 h-4" />
@@ -52,7 +58,7 @@ const ReusablePaymentMethod: React.FC<ReusablePaymentMethodProps> = ({
         </Button>
         <h2 className="text-2xl font-bold mb-4">Select Payment Method</h2>
         <div className="flex sm:space-x-6">
-          {paymentMethods.map(({ id, method, icon }) => (
+          {filteredPaymentMethods.map(({ id, method, icon }) => (
             <label key={id} className="flex items-center space-x-2 cursor-pointer">
               <input
                 type="radio"
