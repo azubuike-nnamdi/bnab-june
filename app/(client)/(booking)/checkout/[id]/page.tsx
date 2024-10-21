@@ -4,9 +4,8 @@ import ReusablePaymentMethod from "@/components/common/reusablePaymentMethod";
 import { useCheckoutContext } from "@/context/checkoutContext"
 import { useSaveTransaction } from "@/hooks/mutations/useSaveTransaction";
 import { useSubmitTransaction } from "@/hooks/mutations/useSubmitTransaction";
-import { CheckoutPageProps, TransactionData } from "@/types/declaration";
+import { CheckoutPageProps } from "@/types/declaration";
 import { CreditCard } from "lucide-react";
-import { toast } from "sonner";
 
 export default function Page({ params }: Readonly<CheckoutPageProps>) {
 
@@ -41,6 +40,7 @@ export default function Page({ params }: Readonly<CheckoutPageProps>) {
         formData={formData}
         loading={isPending || isSavingTransaction}
         loadingText="Processing..."
+        transactionType={transactionType}
       />
     </main>
   )
