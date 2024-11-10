@@ -16,7 +16,7 @@ import { AccommodationBookingType, TransactionType } from "@/types/declaration";
 import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { accommodationOptions, budgetOptions } from "@/lib/data/accommodation";
-import { calculateTotalBudget, genId } from "@/lib/helper";
+import { calculateBudget, genId } from "@/lib/helper";
 
 // Define schemas with common fields and additional fields
 const commonFieldsSchema = z.object({
@@ -134,7 +134,16 @@ export default function AccommodationBookingForm() {
     setTransactionType("accommodation");
 
     const transId = genId('numeric', 24)
-    const calculatedBudget = calculateTotalBudget(data.budget, numberOfDays);
+
+    // Find the selected budget option
+    const selectedBudgetOption = budgetOptions.find(option => option.price === data.budget);
+
+    // Get the budget id (or any other property needed) to pass to calculateBudget
+    const budgetId = selectedBudgetOption?.id;
+
+    // Pass the id or other necessary data to calculateBudget
+    //@ts-ignore
+    const calculatedBudget = calculateBudget(numberOfDays, budgetId);
 
 
     const payload: AccommodationBookingType = {
@@ -143,7 +152,7 @@ export default function AccommodationBookingForm() {
       lastName: data.lastName,
       email: data.email,
       phoneNumber: data.phoneNumber,
-      budget: calculatedBudget,
+      budget: String(calculatedBudget),
       accommodationType: data.accommodationType,
       dateOfArrival: data.dateOfArrival,
       timeOfArrival: data.timeOfArrival,

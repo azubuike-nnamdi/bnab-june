@@ -3,6 +3,7 @@ import { ALPHABET, ALPHANUMERIC, NUMERIC } from "./constants";
 import { customAlphabet } from 'nanoid'
 import { TransactionIdParams } from "@/types/declaration";
 import crypto from 'crypto';
+import { budgetOptions } from "./data/accommodation";
 
 
 
@@ -139,6 +140,39 @@ export function calculateTotalBudget(budgetStr: string, numberOfDays: number | n
   return totalBudget.toFixed(2); // Return the total rounded to 2 decimal places
 }
 
+export const calculateBudget = (days: number, budgetOptionId: number): number => {
+  // Find the budget option in the options array based on the provided id
+  const selectedOption = budgetOptions.find((option) => option.id === budgetOptionId);
+  console.log('selectedOption', selectedOption)
+  if (!selectedOption) {
+    throw new Error("Invalid budget option selected");
+  }
+
+  // Extract minimum and maximum values from the price range
+  const [minPrice, maxPrice] = selectedOption.price
+    .replace(/\$/g, "")
+    .split(" - ")
+    .map(parseFloat);
+
+  if (isNaN(minPrice) || isNaN(maxPrice)) {
+    throw new Error("Invalid price format in budget option");
+  }
+
+  let dailyRate;
+
+  if (days === 1 || days === 2) {
+    // Use the highest value and multiply by the number of days
+    dailyRate = maxPrice;
+  } else if (days >= 3 && days <= 5) {
+    // Use the average of the min and max values and multiply by the number of days
+    dailyRate = (minPrice + maxPrice) / 2;
+  } else {
+    // Use the lowest value and multiply by the number of days
+    dailyRate = minPrice;
+  }
+
+  return dailyRate * days;
+};
 
 // Helper function to get required environment variables
 export function getRequiredEnvVar(name: string): string {
