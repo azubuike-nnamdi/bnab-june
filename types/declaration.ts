@@ -463,3 +463,10 @@ export interface TransactionEmailData {
   channel: string;
   reference: string;
 }
+
+
+export type ZoneCreationType = {
+  range: string
+  cost: string
+  zone: string
+}

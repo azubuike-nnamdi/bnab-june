@@ -1,6 +1,6 @@
-import { FolderPlus, Home, Phone, Settings, User } from "lucide-react";
+import { BadgePlus, FolderPlus, Home, Phone, RollerCoaster, Settings, User } from "lucide-react";
 
-import { ABOUT_URL, ACCOMMODATION_URL, ADMINCONTACT_URL, AIRPORT_PICK_UP_DROP_OFF_URL, BOOKING_URL, CONTACT_URL, CREATE_BOOKING_URL, CUSTOMER_URL, DASHBOARD_URL, DEDICATED_RIDES_URL, HOME_URL, SERVICES_URL, SETTING_URL, TICKET_MASTER_URL, TRAINING_URL } from "@/config/routes";
+import { ABOUT_URL, ACCOMMODATION_URL, ADMINCONTACT_URL, AIRPORT_PICK_UP_DROP_OFF_URL, BOOKING_URL, CONTACT_URL, CREATE_BOOKING_URL, CUSTOMER_URL, DASHBOARD_URL, DEDICATED_RIDES_URL, HOME_URL, SERVICES_URL, SETTING_URL, TICKET_MASTER_URL, TRAINING_URL, ZONE_CREATION_URL } from "@/config/routes";
 
 export const menuItems = [
   {
@@ -320,13 +320,13 @@ export const BackOfficeNavItem = [
     tooltip: "Contact",
     title: 'Contact'
   },
-  // {
-  //   id: 4,
-  //   href: SETTING_URL,
-  //   icon: Settings,
-  //   tooltip: "Settings",
-  //   title: 'Settings'
-  // },
+  {
+    id: 4,
+    href: ZONE_CREATION_URL,
+    icon: BadgePlus,
+    tooltip: "Zone Creation",
+    title: 'Zone Creation'
+  },
 ];
 
 export const airlinesInAccra = [
