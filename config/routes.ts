@@ -20,6 +20,7 @@ const CUSTOMER_URL: string = `${DASHBOARD_URL}/customers`
 const SETTING_URL: string = `${DASHBOARD_URL}/settings`
 const CREATE_BOOKING_URL: string = `${DASHBOARD_URL}/create-booking`
 const ADMINCONTACT_URL: string = `${DASHBOARD_URL}/contact-info`
+const ZONE_CREATION_URL: string = `${DASHBOARD_URL}/zone-creation`
 //Booking journey
 const TICKET_MASTER_URL: string = '/ticket-master'
 const AIRPORT_PICK_UP_DROP_OFF_URL: string = '/airport-pick-up-drop-off'
@@ -59,4 +60,5 @@ export {
   VERIFY_OTP_URL,
   FORGOT_PASSWORD_URL,
   RESET_PASSWORD_URL,
+  ZONE_CREATION_URL,
 }

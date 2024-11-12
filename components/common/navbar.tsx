@@ -8,7 +8,7 @@ import { useSession, signOut } from "next-auth/react";
 import { Button } from "../ui/button";
 import { redirect, usePathname } from "next/navigation";
 import clsx from "clsx";
-import { HOME_URL, LOGIN_URL, REGISTER_URL } from "@/config/routes";
+import { DASHBOARD_URL, HOME_URL, LOGIN_URL, REGISTER_URL } from "@/config/routes";
 import { getFirstName } from "@/lib/helper";
 
 const Navbar = () => {
