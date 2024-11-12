@@ -6,6 +6,7 @@ import { DefaultSession, NextAuthOptions } from 'next-auth';
 import clientPromise from "@/lib/db";
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
+import { cookies } from "next/headers";
 
 declare module "next-auth" {
   interface Session {
@@ -153,12 +154,18 @@ export const options: NextAuthOptions = {
   },
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
         token.sessionToken = user.sessionToken;
       }
+
+      // Update the token if session is updated
+      if (trigger === "update" && session) {
+        token.role = session.user.role;
+      }
+
       return token;
     },
 
@@ -168,10 +175,35 @@ export const options: NextAuthOptions = {
         session.user.role = token.role as string | undefined;
         session.user.sessionToken = token.sessionToken as string | undefined;
       }
+
+      // Set the cookie here
+      cookies().set('user-role', token.role as string, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60, // 1 day
+        path: '/',
+      });
+
       return session;
     },
   },
-
+  events: {
+    async signIn({ user }) {
+      // Set cookie on sign in
+      cookies().set('user-role', user.role as string, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60,
+        path: '/',
+      });
+    },
+    async signOut() {
+      // Clear cookie on sign out
+      cookies().delete('user-role');
+    },
+  },
   pages: {
     signIn: '/auth/login',
   },
