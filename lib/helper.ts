@@ -3,7 +3,7 @@ import { ALPHABET, ALPHANUMERIC, NUMERIC } from "./constants";
 import { customAlphabet } from 'nanoid'
 import { TransactionIdParams } from "@/types/declaration";
 import crypto from 'crypto';
-import { budgetOptions } from "./data/accommodation";
+import { budgetOptionsForGuesthouseApartmentVillage, budgetOptionsForHotel } from "./data/accommodation";
 
 
 
@@ -153,6 +153,10 @@ export const calculateBudget = (
     minPrice = 40;
     maxPrice = 80;
   } else if (budgetOptionId !== null) {
+    const budgetOptions =
+      selectedAccommodationType === "Hotel"
+        ? budgetOptionsForHotel
+        : budgetOptionsForGuesthouseApartmentVillage;
     // For other types, find the budget option in the array
     const selectedOption = budgetOptions.find((option) => option.id === budgetOptionId);
     if (!selectedOption) {

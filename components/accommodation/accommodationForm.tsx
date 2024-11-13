@@ -15,7 +15,7 @@ import { useCheckoutContext } from "@/context/checkoutContext";
 import { AccommodationBookingType, TransactionType } from "@/types/declaration";
 import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { accommodationOptions, budgetOptions } from "@/lib/data/accommodation";
+import { accommodationOptions, budgetOptionsForGuesthouseApartmentVillage, budgetOptionsForHotel } from "@/lib/data/accommodation";
 import { calculateBudget, genId } from "@/lib/helper";
 
 // Define schemas with common fields and additional fields
@@ -96,6 +96,12 @@ export default function AccommodationBookingForm() {
 
   // Watch selected accommodation type
   const selectedAccommodationType = watch("accommodationType");
+
+  // Set budget options based on accommodation type
+  const budgetOptions =
+    selectedAccommodationType === "Hotel"
+      ? budgetOptionsForHotel
+      : budgetOptionsForGuesthouseApartmentVillage;
 
   // State to determine if budget should be disabled
   const [isBudgetDisabled, setIsBudgetDisabled] = useState(false);
@@ -342,7 +348,7 @@ export default function AccommodationBookingForm() {
                 name="dateOfArrival"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Date Of Arrival</FormLabel>
+                    <FormLabel>Check In Date</FormLabel>
                     <FormControl className="w-full">
                       <Input type="date" {...field} className="w-full" />
                     </FormControl>
@@ -355,7 +361,7 @@ export default function AccommodationBookingForm() {
                 name="timeOfArrival"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Time Of Arrival</FormLabel>
+                    <FormLabel>Check In Time</FormLabel>
                     <FormControl>
                       <Input type="time" {...field} />
                     </FormControl>
@@ -370,7 +376,7 @@ export default function AccommodationBookingForm() {
                 name="departureDate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Departure Date</FormLabel>
+                    <FormLabel>Check Out Date</FormLabel>
                     <FormControl>
                       <Input type="date" {...field} />
                     </FormControl>
