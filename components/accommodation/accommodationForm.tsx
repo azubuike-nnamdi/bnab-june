@@ -212,7 +212,10 @@ export default function AccommodationBookingForm() {
                 name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel> First Name</FormLabel>
+                    <FormLabel>
+                      <span>First Name</span>
+                      <span className="text-red-500"> *</span>
+                    </FormLabel>
                     <FormControl>
                       <Input placeholder="Enter your first name" {...field} />
                     </FormControl>
@@ -225,7 +228,10 @@ export default function AccommodationBookingForm() {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel> Last Name</FormLabel>
+                    <FormLabel>
+                      <span> Last Name</span>
+                      <span className="text-red-500"> *</span>
+                    </FormLabel>
                     <FormControl>
                       <Input placeholder="Enter your last name" {...field} />
                     </FormControl>
@@ -240,7 +246,10 @@ export default function AccommodationBookingForm() {
                 name="phoneNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
+                    <FormLabel>
+                      <span>Phone Number</span>
+                      <span className="text-red-500"> *</span>
+                    </FormLabel>
                     <FormControl>
                       <Input type="tel" placeholder="Enter phone number" {...field} />
                     </FormControl>
@@ -253,7 +262,10 @@ export default function AccommodationBookingForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email Address</FormLabel>
+                    <FormLabel>
+                      <span>Email Address</span>
+                      <span className="text-red-500"> *</span>
+                    </FormLabel>
                     <FormControl>
                       <Input type="email" placeholder="Enter email address" {...field} />
                     </FormControl>
@@ -269,7 +281,10 @@ export default function AccommodationBookingForm() {
                 name="accommodationType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Accommodation Type</FormLabel>
+                    <FormLabel>
+                      <span>Accommodation Type</span>
+                      <span className="text-red-500"> *</span>
+                    </FormLabel>
                     <FormControl>
                       <Controller
                         name="accommodationType"
@@ -301,7 +316,10 @@ export default function AccommodationBookingForm() {
                 name="budget"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Budget</FormLabel>
+                    <FormLabel>
+                      <span>Budget</span>
+                      <span className="text-red-500"> *</span>
+                    </FormLabel>
                     <FormControl>
                       {/* Budget Select (Auto-selected or editable based on accommodation type) */}
                       <Controller
@@ -348,7 +366,10 @@ export default function AccommodationBookingForm() {
                 name="dateOfArrival"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Check In Date</FormLabel>
+                    <FormLabel>
+                      <span>Check In Date</span>
+                      <span className="text-red-500"> *</span>
+                    </FormLabel>
                     <FormControl className="w-full">
                       <Input type="date" {...field} className="w-full" />
                     </FormControl>
@@ -361,7 +382,10 @@ export default function AccommodationBookingForm() {
                 name="timeOfArrival"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Check In Time</FormLabel>
+                    <FormLabel>
+                      <span>Check In Time</span>
+                      <span className="text-red-500"> *</span>
+                    </FormLabel>
                     <FormControl>
                       <Input type="time" {...field} />
                     </FormControl>
@@ -376,7 +400,10 @@ export default function AccommodationBookingForm() {
                 name="departureDate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Check Out Date</FormLabel>
+                    <FormLabel>
+                      <span>Check Out Date</span>
+                      <span className="text-red-500"> *</span>
+                    </FormLabel>
                     <FormControl>
                       <Input type="date" {...field} />
                     </FormControl>
@@ -389,7 +416,10 @@ export default function AccommodationBookingForm() {
                 name="departureDate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Number of Days</FormLabel>
+                    <FormLabel>
+                      <span>Number of Days</span>
+                      <span className="text-red-500"> *</span>
+                    </FormLabel>
                     <FormControl>
                       <Input type="text" value={numberOfDays !== null ? `${numberOfDays} day(s)` : ''} disabled />
                     </FormControl>
@@ -402,7 +432,10 @@ export default function AccommodationBookingForm() {
               name="isBookingForSelf"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-md">Is this booking for you?</FormLabel>
+                  <FormLabel className="text-md">
+                    <span>Is this booking for you?</span>
+                    <span className="text-red-500"> *</span>
+                  </FormLabel>
                   <FormControl>
                     <div className="flex space-x-4">
                       <div className="flex items-center space-x-2">
