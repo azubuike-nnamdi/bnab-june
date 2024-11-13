@@ -140,39 +140,43 @@ export function calculateTotalBudget(budgetStr: string, numberOfDays: number | n
   return totalBudget.toFixed(2); // Return the total rounded to 2 decimal places
 }
 
-export const calculateBudget = (days: number, budgetOptionId: number): number => {
-  // Find the budget option in the options array based on the provided id
-  const selectedOption = budgetOptions.find((option) => option.id === budgetOptionId);
-  console.log('selectedOption', selectedOption)
-  if (!selectedOption) {
-    throw new Error("Invalid budget option selected");
-  }
+export const calculateBudget = (
+  days: number,
+  budgetOptionId: number | null,
+  selectedAccommodationType: string
+): number => {
+  let minPrice: number;
+  let maxPrice: number;
 
-  // Extract minimum and maximum values from the price range
-  const [minPrice, maxPrice] = selectedOption.price
-    .replace(/\$/g, "")
-    .split(" - ")
-    .map(parseFloat);
+  // Check for "Hostel" or "B&B" accommodation types with fixed budget range
+  if (selectedAccommodationType === "Hostel" || selectedAccommodationType === "B&B") {
+    minPrice = 40;
+    maxPrice = 80;
+  } else if (budgetOptionId !== null) {
+    // For other types, find the budget option in the array
+    const selectedOption = budgetOptions.find((option) => option.id === budgetOptionId);
+    if (!selectedOption) {
+      throw new Error("Invalid budget option selected");
+    }
 
-  if (isNaN(minPrice) || isNaN(maxPrice)) {
-    throw new Error("Invalid price format in budget option");
-  }
+    // Extract min and max values from the price range string
+    [minPrice, maxPrice] = selectedOption.price
+      .replace(/\$/g, "")
+      .split(" - ")
+      .map(parseFloat);
 
-  let dailyRate;
-
-  if (days === 1 || days === 2) {
-    // Use the highest value and multiply by the number of days
-    dailyRate = maxPrice;
-  } else if (days >= 3 && days <= 5) {
-    // Use the average of the min and max values and multiply by the number of days
-    dailyRate = (minPrice + maxPrice) / 2;
+    if (isNaN(minPrice) || isNaN(maxPrice)) {
+      throw new Error("Invalid price format in budget option");
+    }
   } else {
-    // Use the lowest value and multiply by the number of days
-    dailyRate = minPrice;
+    throw new Error("No valid budget option or accommodation type selected");
   }
 
-  return dailyRate * days;
+  // Calculate average price and multiply by days
+  const averagePrice = (minPrice + maxPrice) / 2;
+  return averagePrice * days;
 };
+
 
 // Helper function to get required environment variables
 export function getRequiredEnvVar(name: string): string {
