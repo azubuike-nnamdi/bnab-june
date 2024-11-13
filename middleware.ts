@@ -35,6 +35,6 @@ export function middleware(request: NextRequest) {
 }
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/ticket-master/booking/:path*', '/airport-pick-up-drop-off/booking/:path*', '/dedicated-rides/booking/:path*', '/checkout/:path*'],
+  matcher: ['/ticket-master/booking/:path*', '/airport-pick-up-drop-off/:path*', '/dedicated-rides/booking/:path*', '/checkout/:path*'],
 }
 

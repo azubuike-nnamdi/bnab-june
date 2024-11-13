@@ -162,7 +162,10 @@ export default function AirportBooking() {
       <form className="space-y-4 pt-4" onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-3 gap-4">
           <div>
-            <label htmlFor="firstName" className="block mb-2">First Name</label>
+            <label htmlFor="firstName" className="block mb-2">
+              <span>First Name</span>
+              <span className="text-red-500"> *</span>
+            </label>
             <input
               type="text"
               id="firstName"
@@ -173,7 +176,10 @@ export default function AirportBooking() {
             />
           </div>
           <div>
-            <label htmlFor="lastName" className="block mb-2">Last Name</label>
+            <label htmlFor="lastName" className="block mb-2">
+              <span>Last Name</span>
+              <span className="text-red-500"> *</span>
+            </label>
             <input
               type="text"
               id="lastName"
@@ -184,7 +190,10 @@ export default function AirportBooking() {
             />
           </div>
           <div>
-            <label htmlFor="email" className="block mb-2">Email</label>
+            <label htmlFor="email" className="block mb-2">
+              <span>Email</span>
+              <span className="text-red-500"> *</span>
+            </label>
             <input
               type="email"
               id="email"
@@ -197,7 +206,10 @@ export default function AirportBooking() {
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="pickUpLocation" className="block mb-2">Pick up location</label>
+            <label htmlFor="pickUpLocation" className="block mb-2">
+              <span>Pick Up Location</span>
+              <span className="text-red-500"> *</span>
+            </label>
             <input
               type="text"
               id="pickUpLocation"
@@ -208,7 +220,10 @@ export default function AirportBooking() {
             />
           </div>
           <div>
-            <label htmlFor="dropOffLocation" className="block mb-2">Drop-off location</label>
+            <label htmlFor="dropOffLocation" className="block mb-2">
+              <span>Drop-off location</span>
+              <span className="text-red-500"> *</span>
+            </label>
             <input
               type="text"
               id="dropOffLocation"
@@ -221,7 +236,10 @@ export default function AirportBooking() {
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="airlineName" className="block mb-2">Airline Name</label>
+            <label htmlFor="airlineName" className="block mb-2">
+              <span>Airline Name</span>
+              <span className="text-red-500"> *</span>
+            </label>
             <select
               id="airlineName"
               value={formData.airlineName}
@@ -237,7 +255,10 @@ export default function AirportBooking() {
             </select>
           </div>
           <div>
-            <label htmlFor="timeOfArrival" className="block mb-2">Time of Arrival</label>
+            <label htmlFor="timeOfArrival" className="block mb-2">
+              <span>Time of Arrival</span>
+              <span className="text-red-500"> *</span>
+            </label>
             <input
               type="time"
               id="timeOfArrival"
@@ -249,7 +270,11 @@ export default function AirportBooking() {
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="pickUpDate" className="block mb-2">Pick Up Date</label>
+            <label htmlFor="pickUpDate" className="block mb-2">
+              <span>Pick Up Date</span>
+              <span className="text-red-500"> *</span>
+
+            </label>
             <input
               type="date"
               id="pickUpDate"
@@ -259,7 +284,10 @@ export default function AirportBooking() {
             />
           </div>
           <div>
-            <label htmlFor="pickUpTime" className="block mb-2">Pick Up Time</label>
+            <label htmlFor="pickUpTime" className="block mb-2">
+              <span>Pick Up Time</span>
+              <span className="text-red-500"> *</span>
+            </label>
             <input
               type="time"
               id="pickUpTime"
@@ -272,7 +300,11 @@ export default function AirportBooking() {
 
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="phoneNumber" className="block mb-2">Phone Number</label>
+            <label htmlFor="phoneNumber" className="block mb-2">
+              <span>Phone Number</span>
+              <span className="text-red-500"> *</span>
+
+            </label>
             <input
               type="number"
               id="phoneNumber"
@@ -283,7 +315,10 @@ export default function AirportBooking() {
             />
           </div>
           <div>
-            <label htmlFor="numberOfPassengers" className="block mb-2">Number of passengers</label>
+            <label htmlFor="numberOfPassengers" className="block mb-2">
+              <span>Number of passengers</span>
+              <span className="text-red-500"> *</span>
+            </label>
             <select
               id="numberOfPassengers"
               value={formData.numberOfPassengers}
@@ -306,7 +341,11 @@ export default function AirportBooking() {
         </div>
         <div className="mb-4">
           <fieldset className="flex items-center">
-            <legend className="block mb-2">Is this booking for you?</legend>
+            <legend className="block mb-2">
+              <span>Is this booking for you?</span>
+              <span className="text-red-500"> *</span>
+
+            </legend>
             <label className="mr-4">
               <input
                 type="radio"
