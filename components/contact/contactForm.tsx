@@ -94,7 +94,7 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="+233454567890" {...field} />
+                  <Input placeholder="Enter Phone Number" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
