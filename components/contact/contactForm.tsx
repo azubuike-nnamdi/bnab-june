@@ -66,7 +66,11 @@ export default function ContactForm() {
             name="fullName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Full Name</FormLabel>
+                <FormLabel>
+                  <span>Full Name</span>
+                  <span className="text-red-500"> *</span>
+
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Enter full name" {...field} />
                 </FormControl>
@@ -79,7 +83,11 @@ export default function ContactForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>
+                  <span>Email</span>
+                  <span className="text-red-500"> *</span>
+
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Enter email address" {...field} />
                 </FormControl>
@@ -92,7 +100,11 @@ export default function ContactForm() {
             name="phoneNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone Number</FormLabel>
+                <FormLabel>
+                  <span>Phone Number</span>
+                  <span className="text-red-500"> *</span>
+
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Enter Phone Number" {...field} />
                 </FormControl>
@@ -105,7 +117,11 @@ export default function ContactForm() {
             name="subject"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Subject</FormLabel>
+                <FormLabel>
+                  <span>Subject</span>
+                  <span className="text-red-500"> *</span>
+
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Subject" {...field} />
                 </FormControl>
@@ -118,7 +134,11 @@ export default function ContactForm() {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Message</FormLabel>
+                <FormLabel>
+                  <span>Message</span>
+                  <span className="text-red-500"> *</span>
+
+                </FormLabel>
                 <FormControl>
                   <Textarea placeholder="Your message here..." {...field} />
                 </FormControl>
