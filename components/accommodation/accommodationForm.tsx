@@ -92,7 +92,26 @@ export default function AccommodationBookingForm() {
 
 
 
-  const { watch, formState } = form;
+  const { watch, formState, setValue } = form;
+
+  // Watch selected accommodation type
+  const selectedAccommodationType = watch("accommodationType");
+
+  // State to determine if budget should be disabled
+  const [isBudgetDisabled, setIsBudgetDisabled] = useState(false);
+
+  // Set budget based on selected accommodation type
+  useEffect(() => {
+    if (selectedAccommodationType === "Hostel" || selectedAccommodationType === "B&B") {
+      // Automatically set budget to "$40 - $80" and disable editing
+      setValue("budget", "$40 - $80");
+      setIsBudgetDisabled(true);
+    } else {
+      // Enable budget selection for other accommodation types
+      setValue("budget", ""); // Clear budget to allow user selection
+      setIsBudgetDisabled(false);
+    }
+  }, [selectedAccommodationType, setValue]);
 
   // Watch for dateOfArrival and departureDate changes
   const dateOfArrival = watch("dateOfArrival");
@@ -143,7 +162,7 @@ export default function AccommodationBookingForm() {
 
     // Pass the id or other necessary data to calculateBudget
     //@ts-ignore
-    const calculatedBudget = calculateBudget(numberOfDays, budgetId);
+    const calculatedBudget = calculateBudget(numberOfDays, budgetId, selectedAccommodationType);
 
 
     const payload: AccommodationBookingType = {
@@ -250,12 +269,7 @@ export default function AccommodationBookingForm() {
                         name="accommodationType"
                         control={form.control}
                         render={({ field: { onChange, onBlur, value } }) => (
-                          <Select
-                            onValueChange={(value) => {
-                              onChange(value);
-                            }}
-                            defaultValue={value}
-                          >
+                          <Select onValueChange={(value) => setValue("accommodationType", value)}>
                             <SelectTrigger>
                               <SelectValue placeholder="Select your preferred accommodation" />
                             </SelectTrigger>
@@ -274,6 +288,8 @@ export default function AccommodationBookingForm() {
                   </FormItem>
                 )}
               />
+
+              {/* budget option field */}
               <FormField
                 control={form.control}
                 name="budget"
@@ -281,25 +297,30 @@ export default function AccommodationBookingForm() {
                   <FormItem>
                     <FormLabel>Budget</FormLabel>
                     <FormControl>
+                      {/* Budget Select (Auto-selected or editable based on accommodation type) */}
                       <Controller
                         name="budget"
                         control={form.control}
-                        render={({ field: { onChange, onBlur, value } }) => (
+                        render={({ field }) => (
                           <Select
-                            onValueChange={(value) => {
-                              onChange(value);
-                            }}
-                            defaultValue={value}
+                            onValueChange={(value) => setValue("budget", value)}
+
                           >
                             <SelectTrigger>
-                              <SelectValue placeholder="Select your budget" />
+                              <SelectValue placeholder="Select Budget" />
                             </SelectTrigger>
                             <SelectContent>
-                              {budgetOptions.map((option) => (
-                                <SelectItem key={option.id} value={option.price}>
-                                  {option.name} ({option.price})
-                                </SelectItem>
-                              ))}
+                              {isBudgetDisabled ? (
+                                // Show only the auto-set budget option when disabled
+                                <SelectItem value="$40 - $80">$40 - $80</SelectItem>
+                              ) : (
+                                // Show all budget options when enabled
+                                budgetOptions.map((option) => (
+                                  <SelectItem key={option.id} value={option.price}>
+                                    {option.name} ({option.price})
+                                  </SelectItem>
+                                ))
+                              )}
                             </SelectContent>
                           </Select>
                         )}
@@ -309,6 +330,7 @@ export default function AccommodationBookingForm() {
                   </FormItem>
                 )}
               />
+
 
             </div>
             {/* section for accommodation type and price range ends here */}
