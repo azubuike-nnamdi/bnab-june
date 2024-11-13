@@ -192,7 +192,9 @@ export default function PassengerDetails({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
             <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-              First Name
+              <span>First Name</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="text"
@@ -204,7 +206,9 @@ export default function PassengerDetails({
           </div>
           <div>
             <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-              Last Name
+              <span>Last Name</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="text"
@@ -218,7 +222,9 @@ export default function PassengerDetails({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
             <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
-              Phone Number
+              <span>Phone Number</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="number"
@@ -231,7 +237,9 @@ export default function PassengerDetails({
           </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
+              <span>Email</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="email"
@@ -248,7 +256,9 @@ export default function PassengerDetails({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div>
             <label htmlFor="pickUpLocation" className="block text-sm font-medium text-gray-700">
-              Pick Up Location
+              <span>Pick Up Location</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="text"
@@ -260,7 +270,9 @@ export default function PassengerDetails({
           </div>
           <div>
             <label htmlFor="pickUpDate" className="block text-sm font-medium text-gray-700">
-              Pick Up Date
+              <span>Pick Up Date</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="date"
@@ -272,7 +284,9 @@ export default function PassengerDetails({
           </div>
           <div>
             <label htmlFor="pickUpTime" className="block text-sm font-medium text-gray-700">
-              Pick Up Time
+              <span>Pick Up Time</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="time"
@@ -289,7 +303,9 @@ export default function PassengerDetails({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div>
             <label htmlFor="dropOffLocation" className="block text-sm font-medium text-gray-700">
-              Drop Off Location
+              <span>Drop Off Location</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="text"
@@ -301,7 +317,9 @@ export default function PassengerDetails({
           </div>
           <div>
             <label htmlFor="dropOffDate" className="block text-sm font-medium text-gray-700">
-              Drop Off Date
+              <span>Drop Off Date</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="date"
@@ -313,7 +331,9 @@ export default function PassengerDetails({
           </div>
           <div>
             <label htmlFor="dropOffTime" className="block text-sm font-medium text-gray-700">
-              Drop Off Time
+              <span>Drop Off Time</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="time"
@@ -330,7 +350,11 @@ export default function PassengerDetails({
         {/* Vehicle Type Section */}
         <div className="grid md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="vehicleType" className="block mb-2">Vehicle Type</label>
+            <label htmlFor="vehicleType" className="block mb-2">
+              <span>Vehicle Type</span>
+              <span className="text-red-500"> *</span>
+
+            </label>
             <select
               id="vehicleType"
               value={formData.vehicleType}
@@ -343,7 +367,11 @@ export default function PassengerDetails({
             </select>
           </div>
           <div>
-            <label htmlFor="price" className="block mb-2">Price</label>
+            <label htmlFor="price" className="block mb-2">
+              <span>Price</span>
+              <span className="text-red-500"> *</span>
+
+            </label>
             <input
               type="text"
               id="price"
@@ -356,7 +384,9 @@ export default function PassengerDetails({
         <div className="grid md:grid-cols-2 gap-4 mb-4">
           <div>
             <label htmlFor="numberOfDays" className="block text-sm font-medium text-gray-700">
-              Number of Days
+              <span>Number of Days</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="number"
@@ -368,7 +398,9 @@ export default function PassengerDetails({
           </div>
           <div className="mb-6">
             <label htmlFor="numberOfPassengers" className="block text-sm font-medium text-gray-700">
-              Number of Passengers
+              <span>Number of Passengers</span>
+              <span className="text-red-500"> *</span>
+
             </label>
             <input
               type="number"
@@ -382,7 +414,11 @@ export default function PassengerDetails({
           </div>
         </div>
         <div className="mb-4">
-          <p className="text-lg font-medium">Is this booking for yourself?</p>
+          <p className="text-lg font-medium">
+            <span>Is this booking for yourself?</span>
+            <span className="text-red-500"> *</span>
+
+          </p>
           <div className="flex items-center space-x-4">
             <label className="flex items-center space-x-2">
               <input
