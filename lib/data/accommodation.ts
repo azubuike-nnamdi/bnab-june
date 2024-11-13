@@ -1,8 +1,15 @@
-export const budgetOptions = [
+export const budgetOptionsForGuesthouseApartmentVillage = [
+  { id: 1, name: "Economy", price: "$80.00 - $120.00" },
+  { id: 2, name: "Standard", price: "$120.00 - $200.00" },
+  { id: 3, name: "Premium", price: "$200.00 - $300.00" },
+  { id: 4, name: "Luxury", price: "$300.00 - $500.00" },
+];
+
+export const budgetOptionsForHotel = [
   { id: 1, name: "Standard", price: "$120.00 - $200.00" },
   { id: 2, name: "Premium", price: "$200.00 - $300.00" },
   { id: 3, name: "Luxury", price: "$300.00 - $500.00" },
-  { id: 4, name: "VIP", price: "$500.00 - $2000.00" }
+  { id: 4, name: "VIP", price: "$500.00 - $2000.00" },
 ];
 
 export const accommodationOptions = [
