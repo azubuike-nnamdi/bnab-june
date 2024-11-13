@@ -25,7 +25,7 @@ const Navbar = () => {
       <div>
         <Link className="link-underline link-underline-black" href={HOME_URL} rel="noreferrer">
           <h1 className="text-3xl font-signature font-bold">Hyea Me Ha</h1>
-          <span className="text-yellow-500">...meet me there</span>
+          <span className="text-yellow-500">...meet me here</span>
         </Link>
       </div>
 
