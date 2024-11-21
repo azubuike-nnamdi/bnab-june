@@ -10,6 +10,7 @@ import { redirect, usePathname } from "next/navigation";
 import clsx from "clsx";
 import { DASHBOARD_URL, HOME_URL, LOGIN_URL, REGISTER_URL } from "@/config/routes";
 import { getFirstName } from "@/lib/helper";
+import Image from "next/image";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -24,7 +25,7 @@ const Navbar = () => {
     <div className="flex justify-between items-center w-full h-20 px-6 py-2 text-white bg-black nav">
       <div>
         <Link className="link-underline link-underline-black" href={HOME_URL} rel="noreferrer">
-          <h1 className="text-3xl font-signature font-bold">Hyea Me Ha</h1>
+          <Image src='/img/hyeameha-logo.svg' alt='logo' width={80} height={70} />
           <span className="text-yellow-500">...meet me here</span>
         </Link>
       </div>
