@@ -26,10 +26,10 @@ export async function POST(req: NextRequest) {
       resetPasswordExpires: { $gt: new Date() }, // Token must still be valid (not expired)
     });
 
-
     if (!user) {
       return NextResponse.json({ message: 'No user found or token has expired. Please request a new password reset.' }, { status: 404 });
     }
+
     // Compare provided token with hashed token in the database
     const tokenMatches = await bcrypt.compare(token, user.resetPasswordToken);
 
@@ -60,3 +60,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "An unexpected error occurred" }, { status: 500 });
   }
 }
+
