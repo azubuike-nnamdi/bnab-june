@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/db';
-import { v4 as uuidv4 } from 'uuid'; // For generating a new session token
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,9 +8,7 @@ export async function POST(req: NextRequest) {
     const { otp } = data;
 
     if (!otp) {
-      return new NextResponse(JSON.stringify({ message: "OTP is required" }), {
-        status: 400,
-      });
+      return NextResponse.json({ message: "OTP is required" }, { status: 400 });
     }
 
     const client = await clientPromise;
@@ -20,22 +18,17 @@ export async function POST(req: NextRequest) {
     const userCollection = db.collection('users');
 
     // Retrieve session from cookies
-    const cookies = req.headers.get('cookie');
-    const sessionToken = cookies?.split('; ').find(row => row.startsWith('HyeaMeHa_sessionToken='))?.split('=')[1];
+    const sessionToken = req.cookies.get('HyeaMeHa_sessionToken')?.value;
 
     if (!sessionToken) {
-      return new NextResponse(JSON.stringify({ message: "Session token is missing" }), {
-        status: 401,
-      });
+      return NextResponse.json({ message: "Session token is missing" }, { status: 401 });
     }
 
     // Find the session in the database
     const session = await sessionCollection.findOne({ sessionToken });
 
     if (!session) {
-      return new NextResponse(JSON.stringify({ message: "Invalid session token" }), {
-        status: 401,
-      });
+      return NextResponse.json({ message: "Invalid session token" }, { status: 401 });
     }
 
     // Retrieve user's email or other identifier from user collection
@@ -46,9 +39,7 @@ export async function POST(req: NextRequest) {
     const otpRecord = await otpCollection.findOne({ email: userEmail });
 
     if (!otpRecord || otpRecord.otp !== otp || new Date() > otpRecord.expiresAt) {
-      return new NextResponse(JSON.stringify({ message: "Invalid or expired OTP" }), {
-        status: 400,
-      });
+      return NextResponse.json({ message: "Invalid or expired OTP" }, { status: 400 });
     }
 
     // OTP is valid, clean up OTP record
@@ -66,11 +57,13 @@ export async function POST(req: NextRequest) {
       { sessionToken },
       { $set: { sessionToken: newSessionToken } }
     );
+
     console.log('Session Token:', sessionToken);
     console.log('OTP Record:', otpRecord);
     console.log('User Email:', userEmail);
+
     // Set session token in cookies
-    const response = new NextResponse(JSON.stringify({ message: "Sign-in successful" }), { status: 200 });
+    const response = NextResponse.json({ message: "Sign-in successful" }, { status: 200 });
     response.cookies.set("HyeaMeHa_sessionToken", newSessionToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60, // 1 day
@@ -80,8 +73,7 @@ export async function POST(req: NextRequest) {
     return response;
   } catch (error) {
     console.error('Error verifying OTP:', error);
-    return new NextResponse(JSON.stringify({ message: "Something went wrong" }), {
-      status: 500,
-    });
+    return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
   }
 }
+
