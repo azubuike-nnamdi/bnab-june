@@ -141,6 +141,7 @@ export type AirportBookingData = {
   forBookingEmail?: string;
   forBookingPhoneNumber?: string;
   bookingType: string;
+  budget: string;
 }
 
 export type AccommodationBookingType = {
@@ -469,4 +470,9 @@ export type ZoneCreationType = {
   range: string
   cost: string
   zone: string
+}
+
+export type Suggestion = {
+  place_id: string;
+  description: string;
 }
