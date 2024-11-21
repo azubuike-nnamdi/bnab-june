@@ -1,14 +1,18 @@
 'use client';
 
-import { AirportBookingData, TransactionType } from '@/types/declaration';
+import { AirportBookingData, Suggestion, TransactionType } from '@/types/declaration';
 import { format, isValid, parseISO } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '../ui/button';
 import { useRouter } from 'next/navigation';
 import { useCheckoutContext } from '@/context/checkoutContext';
 import { CHECKOUT_URL } from '@/config/routes';
 import { airlinesInAccra } from '@/lib/data/data';
 import { genId } from '@/lib/helper';
+import axios from 'axios';
+import { LoadingOverlay } from '../common/loading-overlay';
+import useGetZones from '@/hooks/useGetZones';
+import { determinePrice } from '@/lib/pricing';
 
 export default function AirportBooking() {
   const [formData, setFormData] = useState<AirportBookingData>({
@@ -30,12 +34,114 @@ export default function AirportBooking() {
     forBookingEmail: '',
     forBookingPhoneNumber: '',
     additionalNote: '',
-    bookingType: 'airport-booking'
+    bookingType: 'airport-booking',
+    budget: ''
   });
 
   const router = useRouter();
   const { setCheckout } = useCheckoutContext();
   const [transactionType, setTransactionType] = useState<TransactionType>('airportBooking');
+  const [distance, setDistance] = useState<number | null>(null);
+  const [isCalculatingDistance, setIsCalculatingDistance] = useState(false);
+  const [distanceError, setDistanceError] = useState<string | null>(null);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const { isPending, data } = useGetZones();
+
+  const zones = data?.data ?? []
+
+
+
+  const inputBRef = useRef<HTMLInputElement>(null);
+
+  // Function to fetch distance
+  // Update drop-off location and trigger distance calculation
+  const calculateDistance = useCallback(async () => {
+    if (!formData?.pickUpLocation || !formData?.dropOffLocation) {
+      return
+    }
+    setIsCalculatingDistance(true);
+    setDistanceError(null);
+    try {
+      const response = await fetch(
+        `/api/v1/distance?locationA=${encodeURIComponent(formData?.pickUpLocation)}&locationB=${encodeURIComponent(formData?.dropOffLocation)}`
+      )
+      const data = await response.json()
+
+      if (data.rows && data.rows[0].elements && data.rows[0].elements[0].status === 'OK') {
+        const distanceInKm = data.rows[0].elements[0].distance.value / 1000;
+        setDistance(distanceInKm);
+
+        if (zones) {
+          const price = determinePrice(distanceInKm, zones);
+          setFormData(prev => ({ ...prev, budget: price.toString() }));
+        }
+      } else {
+        setDistance(null)
+        console.error('Error fetching distance:', data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch distance:', error);
+      setDistance(null);
+      setDistanceError('An error occurred while calculating the distance. Please try again.');
+    } finally {
+      setIsCalculatingDistance(false);
+    }
+  }, [formData?.pickUpLocation, formData?.dropOffLocation])
+
+
+  useEffect(() => {
+    calculateDistance()
+  }, [calculateDistance])
+  const handleDropOffChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const dropOffLocation = e.target.value;
+
+    // Update form data
+    setFormData(prev => ({
+      ...prev,
+      dropOffLocation
+    }));
+
+    // Only fetch suggestions and distance if location is not empty
+    if (dropOffLocation.trim()) {
+      try {
+        // Fetch autocomplete suggestions
+        const { data } = await axios.get('/api/v1/distance/autocomplete', {
+          params: { search: dropOffLocation },
+        });
+
+        setSuggestions(data.predictions || []); // Update suggestions state
+        setShowSuggestions(true); // Show suggestions dropdown
+      } catch (error) {
+        console.error('Error fetching autocomplete suggestions:', error);
+      }
+    } else {
+      // Clear suggestions and hide dropdown if input is empty
+      setSuggestions([]);
+      setShowSuggestions(false)
+    }
+  };
+
+
+  const handleSuggestionClick = (suggestion: Suggestion) => {
+    setFormData((prev) => ({ ...prev, dropOffLocation: suggestion.description }));
+    setShowSuggestions(false);
+  };
+
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (inputBRef.current && !inputBRef.current.contains(event.target as Node)) {
+      setShowSuggestions(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { id, value, type } = e.target;
@@ -62,7 +168,7 @@ export default function AirportBooking() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    console.log(formData);
     const {
       isBookingForSelf,
       firstName,
@@ -82,6 +188,7 @@ export default function AirportBooking() {
       forBookingEmail,
       forBookingPhoneNumber,
       bookingType,
+      budget,
     } = formData;
 
     const transId = genId('numeric', 24)
@@ -102,7 +209,8 @@ export default function AirportBooking() {
       pickUpTime,
       numberOfPassengers,
       additionalNote,
-      bookingType
+      bookingType,
+      budget
     };
 
     // If booking is not for self, include the additional person's details
@@ -133,6 +241,7 @@ export default function AirportBooking() {
       formData.pickUpDate,
       formData.pickUpTime,
       formData.numberOfPassengers,
+      formData.budget
     ];
 
     // Ensure all required fields are filled (check for both undefined and empty string)
@@ -160,7 +269,9 @@ export default function AirportBooking() {
     <div className="sm:p-24 p-4">
       <h1 className="sm:text-2xl text-xl font-medium">Seamless Airport Transfers for Arrival and Departure</h1>
       <form className="space-y-4 pt-4" onSubmit={handleSubmit}>
-        <div className="grid md:grid-cols-3 gap-4">
+        {isCalculatingDistance && <LoadingOverlay message="Calculating distance..." />}
+
+        <div className="grid md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="firstName" className="block mb-2">
               <span>First Name</span>
@@ -189,6 +300,9 @@ export default function AirportBooking() {
               className="w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
+
+        </div>
+        <div className="grid  md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="email" className="block mb-2">
               <span>Email</span>
@@ -203,8 +317,6 @@ export default function AirportBooking() {
               className="w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
-        </div>
-        <div className="grid md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="pickUpLocation" className="block mb-2">
               <span>Pick Up Location</span>
@@ -219,18 +331,64 @@ export default function AirportBooking() {
               className="w-full p-2 border border-gray-300 rounded-md disabled:cursor-not-allowed"
             />
           </div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-4">
+
           <div>
             <label htmlFor="dropOffLocation" className="block mb-2">
               <span>Drop-off location</span>
               <span className="text-red-500"> *</span>
             </label>
+            <div className="relative" ref={inputBRef}>
+              <input
+                type="text"
+                id="dropOffLocation"
+                placeholder="Enter drop off location"
+                value={formData.dropOffLocation}
+                onChange={handleDropOffChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+              {showSuggestions && suggestions.length > 0 && (
+                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-md mt-1 max-h-48 overflow-y-auto">
+                  {suggestions.map((suggestion) => (
+                    <li
+                      key={suggestion.place_id}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="p-2 cursor-pointer hover:bg-gray-100"
+                    >
+                      {suggestion.description}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            {/* Distance display */}
+            {isCalculatingDistance && (
+              <div className="text-sm text-gray-600 mt-1">Calculating distance...</div>
+            )}
+            {distance !== null && (
+              <div className="text-sm text-green-600 mt-1">
+                Distance: {distance.toFixed(2)} km
+              </div>
+            )}
+            {distanceError && (
+              <div className="text-sm text-red-600 mt-1">{distanceError}</div>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="price" className="block mb-2">
+              <span>Price</span>
+              <span className="text-red-500"> *</span>
+            </label>
             <input
-              type="text"
-              id="dropOffLocation"
-              placeholder="Enter drop off location"
-              value={formData.dropOffLocation}
+              type="number"
+              id="price"
+              placeholder="Price will be calculated automatically"
+              value={formData.budget}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              disabled
+              className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 disabled:cursor-not-allowed"
             />
           </div>
         </div>

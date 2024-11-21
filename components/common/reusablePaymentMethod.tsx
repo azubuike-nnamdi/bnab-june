@@ -45,9 +45,9 @@ const ReusablePaymentMethod: React.FC<ReusablePaymentMethodProps> = ({
   };
 
   // Filter payment methods based on transactionType
-  const filteredPaymentMethods = transactionType === 'airportBooking'
-    ? paymentMethods.filter(({ method }) => method === 'Pay Later') // Show only 'Pay Later'
-    : paymentMethods; // Show all methods for other transaction types
+  // const filteredPaymentMethods = transactionType === 'airportBooking'
+  //   ? paymentMethods.filter(({ method }) => method === 'Pay Later') // Show only 'Pay Later'
+  //   : paymentMethods; // Show all methods for other transaction types
 
   return (
     <div className="flex items-center justify-center min-h-screen mx-auto">
@@ -58,7 +58,7 @@ const ReusablePaymentMethod: React.FC<ReusablePaymentMethodProps> = ({
         </Button>
         <h2 className="text-2xl font-bold mb-4">Select Payment Method</h2>
         <div className="flex sm:space-x-6">
-          {filteredPaymentMethods.map(({ id, method, icon }) => (
+          {paymentMethods.map(({ id, method, icon }) => (
             <label key={id} className="flex items-center space-x-2 cursor-pointer">
               <input
                 type="radio"
