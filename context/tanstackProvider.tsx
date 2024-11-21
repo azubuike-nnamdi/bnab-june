@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
 import { CheckoutProvider } from "./checkoutContext";
 import { DedicatedBookingProvider } from "./dedicatedRidesContext";
+import { BackToTop } from "@/components/common/back-to-top";
 
 interface TanstackProviderProps {
   children: ReactNode;
@@ -20,6 +21,7 @@ const TanstackProvider = ({ children }: TanstackProviderProps) => {
         <CheckoutProvider>
           <DedicatedBookingProvider>
             {children}
+            <BackToTop />
             <ReactQueryDevtools initialIsOpen={false} />
             <Toaster position="bottom-right" richColors />
           </DedicatedBookingProvider>
