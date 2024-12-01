@@ -1,3 +1,5 @@
+'use client'
+
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 const YOUR_API_KEY = 'AIzaSyCWyd2E7siWI_KdYmok7esykQFzWUbkGgo'
