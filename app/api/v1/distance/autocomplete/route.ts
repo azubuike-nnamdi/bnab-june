@@ -8,7 +8,8 @@ export async function GET(request: NextRequest) {
     const response = await axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json', {
       params: {
         input: searchKeyword,
-        types: 'address',
+        libraries: 'places',
+        // types: 'address',
         components: 'country:gh',
         location: '7.950576277069621, -1.3653371567836274', // Ghana coordinates
         // radius: 3300, // Radius in meters
