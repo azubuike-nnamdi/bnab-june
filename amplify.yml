@@ -1,40 +1,40 @@
 version: 1
 frontend:
-  phases:
-    preBuild:
-      commands:
-        - npx pnpm install
-    build:
-      commands:
-        - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
-        - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
-        - echo "GITHUB_CLIENT_ID=$GITHUB_CLIENT_ID" >> .env
-        - echo "GITHUB_CLIENT_SECRET=$GITHUB_CLIENT_SECRET"  >> .env
-        - echo "GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET" >> .env
-        - echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" >> .env
-        - echo "MONGODB_URI=$MONGODB_URI" >> .env
-        - echo "TWITTER_CLIENT_ID=$TWITTER_CLIENT_ID" >> .env
-        - echo "TWITTER_CLIENT_SECRET=$TWITTER_CLIENT_SECRET" >> .env
-        - echo "SMTP_HOST=$SMTP_HOST" >> .env
-        - echo "SMTP_PORT=$SMTP_PORT" >> .env
-        - echo "SMTP_USERNAME=$SMTP_USERNAME" >> .env
-        - echo "SMTP_PASSWORD=$SMTP_PASSWORD" >> .env
-        - echo "SMTP_FROM=$SMTP_FROM" >> .env
-        - echo "SMTP_TO=$SMTP_TO" >> .env
-        - echo "PAYSTACK_SECRET_KEY=$PAYSTACK_SECRET_KEY" >> .env
-        - echo "PAYSTACK_PUBLIC_KEY=$PAYSTACK_PUBLIC_KEY" >> .env
-        - echo "PAYSTACK_HOSTNAME=$PAYSTACK_HOSTNAME" >> .env
-        - echo "APP_URL=$APP_URL" >> .env
-        - echo "NEXT_PUBLIC_APP_URL=$APP_URL" >> .env
-        - echo "NEXT_PUBLIC_SYSTEM_ROLE=$NEXT_PUBLIC_SYSTEM_ROLE" >> .env
-        -echo "GOOGLE_MAP_KEY=$GOOGLE_MAP_KEY" >> .env
-        -echo "ROLE=$NEXT_PUBLIC_SYSTEM_ROLE" >> .env
-        - npx pnpm run build
-  artifacts:
-    baseDirectory: .next
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - .next/cache/**/*
-      - node_modules/**/*
+   phases:
+      preBuild:
+         commands:
+            - npx pnpm install
+      build:
+         commands:
+            - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
+            - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
+            - echo "GITHUB_CLIENT_ID=$GITHUB_CLIENT_ID" >> .env
+            - echo "GITHUB_CLIENT_SECRET=$GITHUB_CLIENT_SECRET"  >> .env
+            - echo "GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET" >> .env
+            - echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" >> .env
+            - echo "MONGODB_URI=$MONGODB_URI" >> .env
+            - echo "TWITTER_CLIENT_ID=$TWITTER_CLIENT_ID" >> .env
+            - echo "TWITTER_CLIENT_SECRET=$TWITTER_CLIENT_SECRET" >> .env
+            - echo "SMTP_HOST=$SMTP_HOST" >> .env
+            - echo "SMTP_PORT=$SMTP_PORT" >> .env
+            - echo "SMTP_USERNAME=$SMTP_USERNAME" >> .env
+            - echo "SMTP_PASSWORD=$SMTP_PASSWORD" >> .env
+            - echo "SMTP_FROM=$SMTP_FROM" >> .env
+            - echo "SMTP_TO=$SMTP_TO" >> .env
+            - echo "PAYSTACK_SECRET_KEY=$PAYSTACK_SECRET_KEY" >> .env
+            - echo "PAYSTACK_PUBLIC_KEY=$PAYSTACK_PUBLIC_KEY" >> .env
+            - echo "PAYSTACK_HOSTNAME=$PAYSTACK_HOSTNAME" >> .env
+            - echo "APP_URL=$APP_URL" >> .env
+            - echo "NEXT_PUBLIC_APP_URL=$APP_URL" >> .env
+            - echo "NEXT_PUBLIC_SYSTEM_ROLE=$NEXT_PUBLIC_SYSTEM_ROLE" >> .env
+            - echo "GOOGLE_MAP_KEY=$GOOGLE_MAP_KEY" >> .env
+            - echo "ROLE=$ROLE" >> .env
+            - npx pnpm run build
+   artifacts:
+      baseDirectory: .next
+      files:
+         - "**/*"
+   cache:
+      paths:
+         - .next/cache/**/*
+         - node_modules/**/*
