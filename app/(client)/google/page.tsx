@@ -37,7 +37,7 @@ const Page = () => {
     return () => {
       const script = document.querySelector(`script[src*="maps.googleapis.com"]`)
       if (script) {
-        document.body.removeChild(script)
+        document?.body?.removeChild(script)
       }
     }
   }, [])

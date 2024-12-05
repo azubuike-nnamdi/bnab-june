@@ -78,7 +78,7 @@ export default function AirportBooking() {
         }
       } else {
         setDistance(null)
-        console.error('Error fetching distance:', data)
+        // console.error('Error fetching distance:', data)
       }
     } catch (error) {
       console.error('Failed to fetch distance:', error);
