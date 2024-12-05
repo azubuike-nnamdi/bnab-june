@@ -8,7 +8,7 @@ import { DASHBOARD_URL, LOGIN_URL } from './config/routes'
 export function middleware(request: NextRequest) {
   // Add detailed logging
   console.log('Middleware executing for path:', request.nextUrl.pathname);
-  const { ROLE } = process.env
+
 
   const tokenName = process.env.NODE_ENV === 'production'
     ? '__Host-next-auth.csrf-token'
@@ -27,7 +27,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(LOGIN_URL, request.url));
   }
 
-  if (userRole === ROLE) {
+  if (userRole === "admin") {
     console.log('Admin user detected, redirecting to dashboard');
     return NextResponse.redirect(new URL(DASHBOARD_URL, request.url));
   }
