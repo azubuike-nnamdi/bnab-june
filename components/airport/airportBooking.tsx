@@ -376,11 +376,12 @@ export default function AirportBooking() {
             )}
           </div>
 
-          <div>
+          <div className="relative">
             <label htmlFor="price" className="block mb-2">
               <span>Price</span>
               <span className="text-red-500"> *</span>
             </label>
+            <div className="absolute left-3 top-[41px] text-gray-500 pointer-events-none">GHS</div>
             <input
               type="number"
               id="price"
@@ -388,7 +389,7 @@ export default function AirportBooking() {
               value={formData.budget}
               onChange={handleChange}
               disabled
-              className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 disabled:cursor-not-allowed"
+              className="w-full p-2 pl-[50px] border border-gray-300 rounded-md bg-gray-100 disabled:cursor-not-allowed"
             />
           </div>
         </div>
