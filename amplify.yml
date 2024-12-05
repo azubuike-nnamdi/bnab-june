@@ -26,7 +26,9 @@ frontend:
         - echo "PAYSTACK_HOSTNAME=$PAYSTACK_HOSTNAME" >> .env
         - echo "APP_URL=$APP_URL" >> .env
         - echo "NEXT_PUBLIC_APP_URL=$APP_URL" >> .env
-        - echo "NEXT_PUBLIC_SYSTEM_ROLE=NEXT_PUBLIC_SYSTEM_ROLE" >> .env
+        - echo "NEXT_PUBLIC_SYSTEM_ROLE=$NEXT_PUBLIC_SYSTEM_ROLE" >> .env
+        -echo "GOOGLE_MAP_KEY=$GOOGLE_MAP_KEY" >> .env
+        -echo "ROLE=$NEXT_PUBLIC_SYSTEM_ROLE" >> .env
         - npx pnpm run build
   artifacts:
     baseDirectory: .next
