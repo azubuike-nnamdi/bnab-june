@@ -73,12 +73,23 @@ export default function AirportBooking() {
         setDistance(distanceInKm);
 
         if (zones) {
-          const price = determinePrice(distanceInKm, zones);
-          setFormData(prev => ({ ...prev, budget: price.toString() }));
+          // Get base price based on distance
+          const basePrice = determinePrice(distanceInKm, zones);
+
+          // Calculate total price by multiplying base price with number of passengers
+          const numberOfPassengers = formData.numberOfPassengers
+            ? parseInt(formData.numberOfPassengers)
+            : 1;
+
+          const totalPrice = basePrice * numberOfPassengers;
+
+          setFormData(prev => ({
+            ...prev,
+            budget: totalPrice.toString()
+          }));
         }
       } else {
         setDistance(null)
-        // console.error('Error fetching distance:', data)
       }
     } catch (error) {
       console.error('Failed to fetch distance:', error);
@@ -87,7 +98,7 @@ export default function AirportBooking() {
     } finally {
       setIsCalculatingDistance(false);
     }
-  }, [formData?.pickUpLocation, formData?.dropOffLocation])
+  }, [formData?.pickUpLocation, formData?.dropOffLocation, formData?.numberOfPassengers])
 
 
   useEffect(() => {
