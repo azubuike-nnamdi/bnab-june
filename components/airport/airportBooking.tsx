@@ -320,7 +320,7 @@ export default function AirportBooking() {
           <div>
             <label htmlFor="pickUpLocation" className="block mb-2">
               <span>Pick Up Location</span>
-              <span className="text-red-500"> *</span>
+              {/* <span className="text-red-500"> *</span> */}
             </label>
             <input
               type="text"
@@ -366,20 +366,20 @@ export default function AirportBooking() {
             {isCalculatingDistance && (
               <div className="text-sm text-gray-600 mt-1">Calculating distance...</div>
             )}
-            {distance !== null && (
+            {/* {distance !== null && (
               <div className="text-sm text-green-600 mt-1">
                 Distance: {distance.toFixed(2)} km
               </div>
-            )}
-            {distanceError && (
+            )} */}
+            {/* {distanceError && (
               <div className="text-sm text-red-600 mt-1">{distanceError}</div>
-            )}
+            )} */}
           </div>
 
           <div className="relative">
             <label htmlFor="price" className="block mb-2">
               <span>Price</span>
-              <span className="text-red-500"> *</span>
+              {/* <span className="text-red-500"> *</span> */}
             </label>
             <div className="absolute left-3 top-[41px] text-gray-500 pointer-events-none">GHS</div>
             <input
@@ -461,7 +461,7 @@ export default function AirportBooking() {
           <div>
             <label htmlFor="phoneNumber" className="block mb-2">
               <span>Phone Number</span>
-              <span className="text-red-500"> *</span>
+              {/* <span className="text-red-500"> *</span> */}
 
             </label>
             <input
@@ -502,7 +502,7 @@ export default function AirportBooking() {
           <fieldset className="flex items-center">
             <legend className="block mb-2">
               <span>Is this booking for you?</span>
-              <span className="text-red-500"> *</span>
+              {/* <span className="text-red-500"> *</span> */}
 
             </legend>
             <label className="mr-4">
