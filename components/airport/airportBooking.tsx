@@ -269,7 +269,7 @@ export default function AirportBooking() {
     <div className="sm:p-24 p-4">
       <h1 className="sm:text-2xl text-xl font-medium">Seamless Airport Transfers for Arrival and Departure</h1>
       <form className="space-y-4 pt-4" onSubmit={handleSubmit}>
-        {isCalculatingDistance && <LoadingOverlay message="Calculating distance..." />}
+        {/* {isCalculatingDistance && <LoadingOverlay message="Calculating distance..." />} */}
 
         <div className="grid md:grid-cols-2 gap-4">
           <div>
