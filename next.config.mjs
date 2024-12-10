@@ -8,6 +8,12 @@ const nextConfig = {
         port: '',
         pathname: '/img/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'egotickets-core-cdn.s3.eu-north-1.amazonaws.com',
+        port: '',
+        pathname: '/production/uploads/**',
+      },
     ],
   }
 };
