@@ -66,16 +66,29 @@ export default function TicketSummary({
               />
             </div>
           </div>
-          <div className="mb-4">
-            <label htmlFor="ticketType" className="block mb-2">Ticket Type</label>
-            <input
-              type="text"
-              id="ticketType"
-              value={formData.ticketType}
-              disabled
-              className="w-full p-2 border border-gray-300 rounded-md"
-            />
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <div className="">
+              <label htmlFor="ticketType" className="block mb-2">Ticket Type</label>
+              <input
+                type="text"
+                id="ticketType"
+                value={formData.ticketType}
+                disabled
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            <div>
+              <label htmlFor="price" className="block mb-2">Price</label>
+              <input
+                type="text"
+                id="price"
+                value={`GHC ${formData.price}`}
+                readOnly
+                className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 disabled:cursor-not-allowed"
+              />
+            </div>
           </div>
+
           {formData.isBookingForSelf ? null : (
             <section>
               <div className="grid md:grid-cols-2 gap-4 mb-4">
