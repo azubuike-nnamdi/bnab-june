@@ -14,29 +14,35 @@ export default function Checkout({
   setActiveTabIndex,
   onFormDataChange,
   onFormSubmit,
+  ticketOptions
 }: Readonly<CheckoutProps>) {
-  const [formData, setFormData] = useState<TicketBookingFormDataProps>({
-    transactionId: "",
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    email: '',
-    ticketType: 'Regular',
-    price: ticketPrices['Regular'],
-    isBookingForSelf: true,
-    forBookingFirstName: '',
-    forBookingLastName: '',
-    forBookingEmail: '',
-    forBookingPhoneNumber: '',
-    bookingType: "ticket-master",
-    budget: ticketPrices['Regular'],
+  const [formData, setFormData] = useState<TicketBookingFormDataProps>(() => {
+    const defaultTicket = ticketOptions[0] || { name: '', price: '0' };
+    return {
+      transactionId: "",
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      email: '',
+      ticketType: defaultTicket.name,
+      price: defaultTicket.price,
+      isBookingForSelf: true,
+      forBookingFirstName: '',
+      forBookingLastName: '',
+      forBookingEmail: '',
+      forBookingPhoneNumber: '',
+      bookingType: "ticket-master",
+      budget: defaultTicket.price,
+    };
   });
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
 
     if (id === 'ticketType') {
-      const selectedPrice = ticketPrices[value as TicketType];
+      const selectedTicket = ticketOptions.find(ticket => ticket.name === value);
+      const selectedPrice = selectedTicket ? selectedTicket.price : '0';
       const updatedData = { ticketType: value, price: selectedPrice };
       setFormData((prevData) => ({ ...prevData, ...updatedData }));
       onFormDataChange(updatedData); // Notify parent component
@@ -134,9 +140,16 @@ export default function Checkout({
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-md"
             >
-              <option value="Regular">Regular</option>
+              {ticketOptions?.map((ticket) => {
+                return (
+                  <option key={ticket.id} value={ticket.name}>
+                    {ticket.name}
+                  </option>
+                );
+              })}
+              {/* <option value="Regular">Regular</option>
               <option value="VIP">VIP</option>
-              <option value="VVIP">VVIP</option>
+              <option value="VVIP">VVIP</option> */}
             </select>
           </div>
           <div>
@@ -144,7 +157,7 @@ export default function Checkout({
             <input
               type="text"
               id="price"
-              value={`$${formData.price}`}
+              value={`GHC ${formData.price}`}
               readOnly
               className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
             />
