@@ -11,26 +11,32 @@ import { CircleDollarSign, MapPin, Timer } from "lucide-react";
 import { ExpandedState } from "@/types/declaration";
 import useGetAllTicketEvents from "@/hooks/useGetAllTicketEvent";
 import SkeletonCard from "../common/skeleton-card";
+import useGetEvents from "@/hooks/useGetEvents";
 
 interface Event {
-  _id: string;
-  title: string;
-  description: string;
-  image: string;
+  id: number;
+  name: string;
+  text_description: string;
+  banner_photo: {
+    url: string;
+    mobile?: { url: string };
+    thumb?: { url: string };
+  };
+  venue_name: string;
   address: string;
-  time: string;
-  price: string;
-  noOfTickets: number;
+  startdate: string;
+  tickets: Array<{
+    price: string;
+  }>;
 }
 
 export default function EventCard() {
   const [expanded, setExpanded] = useState<ExpandedState>({});
-  const { isPending, data } = useGetAllTicketEvents();
+  const { isPending: isFetchingEvents, data: eventsData } = useGetEvents();
 
-  // Extract the eventData from the fetched data
-  const eventData: Event[] | undefined = data?.data?.events;
+  const eventData: Event[] = eventsData?.data ?? [];
 
-  const handleReadMore = (id: string) => {
+  const handleReadMore = (id: number) => {
     setExpanded((prevState) => ({
       ...prevState,
       [id]: !prevState[id],
@@ -40,62 +46,74 @@ export default function EventCard() {
   // Independent logic for rendering content
   let content;
 
-  if (isPending) {
+  if (isFetchingEvents) {
     content = (
       Array.from({ length: 6 }).map((_, idx) => <SkeletonCard key={idx} />)
     );
   } else if (eventData && eventData.length > 0) {
-    content = eventData.map((event: Event) => (
-      <Card key={event._id}>
-        <CardHeader>
-          <Image
-            src={event.image}
-            width={200}
-            height={300}
-            alt={event.title}
-            className="w-full"
-          />
-        </CardHeader>
-        <CardContent>
-          <h2 className="font-bold sm:text-xl text-lg">{event.title}</h2>
-          <p className="text-sm">
-            {expanded[event._id] ? event.description : truncateText(event.description, 50)}
-            {event.description.length > 30 && (
-              <button
-                type="button"
-                className="text-sm font-medium cursor-pointer text-gray-400 ml-5"
-                onClick={() => handleReadMore(event._id)}
-              >
-                {expanded[event._id] ? 'Read Less' : 'Read More'}
-              </button>
-            )}
-          </p>
-          <div className="flex py-3 gap-3">
-            <MapPin />
-            <p className="text-xs">{event.address}</p>
-          </div>
-          <div className="flex gap-4 items-center">
-            <div className="flex gap-2">
-              <Timer />
-              <p>{event.time}</p>
+    content = eventData.map((event: Event) => {
+      // Choose the best available image
+      const eventImage =
+        event.banner_photo?.url ||
+        event.banner_photo?.mobile?.url ||
+        event.banner_photo?.thumb?.url ||
+        '/placeholder-image.jpg'; // Fallback image
+
+      // Get the lowest ticket price
+      const lowestPrice = Math.min(
+        ...event.tickets.map(ticket => parseFloat(ticket.price))
+      );
+
+      return (
+        <Card key={event.id}>
+          <CardHeader>
+            <Image
+              src={eventImage}
+              width={400}
+              height={300}
+              alt={event.name}
+              className="w-full h-56 object-cover"
+            />
+          </CardHeader>
+          <CardContent>
+            <h2 className="font-bold sm:text-xl text-lg">{event.name}</h2>
+            <p className="text-sm">
+              {expanded[event.id]
+                ? event.text_description
+                : truncateText(event.text_description, 50)}
+              {event.text_description.length > 50 && (
+                <button
+                  type="button"
+                  className="text-sm font-medium cursor-pointer text-gray-400 ml-5"
+                  onClick={() => handleReadMore(event.id)}
+                >
+                  {expanded[event.id] ? 'Read Less' : 'Read More'}
+                </button>
+              )}
+            </p>
+            <div className="flex py-3 gap-3">
+              <MapPin />
+              <p className="text-xs">{event.venue_name}, {event.address}</p>
             </div>
-            <div className="flex gap-2">
-              <CircleDollarSign />
-              <p>From {event.price}</p>
+            <div className="flex gap-4 items-center">
+              <div className="flex gap-2">
+                <Timer />
+                <p>{new Date(event.startdate).toLocaleDateString()}</p>
+              </div>
+              <div className="flex gap-2">
+                <CircleDollarSign />
+                <p>From ₵{lowestPrice}</p>
+              </div>
             </div>
-          </div>
-        </CardContent>
-        <CardFooter>
-          {event.noOfTickets > 0 ? (
-            <Link href={`/ticket-master/${event._id}`}>
+          </CardContent>
+          <CardFooter>
+            <Link href={`/ticket-master/${event.id}`}>
               <Button>Buy Ticket</Button>
             </Link>
-          ) : (
-            <Button disabled>Ticket is Sold Out</Button>
-          )}
-        </CardFooter>
-      </Card>
-    ));
+          </CardFooter>
+        </Card>
+      );
+    });
   } else {
     content = (
       <div className="col-span-3 text-center py-6">
@@ -107,9 +125,8 @@ export default function EventCard() {
   return (
     <Fade direction="up" triggerOnce cascade>
       <main className="md:p-24 sm:p-12 p-4">
-        <h2 className="sm:text-3xl font-semibold text-xl py-6">Our Event</h2>
+        <h2 className="sm:text-3xl font-semibold text-xl py-6">Our Events</h2>
         <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
-          {/* Render the content */}
           {content}
         </div>
       </main>

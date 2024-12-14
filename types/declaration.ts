@@ -58,8 +58,71 @@ export type EventCardProps = {
   phoneNumber: string;
 }
 
+export type TicketProps = {
+
+  id: number;
+  name: string;
+  quantity: number;
+  max_per_ticket: number;
+  stop_sales: boolean;
+  price: string;
+  real_price: string;
+  fee: number;
+  insurance_fee: number;
+
+}
+export type EventsProps = {
+  id: number;
+  name: string;
+  truncated_name: string;
+  category_name: string;
+  date_status: string;
+  city: string;
+  country_name: string;
+  currency: string;
+  text_description: string;
+  venue_name: string;
+  address: string;
+  longitude: number;
+  latitude: number;
+  slug: string;
+  ussd_code: string;
+  friendly_price: string;
+  base_url: string;
+  startdate: string;
+  enddate: string;
+  banner_photo: {
+    url: string;
+    social: { url: string };
+    portrait_thumb: { url: string };
+    micro_blurred: { url: string };
+    thumb: { url: string };
+    cover_art_thumb: { url: string };
+    mobile: { url: string };
+    square_thumb: { url: string };
+    blurred: { url: string };
+  };
+  organizer_name: string;
+  organizer_email: string;
+  organizer_phone: string;
+  organizer_logo: {
+    url: string;
+    thumb: { url: string };
+  };
+  tickets: {
+    id: number;
+    name: string;
+    quantity: number;
+    max_per_ticket: number;
+    stop_sales: boolean;
+    price: string;
+    real_price: string;
+    fee: number;
+    insurance_fee: number;
+  }[];
+}
 export type BookingTicket = {
-  event: EventCardProps;
+  event: EventsProps;
 }
 
 export type CheckoutProps = {
@@ -67,6 +130,7 @@ export type CheckoutProps = {
   setActiveTabIndex: (index: number) => void;
   onFormDataChange: (updatedData: Partial<TicketBookingFormDataProps>) => void;
   onFormSubmit: (formData: TicketBookingFormDataProps) => void;
+  ticketOptions: TicketProps[]
 }
 
 export type TicketEvent = {
@@ -105,10 +169,10 @@ export type TicketBookingFormDataProps = {
   lastName: string;
   phoneNumber: string;
   email: string;
-  event?: TicketEvent
+  event?: EventsProps
   transID?: string;
   ticketType?: string;
-  price: string
+  price: string;
   isBookingForSelf: boolean;
   forBookingFirstName?: string;
   forBookingLastName?: string;

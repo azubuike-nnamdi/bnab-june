@@ -29,6 +29,8 @@ frontend:
             - echo "NEXT_PUBLIC_SYSTEM_ROLE=$NEXT_PUBLIC_SYSTEM_ROLE" >> .env
             - echo "GOOGLE_MAP_KEY=$GOOGLE_MAP_KEY" >> .env
             - echo "ROLE=$ROLE" >> .env
+            - echo "EVENT_BASE_URL=$EVENT_BASE_URL" >> .env
+            - echo "EVENT_API_KEY"=$EVENT_API_KEY >> .env
             - npx pnpm run build
    artifacts:
       baseDirectory: .next
