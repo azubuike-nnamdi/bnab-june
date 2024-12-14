@@ -1,14 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import Checkout from './checkout';
-import { TicketBookingFormDataProps, TicketEvent, TransactionType } from '@/types/declaration';
+import { EventsProps, TicketBookingFormDataProps, TicketEvent, TransactionType } from '@/types/declaration';
 import TicketSummary from './ticketSummary';
 import { CreditCard, Truck } from 'lucide-react';
 import PaymentMethod from '../common/payment-method';
 import { ticketPrices } from '@/lib/data/data';
 
 interface TicketBookingTabProps {
-  event: TicketEvent;
+  event: EventsProps;
 }
 
 const tabs = [
@@ -34,24 +34,31 @@ const tabs = [
 
 const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
 
+  // Filter out tickets with stop_sales: true
+  const availableTickets = event.tickets.filter(ticket => !ticket.stop_sales);
+
+
+
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [transactionType, setTransactionType] = useState<TransactionType>('ticket');
-  const [formData, setFormData] = useState<TicketBookingFormDataProps>({
-    transactionId: "",
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    email: '',
-    event: event,
-    ticketType: 'Regular',
-    price: ticketPrices['Regular'],
-    isBookingForSelf: true,
-    forBookingFirstName: '',
-    forBookingLastName: '',
-    forBookingEmail: '',
-    forBookingPhoneNumber: '',
-    bookingType: "ticket-master",
-    budget: ticketPrices['Regular'],
+  const [formData, setFormData] = useState<TicketBookingFormDataProps>(() => {
+    const defaultTicket = availableTickets[0] || { name: '', price: '0' };
+    return {
+      transactionId: "",
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      email: '',
+      ticketType: defaultTicket.name,
+      price: defaultTicket.price,
+      isBookingForSelf: true,
+      forBookingFirstName: '',
+      forBookingLastName: '',
+      forBookingEmail: '',
+      forBookingPhoneNumber: '',
+      bookingType: "ticket-master",
+      budget: defaultTicket.price,
+    };
   });
 
   const [paymentMethod, setPaymentMethod] = useState<string>('');
@@ -107,6 +114,8 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
                 setActiveTabIndex={setActiveTabIndex}
                 onFormSubmit={handleFormSubmit}
                 onFormDataChange={handleFormDataChange} // Pass the update function
+                ticketOptions={availableTickets} // Pass ALL available tickets
+
               />
             )}
             {activeTabIndex === 1 && (
@@ -135,14 +144,14 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
               <div className="sidebar bg-gray-100 p-4 mt-4 rounded-md animate-fadeInUp">
                 <ul className="list-none space-y-2">
                   <li>
-                    <span className="price text-xl font-medium">{`$${formData.price}`}</span>
+                    <span className="price text-xl font-medium">{`GHC ${formData.price}`}</span>
                   </li>
                 </ul>
                 <div className="border-b my-4"></div>
                 <ul className="list-none space-y-2">
                   <li className="flex justify-between text-xl font-medium">
                     <span>Total</span>
-                    <span>{`$${formData.price}`}</span>
+                    <span>{`GHC ${formData.price}`}</span>
                   </li>
                 </ul>
               </div>
