@@ -183,6 +183,7 @@ export type TicketBookingFormDataProps = {
   updatedAt?: Date;
   bookingType: string;
   budget: string;
+  quantity: number;
 }
 
 export type AirportBookingData = {
@@ -498,6 +499,9 @@ export type Payment = {
   transaction_status: string;
   createdAt: Date;
   count: number;
+  price?: string;
+  quantity?: number;
+  ticketType?: string;
   event?: any; // Make event optional and of type 'any' for flexibility
 }
 
@@ -539,4 +543,21 @@ export type ZoneCreationType = {
 export type Suggestion = {
   place_id: string;
   description: string;
+}
+
+
+export type Ticket = {
+  ticket_id: string;
+  quantity: number;
+}
+
+export type TicketRequestBody = {
+  tickets: Ticket[];
+}
+
+export type BuyEventTicket = {
+  customer_name: string;
+  customer_mobile: string;
+  thirdparty_txid: string;
+  tickets: Ticket[];
 }
