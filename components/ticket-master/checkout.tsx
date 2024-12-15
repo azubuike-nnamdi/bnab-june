@@ -1,13 +1,12 @@
 'use client';
 
-import { CheckoutProps, TicketBookingFormDataProps } from "@/types/declaration";
+import { CheckoutProps, TicketBookingFormDataProps, TicketRequestBody } from "@/types/declaration";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { genId } from "@/lib/helper";
 import { ticketPrices } from "@/lib/data/data";
 
-// a union type that includes the possible values for ticketType and use it to type the value:
-type TicketType = keyof typeof ticketPrices; // 'Regular' | 'VIP' | 'VVIP'
+type TicketType = keyof typeof ticketPrices;
 
 export default function Checkout({
   activeTabIndex,
@@ -33,6 +32,7 @@ export default function Checkout({
       forBookingPhoneNumber: '',
       bookingType: "ticket-master",
       budget: defaultTicket.price,
+      quantity: 1,
     };
   });
 
@@ -43,40 +43,53 @@ export default function Checkout({
     if (id === 'ticketType') {
       const selectedTicket = ticketOptions.find(ticket => ticket.name === value);
       const selectedPrice = selectedTicket ? selectedTicket.price : '0';
-      const updatedData = { ticketType: value, price: selectedPrice };
+      const updatedData = {
+        ticketType: value,
+        price: selectedPrice,
+        budget: (parseFloat(selectedPrice) * formData.quantity).toString()
+      };
       setFormData((prevData) => ({ ...prevData, ...updatedData }));
-      onFormDataChange(updatedData); // Notify parent component
+      onFormDataChange(updatedData);
     } else if (id === 'isBookingForSelf') {
       const isBookingForSelf = value === 'true';
       setFormData((prevData) => ({ ...prevData, isBookingForSelf }));
-      onFormDataChange({ isBookingForSelf }); // Notify parent component
+      onFormDataChange({ isBookingForSelf });
+    } else if (id === 'quantity') {
+      const quantity = parseInt(value, 10);
+      const updatedData = {
+        quantity,
+        budget: (parseFloat(formData.price) * quantity).toString()
+      };
+      setFormData((prevData) => ({ ...prevData, ...updatedData }));
+      onFormDataChange(updatedData);
     } else {
       const updatedData = { [id]: value } as Partial<TicketBookingFormDataProps>;
       setFormData({ ...formData, [id]: value });
-      onFormDataChange(updatedData); // Notify parent component
+      onFormDataChange(updatedData);
     }
   };
 
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const transactionId = genId('numeric', 24); // Generate transactionId
+    const transactionId = genId('numeric', 24);
     const updatedFormData = {
       ...formData,
       transactionId,
       bookingType: formData.bookingType,
-      budget: formData.price,
+      budget: (parseFloat(formData.price) * formData.quantity).toString(),
     };
     onFormSubmit(updatedFormData);
     setActiveTabIndex(activeTabIndex + 1);
   };
 
-  // Check if all user-input fields are filled
   const isFormValid =
     (formData.firstName ?? '').trim() !== '' &&
     (formData.lastName ?? '').trim() !== '' &&
     (formData.phoneNumber ?? '').trim() !== '' &&
     (formData.email ?? '').trim() !== '' &&
     (formData.ticketType ?? '').trim() !== '' &&
+    (formData.quantity ?? '') !== 0 &&
     (formData.isBookingForSelf || (formData.forBookingFirstName ?? '').trim() !== '' && (formData.forBookingLastName ?? '').trim() !== '' && (formData.forBookingEmail ?? '').trim() !== '' && (formData.forBookingPhoneNumber ?? '').trim() !== '');
 
   return (
@@ -140,16 +153,11 @@ export default function Checkout({
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-md"
             >
-              {ticketOptions?.map((ticket) => {
-                return (
-                  <option key={ticket.id} value={ticket.name}>
-                    {ticket.name}
-                  </option>
-                );
-              })}
-              {/* <option value="Regular">Regular</option>
-              <option value="VIP">VIP</option>
-              <option value="VVIP">VVIP</option> */}
+              {ticketOptions?.map((ticket) => (
+                <option key={ticket.id} value={ticket.name}>
+                  {ticket.name}
+                </option>
+              ))}
             </select>
           </div>
           <div>
@@ -157,11 +165,24 @@ export default function Checkout({
             <input
               type="text"
               id="price"
-              value={`GHC ${formData.price}`}
+              value={`GHC ${parseFloat(formData.budget).toFixed(2)}`}
               readOnly
               className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
             />
           </div>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="quantity" className="block mb-2">Quantity</label>
+          <select
+            id="quantity"
+            value={formData.quantity}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-md"
+          >
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+          </select>
         </div>
         <div className="mb-4">
           <fieldset className="flex items-center">
@@ -272,3 +293,4 @@ export default function Checkout({
     </div>
   );
 }
+

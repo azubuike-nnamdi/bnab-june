@@ -58,6 +58,7 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
       forBookingPhoneNumber: '',
       bookingType: "ticket-master",
       budget: defaultTicket.price,
+      quantity: 1
     };
   });
 
@@ -87,6 +88,7 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
     setFormData(prevData => ({ ...prevData, ...updatedData }));
   };
 
+  const total = (parseFloat(formData.price) * formData.quantity).toString()
   return (
     <div className="container mx-auto">
       <div className="flex flex-col sm:flex-row mx-auto justify-center sm:space-x-4 border">
@@ -143,15 +145,22 @@ const TicketBookingTab: React.FC<TicketBookingTabProps> = ({ event }) => {
               </div>
               <div className="sidebar bg-gray-100 p-4 mt-4 rounded-md animate-fadeInUp">
                 <ul className="list-none space-y-2">
-                  <li>
-                    <span className="price text-xl font-medium">{`GHC ${formData.price}`}</span>
+                  <li className='flex items-center justify-between'>
+                    <span>Ticket Amount</span>
+                    <span className="price ">{`GHC ${formData.price}`}</span>
+                  </li>
+                </ul>
+                <ul className="list-none space-y-2">
+                  <li className='flex items-center justify-between'>
+                    <span>Quantity</span>
+                    <span className="quantity">{`${formData.quantity}`}</span>
                   </li>
                 </ul>
                 <div className="border-b my-4"></div>
                 <ul className="list-none space-y-2">
                   <li className="flex justify-between text-xl font-medium">
                     <span>Total</span>
-                    <span>{`GHC ${formData.price}`}</span>
+                    <span>{`GHC ${total}.00`}</span>
                   </li>
                 </ul>
               </div>
