@@ -88,6 +88,16 @@ export default function TicketSummary({
               />
             </div>
           </div>
+          <div>
+            <label htmlFor="price" className="block mb-2">Quantity</label>
+            <input
+              type="text"
+              id="quantity"
+              value={` ${formData.quantity}`}
+              readOnly
+              className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 disabled:cursor-not-allowed"
+            />
+          </div>
 
           {formData.isBookingForSelf ? null : (
             <section>
