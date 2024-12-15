@@ -2,11 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 import clientPromise from '@/lib/db';
 import { ObjectId } from "mongodb";
-import nodemailer from 'nodemailer'; // Use ObjectId from the mongodb package
+import nodemailer from 'nodemailer';
 import { BuyEventTicket } from '@/types/declaration';
 import { getServerSession } from 'next-auth';
 import { options } from '@/app/api/auth/[...nextauth]/options';
-
 
 const { PAYSTACK_HOSTNAME, PAYSTACK_SECRET_KEY, EVENT_BASE_URL, EVENT_API_KEY, SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, SMTP_FROM } = process.env;
 
@@ -15,7 +14,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const { searchParams } = new URL(req.url);
-    const transactionId = searchParams.get('reference'); // Rename reference to transactionId
+    const transactionId = searchParams.get('reference');
     console.log('Transaction ID:', transactionId);
 
     if (!transactionId) {
@@ -40,13 +39,13 @@ export async function GET(req: NextRequest) {
     await db.collection('verify-transaction-log').insertOne(paystackTransaction);
 
     // Fetch the transaction from the 'payment-history' collection
-    const transaction = await db.collection('payment-history').findOne({ transactionId }); // Use transactionId
+    const transaction = await db.collection('payment-history').findOne({ transactionId });
     if (!transaction) {
       return NextResponse.json({ message: 'Transaction not found' }, { status: 422 });
     }
 
-    // Check if the transactionId matches and the amount (budget) in the database matches the Paystack response
-    const isReferenceMatching = transaction.transactionId === paystackTransaction.reference; // Compare with transactionId
+    // Validate transaction reference and amount
+    const isReferenceMatching = transaction.transactionId === paystackTransaction.reference;
     const isAmountMatching = transaction.budget === paystackTransaction.amount;
 
     if (!isReferenceMatching || !isAmountMatching) {
@@ -55,30 +54,21 @@ export async function GET(req: NextRequest) {
       }, { status: 400 });
     }
 
-    // If reference and amount match, update the transaction status depending on the status from Paystack and set count to 1
+    // Update transaction status in the database
     await db.collection('payment-history').updateOne(
-      { transactionId: paystackTransaction.reference }, // Use transactionId
+      { transactionId: paystackTransaction.reference },
       {
         $set: {
-          transaction_status: paystackTransaction.status, // Dynamically update the status from Paystack
-          count: 1 // Set count to 1
-        }
+          transaction_status: paystackTransaction.status,
+          count: 1,
+        },
       }
     );
 
-    // If the booking type is ticket-master, decrease the noOfTickets in the all-ticketmaster-event collection
-    if (transaction.bookingType === 'ticket-master' && transaction.event) {
-      console.log('Attempting to update ticket count for event:', transaction.event);
+    // Proceed with ticket purchase only if bookingType is 'ticket-master' and the payment is successful
+    if (transaction.bookingType === 'ticket-master' && paystackTransaction.status === 'success') {
+      console.log('Attempting to purchase ticket for event:', transaction.event);
 
-      // const eventId = transaction.event._id;
-      // const updateResult = await db.collection('all-ticketmaster-event').updateOne(
-      //   { _id: new ObjectId(eventId) },
-      //   { $inc: { noOfTickets: - 1 } }
-      // );
-
-      // if (updateResult.modifiedCount === 0) {
-      //   console.warn(`Failed to update ticket count for event ${eventId}`);
-      // }
       const body: BuyEventTicket = {
         customer_name: `${transaction.firstName} ${transaction.lastName}`,
         customer_mobile: transaction.phoneNumber,
@@ -86,65 +76,48 @@ export async function GET(req: NextRequest) {
         tickets: [
           {
             ticket_id: transaction.ticketType,
-            quantity: transaction.quantity, // e.g., 1
+            quantity: transaction.quantity,
           },
         ],
       };
 
-      // Event ticket purchase API URL
-      // Event ticket purchase API URL
       const url = `${EVENT_BASE_URL}/apis/partner-api/events/${transaction.event.id}/buy_ticket`;
-
       const ticketResponse = await fetch(url, {
-        method: "POST",
-        headers: { // Corrected placement of headers
-          "Content-Type": "application/json",
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
           Authorization: String(EVENT_API_KEY),
         },
         body: JSON.stringify(body),
       });
+
       if (ticketResponse.ok) {
         const ticketResponseData = await ticketResponse.json();
-
-        // Send email with ticket details
         await emailTicketDetails(body, ticketResponseData);
       } else {
         console.error('Failed to buy ticket:', await ticketResponse.text());
       }
     }
 
-    // // Consume the "buy event ticket" API
-    // if (transaction.bookingType === "ticket-master") {
-    //   const body: BuyEventTicket = {
-    //     customer_name: transaction.firstName + transaction.lastName,
-    //     customer_mobile: transaction.phoneNumber,
-    //     thirdparty_txid: transactionId,
-    //     tickets: transaction.tickets,
-    //   };
-
     return NextResponse.json({
-      message: "Transaction verified",
-      paystackTransaction
+      message: 'Transaction verified',
+      paystackTransaction,
     }, { status: 200 });
-
-
 
   } catch (error) {
     console.error('Error:', error);
     if (axios.isAxiosError(error)) {
       return NextResponse.json({
-        message: "An error occurred while verifying the transaction",
-        error: error.response?.data || error.message
+        message: 'An error occurred while verifying the transaction',
+        error: error.response?.data || error.message,
       }, { status: error.response?.status ?? 500 });
     }
     return NextResponse.json({
-      message: "An unexpected error occurred",
-      error: error instanceof Error ? error.message : String(error)
+      message: 'An unexpected error occurred',
+      error: error instanceof Error ? error.message : String(error),
     }, { status: 500 });
   }
 }
-
-
 
 async function emailTicketDetails(buyTicketData: BuyEventTicket, ticketResponseData: any) {
   const session = await getServerSession(options);
@@ -152,8 +125,8 @@ async function emailTicketDetails(buyTicketData: BuyEventTicket, ticketResponseD
   try {
     const transporter = nodemailer.createTransport({
       host: SMTP_HOST,
-      port: parseInt(SMTP_PORT ?? "465"),
-      secure: true, // Set to true if your SMTP server requires it
+      port: parseInt(SMTP_PORT ?? '465'),
+      secure: true,
       auth: {
         user: SMTP_USERNAME,
         pass: SMTP_PASSWORD,
