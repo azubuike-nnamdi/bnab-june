@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
+    console.log('body', body);
     const {
       transactionId,
       firstName,
@@ -25,7 +26,10 @@ export async function POST(req: NextRequest) {
       email,
       phoneNumber,
       budget,
-      event
+      event,
+      price,
+      ticketType,
+      quantity
     } = body;
 
     // Validate required fields
@@ -75,9 +79,12 @@ export async function POST(req: NextRequest) {
       firstName,
       lastName,
       bookingType,
+      ticketType,
       email,
       phoneNumber,
       budget,
+      price,
+      quantity,
       transaction_status: "initiate",
       createdAt: new Date(),
       count: 0,
