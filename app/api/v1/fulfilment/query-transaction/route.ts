@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 import clientPromise from '@/lib/db';
-import { ObjectId } from "mongodb"; // Use ObjectId from the mongodb package
+import { ObjectId } from "mongodb";
+import nodemailer from 'nodemailer'; // Use ObjectId from the mongodb package
+import { BuyEventTicket } from '@/types/declaration';
+import { getServerSession } from 'next-auth';
+import { options } from '@/app/api/auth/[...nextauth]/options';
 
 
-const { PAYSTACK_HOSTNAME, PAYSTACK_SECRET_KEY } = process.env;
+const { PAYSTACK_HOSTNAME, PAYSTACK_SECRET_KEY, EVENT_BASE_URL, EVENT_API_KEY, SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, SMTP_FROM } = process.env;
 
 export async function GET(req: NextRequest) {
+  const session = await getServerSession(options);
+
   try {
     const { searchParams } = new URL(req.url);
     const transactionId = searchParams.get('reference'); // Rename reference to transactionId
@@ -64,21 +70,64 @@ export async function GET(req: NextRequest) {
     if (transaction.bookingType === 'ticket-master' && transaction.event) {
       console.log('Attempting to update ticket count for event:', transaction.event);
 
-      const eventId = transaction.event._id;
-      const updateResult = await db.collection('all-ticketmaster-event').updateOne(
-        { _id: new ObjectId(eventId) },
-        { $inc: { noOfTickets: - 1 } }
-      );
+      // const eventId = transaction.event._id;
+      // const updateResult = await db.collection('all-ticketmaster-event').updateOne(
+      //   { _id: new ObjectId(eventId) },
+      //   { $inc: { noOfTickets: - 1 } }
+      // );
 
-      if (updateResult.modifiedCount === 0) {
-        console.warn(`Failed to update ticket count for event ${eventId}`);
+      // if (updateResult.modifiedCount === 0) {
+      //   console.warn(`Failed to update ticket count for event ${eventId}`);
+      // }
+      const body: BuyEventTicket = {
+        customer_name: `${transaction.firstName} ${transaction.lastName}`,
+        customer_mobile: transaction.phoneNumber,
+        thirdparty_txid: transactionId,
+        tickets: [
+          {
+            ticket_id: transaction.ticketType,
+            quantity: transaction.quantity, // e.g., 1
+          },
+        ],
+      };
+
+      // Event ticket purchase API URL
+      // Event ticket purchase API URL
+      const url = `${EVENT_BASE_URL}/apis/partner-api/events/${transaction.event.id}/buy_ticket`;
+
+      const ticketResponse = await fetch(url, {
+        method: "POST",
+        headers: { // Corrected placement of headers
+          "Content-Type": "application/json",
+          Authorization: String(EVENT_API_KEY),
+        },
+        body: JSON.stringify(body),
+      });
+      if (ticketResponse.ok) {
+        const ticketResponseData = await ticketResponse.json();
+
+        // Send email with ticket details
+        await emailTicketDetails(body, ticketResponseData);
+      } else {
+        console.error('Failed to buy ticket:', await ticketResponse.text());
       }
     }
+
+    // // Consume the "buy event ticket" API
+    // if (transaction.bookingType === "ticket-master") {
+    //   const body: BuyEventTicket = {
+    //     customer_name: transaction.firstName + transaction.lastName,
+    //     customer_mobile: transaction.phoneNumber,
+    //     thirdparty_txid: transactionId,
+    //     tickets: transaction.tickets,
+    //   };
 
     return NextResponse.json({
       message: "Transaction verified",
       paystackTransaction
     }, { status: 200 });
+
+
 
   } catch (error) {
     console.error('Error:', error);
@@ -92,5 +141,54 @@ export async function GET(req: NextRequest) {
       message: "An unexpected error occurred",
       error: error instanceof Error ? error.message : String(error)
     }, { status: 500 });
+  }
+}
+
+
+
+async function emailTicketDetails(buyTicketData: BuyEventTicket, ticketResponseData: any) {
+  const session = await getServerSession(options);
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: parseInt(SMTP_PORT ?? "465"),
+      secure: true, // Set to true if your SMTP server requires it
+      auth: {
+        user: SMTP_USERNAME,
+        pass: SMTP_PASSWORD,
+      },
+    });
+
+    const ticketUrl = ticketResponseData.tickets[0]?.ticket_url || '';
+    const eventName = ticketResponseData.event_name || 'Your Event';
+
+    const mailOptions = {
+      from: SMTP_FROM,
+      to: session?.user?.email as string,
+      subject: `Your Ticket for ${eventName}`,
+      html: `
+        <h3>Hello ${buyTicketData.customer_name},</h3>
+        <p>Thank you for purchasing a ticket for <strong>${eventName}</strong>.</p>
+        <p><strong>Event Details:</strong></p>
+        <ul>
+          <li><strong>Venue:</strong> ${ticketResponseData.tickets[0]?.venue_name || 'Venue'}</li>
+          <li><strong>Ticket Name:</strong> ${ticketResponseData.tickets[0]?.ticket_name || 'General Admission'}</li>
+          <li><strong>Quantity:</strong> ${buyTicketData.tickets[0]?.quantity || 1}</li>
+          <li><strong>Total Amount:</strong> $${ticketResponseData.total_amount}</li>
+        </ul>
+        <p>You can download your ticket using the link below:</p>
+        <a href="${ticketUrl}" target="_blank">Download Ticket</a>
+        <br/><br/>
+        <p>Thank you for choosing our service!</p>
+        <p>Best regards,<br/>Event Team</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully to:', session?.user?.email);
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw error;
   }
 }
