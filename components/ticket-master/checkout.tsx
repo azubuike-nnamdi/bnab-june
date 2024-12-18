@@ -52,6 +52,7 @@ export default function Checkout({
       };
       setFormData((prevData) => ({ ...prevData, ...updatedData }));
       onFormDataChange(updatedData);
+      console.log('Selected Ticket:', selectedTicket);
     } else if (id === 'isBookingForSelf') {
       const isBookingForSelf = value === 'true';
       setFormData((prevData) => ({ ...prevData, isBookingForSelf }));
@@ -80,6 +81,7 @@ export default function Checkout({
       transactionId,
       bookingType: formData.bookingType,
       budget: (parseFloat(formData.price) * formData.quantity).toString(),
+      ticketId: formData.ticketId, // Include ticketId in the payload
     };
     onFormSubmit(updatedFormData);
     setActiveTabIndex(activeTabIndex + 1);
