@@ -24,6 +24,7 @@ export default function Checkout({
       phoneNumber: '',
       email: '',
       ticketType: defaultTicket.name,
+      ticketId: defaultTicket?.id,
       price: defaultTicket.price,
       isBookingForSelf: true,
       forBookingFirstName: '',

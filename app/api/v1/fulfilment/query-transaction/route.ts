@@ -75,7 +75,7 @@ export async function GET(req: NextRequest) {
         thirdparty_txid: transactionId,
         tickets: [
           {
-            ticket_id: transaction?.event?.id,
+            ticket_id: transaction?.ticketId,
             quantity: transaction.quantity,
           },
         ],
