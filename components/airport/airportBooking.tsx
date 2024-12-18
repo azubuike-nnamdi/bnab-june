@@ -1,6 +1,6 @@
 'use client';
 
-import { AirportBookingData, DistanceCost, Suggestion, TransactionType } from '@/types/declaration';
+import { AirportBookingData, Suggestion, TransactionType } from '@/types/declaration';
 import { format, isValid, parseISO } from 'date-fns';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '../ui/button';
