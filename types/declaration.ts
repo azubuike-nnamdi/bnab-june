@@ -503,6 +503,7 @@ export type Payment = {
   price?: string;
   quantity?: number;
   ticketType?: string;
+  ticketId?: number;
   event?: any; // Make event optional and of type 'any' for flexibility
 }
 

@@ -52,7 +52,7 @@ export default function Checkout({
       };
       setFormData((prevData) => ({ ...prevData, ...updatedData }));
       onFormDataChange(updatedData);
-      console.log('Selected Ticket:', selectedTicket);
+      // console.log('Selected Ticket:', selectedTicket);
     } else if (id === 'isBookingForSelf') {
       const isBookingForSelf = value === 'true';
       setFormData((prevData) => ({ ...prevData, isBookingForSelf }));
