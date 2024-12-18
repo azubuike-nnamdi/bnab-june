@@ -93,9 +93,35 @@ export async function GET(req: NextRequest) {
 
       if (ticketResponse.ok) {
         const ticketResponseData = await ticketResponse.json();
+
+        // Log successful ticket purchase
+        await db.collection('buy-event').insertOne({
+          transactionId: transactionId,
+          eventId: transaction.event.id,
+          customerName: `${transaction.firstName} ${transaction.lastName}`,
+          ticketType: transaction.ticketType,
+          quantity: transaction.quantity,
+          responseData: ticketResponseData,
+          status: 'success',
+          createdAt: new Date()
+        });
+
         await emailTicketDetails(body, ticketResponseData);
       } else {
-        console.error('Failed to buy ticket:', await ticketResponse.text());
+        // Log failed ticket purchase
+        const errorResponseText = await ticketResponse.text();
+        console.error('Failed to buy ticket:', errorResponseText);
+
+        await db.collection('logs').insertOne({
+          transactionId: transactionId,
+          eventId: transaction.event.id,
+          customerName: `${transaction.firstName} ${transaction.lastName}`,
+          ticketType: transaction.ticketType,
+          quantity: transaction.quantity,
+          responseData: errorResponseText,
+          status: 'failure',
+          createdAt: new Date()
+        });
       }
     }
 
