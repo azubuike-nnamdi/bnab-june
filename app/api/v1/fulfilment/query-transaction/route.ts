@@ -82,6 +82,15 @@ export async function GET(req: NextRequest) {
       };
 
       const url = `${EVENT_BASE_URL}/apis/partner-api/events/${transaction.event.id}/buy_ticket`;
+      // Log the request body
+      await db.collection('ticket-logs').insertOne({
+        type: 'request',
+        transactionId: transactionId,
+        eventId: transaction.event.id,
+        body: body,
+        url: url,
+        createdAt: new Date()
+      });
       const ticketResponse = await fetch(url, {
         method: 'POST',
         headers: {
@@ -89,6 +98,17 @@ export async function GET(req: NextRequest) {
           Authorization: String(EVENT_API_KEY),
         },
         body: JSON.stringify(body),
+      });
+
+      await db.collection('ticket-response').insertOne(ticketResponse)
+      await db.collection('ticket-logs').insertOne({
+        type: 'response',
+        transactionId: transactionId,
+        eventId: transaction.event.id,
+        status: ticketResponse.status,
+        statusText: ticketResponse.statusText,
+        body: ticketResponse,
+        createdAt: new Date()
       });
 
       if (ticketResponse.ok) {
