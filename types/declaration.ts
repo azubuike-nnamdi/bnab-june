@@ -184,6 +184,7 @@ export type TicketBookingFormDataProps = {
   bookingType: string;
   budget: string;
   quantity: number;
+  ticketId?: number
 }
 
 export type AirportBookingData = {
