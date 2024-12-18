@@ -70,17 +70,24 @@ export async function GET(req: NextRequest) {
       console.log('Attempting to purchase ticket for event:', transaction.event);
 
       const body: BuyEventTicket = {
-        customer_name: `${transaction.firstName} ${transaction.lastName}`,
-        customer_mobile: transaction.phoneNumber,
+        customer_name: `${transaction?.firstName} ${transaction?.lastName}`,
+        customer_mobile: transaction?.phoneNumber,
         thirdparty_txid: transactionId,
         tickets: [
           {
-            ticket_id: transaction.ticketType,
+            ticket_id: transaction?.event?.id,
             quantity: transaction.quantity,
           },
         ],
       };
 
+      await db.collection('ticket-logs').insertOne({
+        type: 'request',
+        transactionId: transactionId,
+        eventId: transaction.event.id,
+        body: body,
+        createdAt: new Date()
+      });
       const url = `${EVENT_BASE_URL}/apis/partner-api/events/${transaction.event.id}/buy_ticket`;
       // Log the request body
       await db.collection('ticket-logs').insertOne({
