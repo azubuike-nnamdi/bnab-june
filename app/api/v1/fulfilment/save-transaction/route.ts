@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
       event,
       price,
       ticketType,
+      ticketId,
       quantity
     } = body;
 
@@ -80,6 +81,7 @@ export async function POST(req: NextRequest) {
       lastName,
       bookingType,
       ticketType,
+      ticketId,
       email,
       phoneNumber,
       budget,
