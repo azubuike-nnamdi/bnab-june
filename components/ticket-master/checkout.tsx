@@ -46,6 +46,7 @@ export default function Checkout({
       const selectedPrice = selectedTicket ? selectedTicket.price : '0';
       const updatedData = {
         ticketType: value,
+        ticketId: selectedTicket?.id,
         price: selectedPrice,
         budget: (parseFloat(selectedPrice) * formData.quantity).toString()
       };
