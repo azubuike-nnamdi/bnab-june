@@ -205,7 +205,7 @@ async function emailTicketDetails(buyTicketData: BuyEventTicket, ticketResponseD
           <li><strong>Venue:</strong> ${ticketResponseData.tickets[0]?.venue_name || 'Venue'}</li>
           <li><strong>Ticket Name:</strong> ${ticketResponseData.tickets[0]?.ticket_name || 'General Admission'}</li>
           <li><strong>Quantity:</strong> ${buyTicketData.tickets[0]?.quantity || 1}</li>
-          <li><strong>Total Amount:</strong> $${ticketResponseData.total_amount}</li>
+          <li><strong>Total Amount:</strong> GHS ${ticketResponseData.total_amount} .00</li>
         </ul>
         <p>You can download your ticket using the link below:</p>
         <a href="${ticketUrl}" target="_blank">Download Ticket</a>
