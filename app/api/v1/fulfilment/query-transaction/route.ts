@@ -6,6 +6,7 @@ import nodemailer from 'nodemailer';
 import { BuyEventTicket } from '@/types/declaration';
 import { getServerSession } from 'next-auth';
 import { options } from '@/app/api/auth/[...nextauth]/options';
+import { formatMsisdn } from '@/lib/helper';
 
 const { PAYSTACK_HOSTNAME, PAYSTACK_SECRET_KEY, EVENT_BASE_URL, EVENT_API_KEY, SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, SMTP_FROM } = process.env;
 
@@ -68,10 +69,11 @@ export async function GET(req: NextRequest) {
     // Proceed with ticket purchase only if bookingType is 'ticket-master' and the payment is successful
     if (transaction.bookingType === 'ticket-master' && paystackTransaction.status === 'success') {
       console.log('Attempting to purchase ticket for event:', transaction.event);
+      const formatPhoneNumber = formatMsisdn(transaction?.phoneNumber, 'compact-int') as string
 
       const body: BuyEventTicket = {
         customer_name: `${transaction?.firstName} ${transaction?.lastName}`,
-        customer_mobile: transaction?.phoneNumber,
+        customer_mobile: formatPhoneNumber,
         thirdparty_txid: transactionId,
         tickets: [
           {
