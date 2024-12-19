@@ -1,7 +1,7 @@
 import { format, parseISO } from "date-fns";
-import { ALPHABET, ALPHANUMERIC, NUMERIC } from "./constants";
+import { ALPHABET, ALPHANUMERIC, COUNTRY_CODE_234_MSISDN_REGEX, INTERNATIONAL_FORMAT_MSISDN_REGEX, NUMERIC, TEN_DIGIT_MSISDN_REGEX, ZERO_LEADING_MSISDN_REGEX } from "./constants";
 import { customAlphabet } from 'nanoid'
-import { TransactionIdParams } from "@/types/declaration";
+import { FormatType, TransactionIdParams } from "@/types/declaration";
 import crypto from 'crypto';
 import { budgetOptionsForGuesthouseApartmentVillage, budgetOptionsForHotel } from "./data/accommodation";
 
@@ -189,4 +189,93 @@ export function getRequiredEnvVar(name: string): string {
     throw new Error(`Missing required environment variable: ${name}`);
   }
   return value;
+}
+function formatCompact(string: string): string | null {
+  return formatWithRegex(string, [
+    { regex: TEN_DIGIT_MSISDN_REGEX, replace: '$1$2$3' },
+    { regex: ZERO_LEADING_MSISDN_REGEX, replace: '$2$3$4' },
+    { regex: COUNTRY_CODE_234_MSISDN_REGEX, replace: '$2$3$4' },
+    { regex: INTERNATIONAL_FORMAT_MSISDN_REGEX, replace: '$2$3$4' },
+  ])
+}
+
+function formatCompactInt(string: string): string | null {
+  return formatWithRegex(string, [
+    { regex: TEN_DIGIT_MSISDN_REGEX, replace: '234$1$2$3' },
+    { regex: ZERO_LEADING_MSISDN_REGEX, replace: '234$2$3$4' },
+    { regex: COUNTRY_CODE_234_MSISDN_REGEX, replace: '234$2$3$4' },
+    { regex: INTERNATIONAL_FORMAT_MSISDN_REGEX, replace: '234$2$3$4' },
+  ])
+}
+
+function formatCompactLeading(string: string): string | null {
+  return formatWithRegex(string, [
+    { regex: TEN_DIGIT_MSISDN_REGEX, replace: '0$1$2$3' },
+    { regex: ZERO_LEADING_MSISDN_REGEX, replace: '0$2$3$4' },
+    { regex: COUNTRY_CODE_234_MSISDN_REGEX, replace: '0$2$3$4' },
+    { regex: INTERNATIONAL_FORMAT_MSISDN_REGEX, replace: '0$2$3$4' },
+  ])
+}
+
+function formatDefault(string: string): string | null {
+  return formatWithRegex(string, [
+    { regex: TEN_DIGIT_MSISDN_REGEX, replace: '0$1 $2 $3' },
+    { regex: ZERO_LEADING_MSISDN_REGEX, replace: '0$2 $3 $4' },
+    { regex: COUNTRY_CODE_234_MSISDN_REGEX, replace: '0$2 $3 $4' },
+    { regex: INTERNATIONAL_FORMAT_MSISDN_REGEX, replace: '0$2 $3 $4' },
+  ])
+}
+
+function formatInternational(string: string): string | null {
+  return formatWithRegex(string, [
+    { regex: TEN_DIGIT_MSISDN_REGEX, replace: '+234 (0) $1 $2 $3' },
+    { regex: ZERO_LEADING_MSISDN_REGEX, replace: '+234 (0) $2 $3 $4' },
+    { regex: COUNTRY_CODE_234_MSISDN_REGEX, replace: '+234 (0) $2 $3 $4' },
+    { regex: INTERNATIONAL_FORMAT_MSISDN_REGEX, replace: '+234 (0) $2 $3 $4' },
+  ])
+}
+
+function isValidMsisdn(msisdn: string, format: FormatType = 'default'): boolean {
+  if (!msisdn) {
+    return false
+  }
+
+  switch (format) {
+    // case 'gds-provider':
+    //   return [6, 10].includes(msisdn.length)
+    // case 'bulk-messaging':
+    //   return [9, 13].includes(msisdn.length) && msisdn.startsWith('234')
+    default:
+      return [10, 11, 13, 14].includes(msisdn.length)
+  }
+}
+export function formatMsisdn(string: string, format: FormatType = 'default'): string | null {
+  // Remove all spaces from the input string
+  const sanitizedString = string?.replace(/\s+/g, '')
+
+  if (!isValidMsisdn(sanitizedString, format)) {
+    return null
+  }
+
+  const formatFunctions: { [key in FormatType]: (s: string) => string | null } = {
+    compact: formatCompact,
+    'compact-int': formatCompactInt,
+    'compact-leading': formatCompactLeading,
+    default: formatDefault,
+    int: formatInternational,
+  }
+
+  const formatted = formatFunctions[format](sanitizedString)
+  return formatted
+}
+
+
+function formatWithRegex(string: string, patterns: { regex: RegExp; replace: string }[]): string | null {
+  for (const { regex, replace } of patterns) {
+    if (regex.test(string)) {
+      return string.replace(regex, replace)
+    }
+  }
+
+  return null
 }
