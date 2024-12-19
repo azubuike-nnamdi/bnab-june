@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
         },
       }
     );
-    const paystackTransaction = response.data.data;
+    const paystackTransaction = response?.data?.data;
 
     // Connect to database
     const client = await clientPromise;
@@ -103,6 +103,8 @@ export async function GET(req: NextRequest) {
         headers: {
           'Content-Type': 'application/json',
           Authorization: String(EVENT_API_KEY),
+          Accept: '*/*',
+          Connection: 'keep-alive'
         },
         body: JSON.stringify(body),
       });
