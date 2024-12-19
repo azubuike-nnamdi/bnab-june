@@ -563,3 +563,11 @@ export type BuyEventTicket = {
   thirdparty_txid: string;
   tickets: Ticket[];
 }
+
+
+export type FormatType =
+  | 'compact'
+  | 'compact-int'
+  | 'compact-leading'
+  | 'default'
+  | 'int'
