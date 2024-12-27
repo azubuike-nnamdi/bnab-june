@@ -37,9 +37,33 @@ export default function Checkout({
     };
   });
 
+  const [emailError, setEmailError] = useState('');
+  const [forBookingEmailError, setForBookingEmailError] = useState('');
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
+
+    if (id === 'email') {
+      if (!validateEmail(value)) {
+        setEmailError('Please enter a valid email address');
+      } else {
+        setEmailError('');
+      }
+    }
+
+    if (id === 'forBookingEmail') {
+      if (!validateEmail(value)) {
+        setForBookingEmailError('Please enter a valid email address');
+      } else {
+        setForBookingEmailError('');
+      }
+    }
 
     if (id === 'ticketType') {
       const selectedTicket = ticketOptions.find(ticket => ticket.name === value);
@@ -87,14 +111,28 @@ export default function Checkout({
     setActiveTabIndex(activeTabIndex + 1);
   };
 
-  const isFormValid =
-    (formData.firstName ?? '').trim() !== '' &&
-    (formData.lastName ?? '').trim() !== '' &&
-    (formData.phoneNumber ?? '').trim() !== '' &&
-    (formData.email ?? '').trim() !== '' &&
-    (formData.ticketType ?? '').trim() !== '' &&
-    (formData.quantity ?? '') !== 0 &&
-    (formData.isBookingForSelf || (formData.forBookingFirstName ?? '').trim() !== '' && (formData.forBookingLastName ?? '').trim() !== '' && (formData.forBookingEmail ?? '').trim() !== '' && (formData.forBookingPhoneNumber ?? '').trim() !== '');
+  const isFormValid = () => {
+    const mainEmailValid = validateEmail(formData.email);
+    const forBookingEmailValid = !formData.isBookingForSelf ? validateEmail(formData.forBookingEmail ?? "") : true;
+
+    const basicFieldsValid =
+      (formData.firstName ?? '').trim() !== '' &&
+      (formData.lastName ?? '').trim() !== '' &&
+      (formData.phoneNumber ?? '').trim() !== '' &&
+      (formData.ticketType ?? '').trim() !== '' &&
+      (formData.quantity ?? '') !== 0 &&
+      mainEmailValid;
+
+    if (!formData.isBookingForSelf) {
+      return basicFieldsValid &&
+        (formData.forBookingFirstName ?? '').trim() !== '' &&
+        (formData.forBookingLastName ?? '').trim() !== '' &&
+        (formData.forBookingPhoneNumber ?? '').trim() !== '' &&
+        forBookingEmailValid;
+    }
+
+    return basicFieldsValid;
+  };
 
   return (
     <div className="container mx-auto my-5 animate-fadeInUp">
@@ -144,8 +182,9 @@ export default function Checkout({
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className={`w-full p-2 border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded-md`}
             />
+            {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-4 mb-4">

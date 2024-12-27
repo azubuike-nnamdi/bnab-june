@@ -48,9 +48,15 @@ export default function AirportBooking() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const { isPending, data } = useGetZones();
 
+  const [emailError, setEmailError] = useState('');
+  const [forBookingEmailError, setForBookingEmailError] = useState('');
   const zones = data?.data ?? []
 
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const inputBRef = useRef<HTMLInputElement>(null);
 
@@ -171,6 +177,21 @@ export default function AirportBooking() {
       setFormData({ ...formData, [id]: value === 'true' });
     } else {
       setFormData({ ...formData, [id]: value });
+      if (id === 'email') {
+        if (!validateEmail(value)) {
+          setEmailError('Please enter a valid email address');
+        } else {
+          setEmailError('');
+        }
+      }
+
+      if (id === 'forBookingEmail') {
+        if (!validateEmail(value)) {
+          setForBookingEmailError('Please enter a valid email address');
+        } else {
+          setForBookingEmailError('');
+        }
+      }
     }
   };
 
@@ -266,6 +287,8 @@ export default function AirportBooking() {
 
     // Ensure all required fields are filled (check for both undefined and empty string)
     const areRequiredFieldsFilled = requiredFields.every((field) => typeof field === 'string' && field.trim() !== '');
+    const isMainEmailValid = validateEmail(formData.email);
+
 
     // If booking is not for self, additional fields are required
     if (!formData.isBookingForSelf) {
@@ -332,12 +355,13 @@ export default function AirportBooking() {
                 </label>
                 <input
                   type="email"
-                  id="email"
-                  placeholder="Enter Email Address"
-                  value={formData.email}
+                  id="forBookingEmail"
+                  placeholder="Person's Email"
+                  value={formData.forBookingEmail}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className={`w-full p-2 border ${forBookingEmailError ? 'border-red-500' : 'border-gray-300'} rounded-md`}
                 />
+                {forBookingEmailError && <p className="text-red-500 text-sm mt-1">{forBookingEmailError}</p>}
               </div>
               <div>
                 <label htmlFor="pickUpLocation" className="block mb-2">
