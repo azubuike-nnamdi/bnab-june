@@ -102,7 +102,7 @@ export default function EventCard() {
               </div>
               <div className="flex gap-2">
                 <CircleDollarSign />
-                <p>From ₵{lowestPrice}</p>
+                <p>From ₵{lowestPrice}.00</p>
               </div>
             </div>
           </CardContent>
