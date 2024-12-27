@@ -69,11 +69,11 @@ export async function GET(req: NextRequest) {
     // Proceed with ticket purchase only if bookingType is 'ticket-master' and the payment is successful
     if (transaction.bookingType === 'ticket-master' && paystackTransaction.status === 'success') {
       console.log('Attempting to purchase ticket for event:', transaction.event);
-      const formatPhoneNumber = formatMsisdn(transaction?.phoneNumber, 'compact-int') as string
+      // const formatPhoneNumber = formatMsisdn(transaction?.phoneNumber, 'compact-int') as string
 
       const body: BuyEventTicket = {
         customer_name: `${transaction?.firstName} ${transaction?.lastName}`,
-        customer_mobile: formatPhoneNumber,
+        customer_mobile: transaction?.phoneNumber,
         thirdparty_txid: transactionId,
         tickets: [
           {
