@@ -6,12 +6,12 @@ import nodemailer from 'nodemailer';
 import { BuyEventTicket } from '@/types/declaration';
 import { getServerSession } from 'next-auth';
 import { options } from '@/app/api/auth/[...nextauth]/options';
-import { formatMsisdn } from '@/lib/helper';
+// import { formatMsisdn } from '@/lib/helper';
 
 const { PAYSTACK_HOSTNAME, PAYSTACK_SECRET_KEY, EVENT_BASE_URL, EVENT_API_KEY, SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, SMTP_FROM } = process.env;
 
 export async function GET(req: NextRequest) {
-  const session = await getServerSession(options);
+  // const session = await getServerSession(options);
 
   try {
     const { searchParams } = new URL(req.url);
