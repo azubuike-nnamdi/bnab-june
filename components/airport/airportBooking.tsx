@@ -13,6 +13,7 @@ import axios from 'axios';
 import { LoadingOverlay } from '../common/loading-overlay';
 import useGetZones from '@/hooks/useGetZones';
 import { determinePrice } from '@/lib/pricing';
+import { toast } from 'sonner';
 
 export default function AirportBooking() {
   const [formData, setFormData] = useState<AirportBookingData>({
@@ -51,9 +52,26 @@ export default function AirportBooking() {
   const [emailError, setEmailError] = useState('');
   const [forBookingEmailError, setForBookingEmailError] = useState('');
   const zones = data?.data ?? []
+  const [timeError, setTimeError] = useState<string>('');
 
+  // Add a function to validate the time
+  const validatePickupTime = (arrivalTime: string, pickupTime: string, pickupDate: string, arrivalDate: string): boolean => {
+    // Convert times to comparable format
+    const [arrivalHours, arrivalMinutes] = arrivalTime.split(':').map(Number);
+    const [pickupHours, pickupMinutes] = pickupTime.split(':').map(Number);
 
-  const validateEmail = (email: string): boolean => {
+    // Convert dates to comparable format
+    const arrivalDateTime = new Date(arrivalDate);
+    const pickupDateTime = new Date(pickupDate);
+
+    // Set the hours and minutes
+    arrivalDateTime.setHours(arrivalHours, arrivalMinutes, 0);
+    pickupDateTime.setHours(pickupHours, pickupMinutes, 0);
+
+    return pickupDateTime >= arrivalDateTime;
+  };
+
+  const validateEmail = (email: any): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
@@ -204,7 +222,23 @@ export default function AirportBooking() {
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof AirportBookingData) => {
     const time = e.target.value;
-    setFormData({ ...formData, [field]: time });
+
+    if (field === 'pickUpTime') {
+      const isValidTime = validatePickupTime(
+        formData.timeOfArrival,
+        time,
+        formData.pickUpDate,
+        formData.pickUpDate // Assuming arrival and pickup are on same date
+      );
+
+      if (!isValidTime) {
+        setTimeError('Pickup time must be after arrival time');
+      } else {
+        setTimeError('');
+      }
+    }
+
+    setFormData(prev => ({ ...prev, [field]: time }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -269,7 +303,6 @@ export default function AirportBooking() {
   };
 
   const isFormValid = () => {
-    // Required fields for all cases
     const requiredFields = [
       formData.firstName,
       formData.lastName,
@@ -285,12 +318,9 @@ export default function AirportBooking() {
       formData.budget
     ];
 
-    // Ensure all required fields are filled (check for both undefined and empty string)
     const areRequiredFieldsFilled = requiredFields.every((field) => typeof field === 'string' && field.trim() !== '');
     const isMainEmailValid = validateEmail(formData.email);
 
-
-    // If booking is not for self, additional fields are required
     if (!formData.isBookingForSelf) {
       const additionalRequiredFields = [
         formData.forBookingFirstName,
@@ -300,11 +330,12 @@ export default function AirportBooking() {
       ];
 
       const areAdditionalFieldsFilled = additionalRequiredFields.every((field) => typeof field === 'string' && field.trim() !== '');
+      const isBookingEmailValid = validateEmail(formData.forBookingEmail);
 
-      return areRequiredFieldsFilled && areAdditionalFieldsFilled;
+      return areRequiredFieldsFilled && areAdditionalFieldsFilled && isMainEmailValid && isBookingEmailValid;
     }
 
-    return areRequiredFieldsFilled;
+    return areRequiredFieldsFilled && isMainEmailValid;
   };
 
 
@@ -355,13 +386,13 @@ export default function AirportBooking() {
                 </label>
                 <input
                   type="email"
-                  id="forBookingEmail"
+                  id="email"
                   placeholder="Person's Email"
-                  value={formData.forBookingEmail}
+                  value={formData.email}
                   onChange={handleChange}
-                  className={`w-full p-2 border ${forBookingEmailError ? 'border-red-500' : 'border-gray-300'} rounded-md`}
+                  className={`w-full p-2 border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded-md`}
                 />
-                {forBookingEmailError && <p className="text-red-500 text-sm mt-1">{forBookingEmailError}</p>}
+                {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
               </div>
               <div>
                 <label htmlFor="pickUpLocation" className="block mb-2">
@@ -543,8 +574,9 @@ export default function AirportBooking() {
                   id="pickUpTime"
                   value={formData.pickUpTime}
                   onChange={(e) => handleTimeChange(e, 'pickUpTime')}
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className={`w-full p-2 border ${timeError ? 'border-red-500' : 'border-gray-300'} rounded-md`}
                 />
+                {timeError && <p className="text-red-500 text-sm mt-1">{timeError}</p>}
               </div>
             </div>
             <div className="mb-4">
