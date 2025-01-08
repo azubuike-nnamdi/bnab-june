@@ -39,7 +39,7 @@ const BookingSidebar: React.FC<SideBarProps> = ({ formData }) => {
           </li>
           <li className="flex justify-between items-center my-2">
             <span className="text-base text-gray-800 sm:text-xs">Price:</span>
-            <span className="text-base text-gray-800">${formData.price}</span>
+            <span className="text-base text-gray-800">GHC {formData.price}</span>
           </li>
           <li className="flex justify-between items-center my-2">
             <span className="text-base text-gray-800 sm:text-xs">Total Number of Days:</span>
@@ -54,7 +54,7 @@ const BookingSidebar: React.FC<SideBarProps> = ({ formData }) => {
         <ul className="list-disc list-inside">
           <li className="flex justify-between items-center">
             <span className="text-lg font-medium text-gray-800">Total:</span>
-            <span className="text-lg font-medium text-gray-800">{formatCurrency(formData.totalAmount)}</span>
+            <span className="text-lg font-medium text-gray-800">GHC {formData.totalAmount}</span>
           </li>
         </ul>
       </div>

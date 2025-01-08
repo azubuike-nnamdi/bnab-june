@@ -375,7 +375,7 @@ export default function PassengerDetails({
             <input
               type="text"
               id="price"
-              value={`$${formData.price}`}
+              value={`GHC ${formData.price}`}
               readOnly
               className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
             />
