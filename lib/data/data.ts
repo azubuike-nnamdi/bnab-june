@@ -96,10 +96,12 @@ export const links3 = [
   // { id: 6, name: "Airport transfer", href: "#" },
 ];
 export const links4 = [
-  { id: 1, name: "Saloon", href: "#" },
-  { id: 2, name: "SUV", href: "#" },
-  { id: 3, name: "Coach", href: "#" },
-  { id: 4, name: "Mini Bus", href: "#" },
+  {
+    id: 1, name: "Saloon", href: `${DEDICATED_RIDES_URL}/1`
+  },
+  { id: 2, name: "SUV", href: `${DEDICATED_RIDES_URL}/2` },
+  { id: 3, name: "Coach", href: `${DEDICATED_RIDES_URL}/3` },
+  { id: 4, name: "Mini Bus", href: `${DEDICATED_RIDES_URL}/4` },
 ];
 export const legalLinks = [
   { id: 1, name: "Terms", href: "#about" },
