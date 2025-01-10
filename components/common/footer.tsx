@@ -22,7 +22,9 @@ export default function Footer() {
             <div className="flex items-center space-x-4">
               <span className="text-lg font-medium">Follow Us</span>
               {socialMediaPlatforms.map((elm) => (
-                <Image key={elm.id} src={elm?.img} alt={elm.name} width={15} height={5} />
+                <Link href={elm?.href} key={elm.id}>
+                  <Image src={elm?.img} alt={elm.name} width={15} height={5} className="cursor-pointer" />
+                </Link>
 
               ))}
             </div>
