@@ -54,20 +54,20 @@ export const socialMediaPlatforms = [
     id: 1,
     name: "Facebook",
     img: "/img/facebook.png",
-    href: "#",
+    href: "https://fb.me/hyeameha",
   },
-  { id: 2, name: "Twitter", img: '/img/twitter.png', href: "#" },
-  {
-    id: 3,
-    name: "Instagram",
-    img: "/img/facebook.png",
-    href: "#",
-  },
+  { id: 2, name: "Twitter", img: '/img/twitter.png', href: "https://x.com/hyeameha" },
+  // {
+  //   id: 3,
+  //   name: "Instagram",
+  //   img: "/img/facebook.png",
+  //   href: "#",
+  // },
   {
     id: 4,
     name: "LinkedIn",
     img: "/img/linkedin.png",
-    href: "#",
+    href: "https://www.linkedin.com/company/hyeameha",
   },
 ];
 
@@ -353,3 +353,53 @@ export const airlinesInAccra = [
   { id: 21, name: "Air Peace " },
   { id: 22, name: "Africa World Airlines" },
 ] as const;
+
+
+
+export const trainingOptions = [
+  {
+    id: 1,
+    title: "Hair Braiding",
+    time: "9:00 AM - 11:00 PM",
+    duration: "2 hours",
+    topics: [
+      "Introduction to Hair Braiding Techniques",
+      "Basic Braiding Patterns (Simple braids, French braids)",
+      "Hands-On Practice with Guidance"
+    ]
+  },
+  {
+    id: 2,
+    title: "Cooking Lessons",
+    time: "9:00 AM - 11:00 PM",
+    duration: "2 hours",
+    topics: [
+      "Introduction to local Ghanaian Dishes",
+      "Preparing and Cooking a Simple Dish"
+    ]
+  },
+  {
+    id: 3,
+    title: "Traditional Drumming Lessons",
+    time: "9:00 AM - 11:00 PM",
+    duration: "2 hours",
+    topics: [
+      "Introduction to Basic Drumming Techniques",
+      "Learning Basic Rhythms and Patterns",
+      "Group Drumming Session and Practice"
+    ]
+  },
+  {
+    id: 4,
+    title: "Arts & Crafts",
+    time: "9:00 AM - 12:00 PM",
+    duration: "2 hours",
+    topics: [
+      "Introduction to Various Art Forms and Materials",
+      "Hands-On Craft Project (e.g., Making a decorative item)",
+      "Kente Weaving",
+      "Basket Weaving",
+      "Wood carving"
+    ]
+  }
+];
