@@ -28,7 +28,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
             <h5 className="text-lg font-medium mb-4">Company</h5>
             <ul className="space-y-2">
@@ -77,7 +77,7 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-          <div>
+          {/* <div>
             <h5 className="text-lg font-medium mb-4">Download The App</h5>
             <div className="space-y-4">
               <Link
@@ -111,13 +111,13 @@ export default function Footer() {
                 </div>
               </Link>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="border-t border-gray-700 pt-4">
           <div className="flex flex-wrap items-center justify-between">
             <div className="text-sm">
               <span>© {new Date().getFullYear()} Hyea Me Ha</span>
-              <ul className="flex space-x-4 mt-2">
+              {/* <ul className="flex space-x-4 mt-2">
                 {legalLinks.map((elm) => (
                   <li key={elm.id}>
                     <Link className="hover:underline" href={elm.href}>
@@ -125,7 +125,7 @@ export default function Footer() {
                     </Link>
                   </li>
                 ))}
-              </ul>
+              </ul> */}
             </div>
             <div className="flex space-x-4 mt-2">
               <a

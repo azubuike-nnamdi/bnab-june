@@ -9,10 +9,14 @@ export default function page() {
   return (
     <main>
       <BreadCrumb title="Training" links={trainingLink} />
-      <Training />
-      <TrainingCard/>
-      <Art/>
-      <Discover />
+      <div className="sm:px-24 p-8">
+        <h1 className="text-2xl font-bold mb-6">Training Programme Booking</h1>
+        <TrainingCard />
+
+      </div>
+      {/* <Training />
+      <Art />
+      <Discover /> */}
     </main>
   )
 }

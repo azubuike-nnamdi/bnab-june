@@ -571,3 +571,26 @@ export type FormatType =
   | 'compact-leading'
   | 'default'
   | 'int'
+
+
+
+export interface TrainingOption {
+  id: number;
+  title: string;
+  time: string;
+  duration: string;
+  topics: string[];
+}
+
+// form data type
+export interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+//  props type for the component
+export interface TrainingBookingFormProps {
+  option: TrainingOption;
+  onClose: () => void;
+}
