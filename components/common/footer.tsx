@@ -22,7 +22,7 @@ export default function Footer() {
             <div className="flex items-center space-x-4">
               <span className="text-lg font-medium">Follow Us</span>
               {socialMediaPlatforms.map((elm) => (
-                <Link href={elm?.href} key={elm.id}>
+                <Link href={elm?.href} key={elm.id} target={"_blank"}>
                   <Image src={elm?.img} alt={elm.name} width={15} height={5} className="cursor-pointer" />
                 </Link>
 
@@ -30,7 +30,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
           <div>
             <h5 className="text-lg font-medium mb-4">Company</h5>
             <ul className="space-y-2">
@@ -43,7 +43,7 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-          <div>
+          {/* <div>
             <h5 className="text-lg font-medium mb-4">Top Cities</h5>
             <ul className="space-y-2">
               {links2.map((elm) => (
@@ -54,7 +54,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
           <div>
             <h5 className="text-lg font-medium mb-4">Explore</h5>
             <ul className="space-y-2">
@@ -116,7 +116,7 @@ export default function Footer() {
           </div> */}
         </div>
         <div className="border-t border-gray-700 pt-4">
-          <div className="flex flex-wrap items-center justify-between">
+          <div className="flex flex-wrap items-center justify-center">
             <div className="text-sm">
               <span>© {new Date().getFullYear()} Hyea Me Ha</span>
               {/* <ul className="flex space-x-4 mt-2">
@@ -129,7 +129,7 @@ export default function Footer() {
                 ))}
               </ul> */}
             </div>
-            <div className="flex space-x-4 mt-2">
+            {/* <div className="flex space-x-4 mt-2">
               <a
                 className="hover:underline"
                 href="#"
@@ -142,7 +142,7 @@ export default function Footer() {
               >
                 English
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
